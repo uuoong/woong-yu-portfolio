@@ -214,7 +214,7 @@
                 -webkit-font-smoothing: antialiased;
                 background-color: #fff;
                 color: #1f1f1f;
-                font-family: Neue Haas Grotesk Text Pro,Roboto,sans-serif;
+                font-family: "Hanken Grotesk", sans-serif;
                 font-kerning: none;
                 font-size: 1.6rem;
                 font-weight: 700;
@@ -268,7 +268,7 @@
             }
 
             h1,h2,h3,h4,h5,h6 {
-                font-family: Neue Haas Grotesk Text Pro,Roboto,sans-serif;
+                font-family: "Hanken Grotesk", sans-serif;
                 font-weight: 700;
                 letter-spacing: -.02em;
                 line-height: 1;
