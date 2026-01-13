@@ -1,0 +1,62 @@
+/* Defines font family application, default heading style, and text-related utilities. */
+
+/* --- Body Type --- */
+html {
+    background-color: var(--color-light);
+}
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    color: var(--color-text);
+    line-height: 1.5;
+    font-weight: 500;
+    font-style: normal;
+    font-size: clamp(16px, 1.2vw, 19px);
+    background-color: var(--color-light);
+}
+
+main {
+    background-color: var(--color-light);
+}
+
+/* --- Selection --- */
+::selection {
+    background-color: rgba(var(--color-dark-rgb), 1);
+    color: var(--color-light);
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background-color: rgba(var(--color-dark-rgb), 1);
+    color: var(--color-light);
+    text-shadow: none;
+}
+
+/* --- Headings --- */
+h1, h2, h3, h4, h5 {
+    font-weight: 500;
+    font-size: calc(var(--title-size) * 1);
+    line-height: 1;
+    color: var(--color-dark);
+}
+
+/* --- Utilities --- */
+:is(h1, h2, h3, h4, h5, span).l, h1 {
+    font-size: calc(var(--title-size) * 0.72);
+    letter-spacing: -0.027em;
+    line-height: 0.99;
+} 
+
+.link.xxl {
+    font-size: calc(var(--title-size) * 0.72);
+}
+
+:is(h1, h2, h3, h4, h5, span).m, h2 {
+    font-size: calc(var(--title-size) * 0.45);
+    letter-spacing: -0.025em;
+    line-height: 1.02;
+} 
+
+.link.xl {
+    font-size: calc(var(--title-size) * 0.45);
+}
