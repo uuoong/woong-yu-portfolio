@@ -1,0 +1,168 @@
+/* Defines the core values ​​of your design system, including font load, color, spacing, and variables. */
+
+:root {
+  /* ------------------------- Spacing System -------------------------------------------------- */
+  --spacing: 0.0625rem; /* 1px base unit */
+  
+  /* Gap System */
+  --gap: calc(var(--spacing) * 16); /* 16px */
+  --gap-s: calc(var(--gap) * 0.66); /* ~10.5px */
+  --gap-l: calc(var(--gap) * 2); /* 32px */
+  --gap-xl: calc(var(--gap) * 3); /* 48px */
+  
+  /* Section & Container Padding */
+  --section-padding: calc(var(--spacing) * 64); /* 64px */
+  --container-padding: calc(var(--spacing) * 32); /* 32px */
+  
+  /* Grid System */
+  --main-grid-gap: calc(var(--spacing) * 32); /* 32px */
+  --main-grid-columns: 12;
+  
+  /* ------------------------- Colors -------------------------------------------------- */
+  /* Primary Colors */
+  --color-black: #232323;
+  --color-black-deep: #000000;
+  --color-white: #ffffff;
+  --color-grey: #797878;
+  
+  /* RGB Values for rgba usage */
+  --color-black-rgb: 35, 35, 35;
+  --color-black-deep-rgb: 0, 0, 0;
+  --color-white-rgb: 255, 255, 255;
+  --color-grey-rgb: 121, 120, 120;
+  
+  /* Semantic Colors */
+  --color-border-grey: var(--color-grey);
+  --color-border-white: rgba(var(--color-white-rgb), 0.1);
+  
+  /* ------------------------- Typography -------------------------------------------------- */
+  /* Font Families */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Ubuntu Mono', 'Courier New', Courier, monospace;
+  
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  
+  /* Font Sizes - Fluid Typography */
+  --font-size-base: clamp(14px, 1vw, 16px);
+  --font-size-body: 1.1em; /* 약 15.4px - 17.6px */
+  
+  /* Line Heights */
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.3;
+  --line-height-relaxed: 1.5;
+  
+  /* ------------------------- Layout -------------------------------------------------- */
+  /* Viewport Height (custom property for mobile fix) */
+  --vh: 1vh;
+  
+  /* Navigation */
+  --nav-height: calc(var(--spacing) * 136); /* Header height */
+  
+  /* Z-index Scale */
+  --z-behind: -1;
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-sticky: 100;
+  --z-modal: 8;
+  --z-overlay: 1000;
+  --z-tooltip: 9999;
+  
+  /* ------------------------- Border Radius -------------------------------------------------- */
+  --radius-2: calc(var(--spacing) * 2); /* 2px */
+  --radius-4: calc(var(--spacing) * 4); /* 4px */
+  --radius-8: calc(var(--spacing) * 8); /* 8px */
+  --radius-full: 9999px; /* Circular */
+  
+  /* ------------------------- Transitions & Animations -------------------------------------------------- */
+  /* Durations */
+  --duration-fast: 0.2s;
+  --duration-normal: 0.35s;
+  --duration-slow: 0.5s;
+  
+  /* Easing Functions */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-primary: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+  
+  /* Combined Transitions */
+  --transition-fast: var(--duration-fast) var(--ease-in-out);
+  --transition-normal: var(--duration-normal) var(--ease-in-out);
+  --transition-slow: var(--duration-slow) var(--ease-in-out);
+  
+  /* ------------------------- Shadows -------------------------------------------------- */
+  --shadow-border-grey: 0 0 0 1px var(--color-grey);
+  --shadow-border-white: 0 0 0 1px rgba(var(--color-white-rgb), 0.1);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* ------------------------- Specific Component Sizes -------------------------------------------------- */
+  /* Modal */
+  --modal-width-sm: calc(var(--spacing) * 320); /* 320px */
+  --modal-width-md: calc(var(--spacing) * 400); /* 400px */
+  --modal-width-lg: calc(var(--spacing) * 600); /* 600px */
+  
+  /* Button */
+  --btn-height: calc(var(--spacing) * 52); /* 52px */
+  --btn-height-sm: calc(var(--spacing) * 44); /* 44px */
+  
+  /* Icon Sizes */
+  --icon-xs: calc(var(--spacing) * 12); /* 12px */
+  --icon-sm: calc(var(--spacing) * 16); /* 16px */
+  --icon-md: calc(var(--spacing) * 20); /* 20px */
+  --icon-lg: calc(var(--spacing) * 24); /* 24px */
+  --icon-xl: calc(var(--spacing) * 32); /* 32px */
+  
+  /* ------------------------- Breakpoints (for reference in media queries) -------------------------------------------------- */
+  /* These are used in @media queries, not as CSS variables */
+  /* --breakpoint-sm: 640px; */
+  /* --breakpoint-md: 768px; */
+  /* --breakpoint-lg: 1024px; */
+  /* --breakpoint-xl: 1280px; */
+}
+
+/* ------------------------- Responsive Adjustments -------------------------------------------------- */
+
+/* Tablet & Below (lg breakpoint: 1024px) */
+@media screen and (max-width: 1024px) {
+  :root {
+    --main-grid-columns: 6;
+    --section-padding: calc(var(--spacing) * 48);
+    --container-padding: calc(var(--spacing) * 24);
+  }
+}
+
+/* Mobile (md breakpoint: 768px) */
+@media screen and (max-width: 768px) {
+  :root {
+    --main-grid-gap: calc(var(--spacing) * 24);
+    --gap: calc(var(--spacing) * 12);
+  }
+}
+
+/* Small Mobile (sm breakpoint: 540px) */
+@media screen and (max-width: 540px) {
+  :root {
+    --main-grid-columns: 4;
+    --section-padding: calc(var(--spacing) * 32);
+    --container-padding: calc(var(--spacing) * 16);
+    --main-grid-gap: calc(var(--spacing) * 16);
+  }
+}
+
+/* ------------------------- Dark Mode Support (optional) -------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Add dark mode variables if needed */
+  }
+}
+
+/* ------------------------- Print Styles (optional) -------------------------------------------------- */
+@media print {
+  :root {
+    --spacing: 1pt;
+  }
+}
