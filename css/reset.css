@@ -86,8 +86,14 @@ audio, iframe {
 }
 
 /* --- Lenis Scroll --- */
-html.lenis { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto; height: 100vh; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
-.lenis.lenis-scrolling iframe { pointer-events: none; }
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
