@@ -1,168 +1,155 @@
-/* Defines the core values ​​of your design system, including font load, color, spacing, and variables. */
+/* variables.css - CSS Custom Properties (Design Tokens) */
 
 :root {
-  /* ------------------------- Spacing System -------------------------------------------------- */
-  --spacing: 0.0625rem; /* 1px base unit */
+  /* ===== 폰트 ===== */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-mono: 'Ubuntu Mono', ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   
-  /* Gap System */
-  --gap: calc(var(--spacing) * 16); /* 16px */
-  --gap-s: calc(var(--gap) * 0.66); /* ~10.5px */
-  --gap-l: calc(var(--gap) * 2); /* 32px */
-  --gap-xl: calc(var(--gap) * 3); /* 48px */
+  /* ===== Spacing 시스템 ===== */
+  /* 1 unit = 0.0625rem = 1px */
+  --spacing: 0.0625rem;
   
-  /* Section & Container Padding */
-  --section-padding: calc(var(--spacing) * 64); /* 64px */
-  --container-padding: calc(var(--spacing) * 32); /* 32px */
-  
-  /* Grid System */
-  --main-grid-gap: calc(var(--spacing) * 32); /* 32px */
-  --main-grid-columns: 12;
-  
-  /* ------------------------- Colors -------------------------------------------------- */
-  /* Primary Colors */
+  /* ===== 색상 ===== */
   --color-black: #232323;
   --color-black-deep: #000000;
   --color-white: #ffffff;
   --color-grey: #797878;
   
-  /* RGB Values for rgba usage */
-  --color-black-rgb: 35, 35, 35;
-  --color-black-deep-rgb: 0, 0, 0;
-  --color-white-rgb: 255, 255, 255;
-  --color-grey-rgb: 121, 120, 120;
-  
-  /* Semantic Colors */
-  --color-border-grey: var(--color-grey);
-  --color-border-white: rgba(var(--color-white-rgb), 0.1);
-  
-  /* ------------------------- Typography -------------------------------------------------- */
-  /* Font Families */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'Ubuntu Mono', 'Courier New', Courier, monospace;
-  
-  /* Font Weights */
-  --font-weight-normal: 400;
+  /* ===== Font Weight ===== */
+  --font-weight-regular: 400;
   --font-weight-semibold: 600;
+  --font-weight-bold: 700;
   
-  /* Font Sizes - Fluid Typography */
-  --font-size-base: clamp(14px, 1vw, 16px);
-  --font-size-body: 1.1em; /* 약 15.4px - 17.6px */
+  /* ===== Border Radius ===== */
+  --radius-2: calc(var(--spacing) * 2);   /* 2px */
+  --radius-4: calc(var(--spacing) * 4);   /* 4px */
+  --radius-8: calc(var(--spacing) * 8);   /* 8px */
+  --radius-12: calc(var(--spacing) * 12); /* 12px */
+  --radius-16: calc(var(--spacing) * 16); /* 16px */
+  --radius-full: 9999px;
   
-  /* Line Heights */
-  --line-height-tight: 1.1;
-  --line-height-normal: 1.3;
-  --line-height-relaxed: 1.5;
+  /* ===== Typography Scale ===== */
+  --text-xs: calc(var(--spacing) * 10);   /* 10px */
+  --text-sm: calc(var(--spacing) * 12);   /* 12px */
+  --text-base: calc(var(--spacing) * 14); /* 14px */
+  --text-md: calc(var(--spacing) * 15);   /* 15px */
+  --text-lg: calc(var(--spacing) * 18);   /* 18px */
+  --text-xl: calc(var(--spacing) * 20);   /* 20px */
+  --text-2xl: calc(var(--spacing) * 24);  /* 24px */
+  --text-3xl: calc(var(--spacing) * 30);  /* 30px */
+  --text-4xl: calc(var(--spacing) * 36);  /* 36px */
+  --text-5xl: calc(var(--spacing) * 48);  /* 48px */
   
-  /* ------------------------- Layout -------------------------------------------------- */
-  /* Viewport Height (custom property for mobile fix) */
-  --vh: 1vh;
+  /* ===== Line Height ===== */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
   
-  /* Navigation */
-  --nav-height: calc(var(--spacing) * 136); /* Header height */
+  /* ===== Spacing Helpers ===== */
+  --space-1: calc(var(--spacing) * 1);   /* 1px */
+  --space-2: calc(var(--spacing) * 2);   /* 2px */
+  --space-4: calc(var(--spacing) * 4);   /* 4px */
+  --space-8: calc(var(--spacing) * 8);   /* 8px */
+  --space-12: calc(var(--spacing) * 12); /* 12px */
+  --space-16: calc(var(--spacing) * 16); /* 16px */
+  --space-18: calc(var(--spacing) * 18); /* 18px */
+  --space-20: calc(var(--spacing) * 20); /* 20px */
+  --space-24: calc(var(--spacing) * 24); /* 24px */
+  --space-28: calc(var(--spacing) * 28); /* 28px */
+  --space-32: calc(var(--spacing) * 32); /* 32px */
+  --space-40: calc(var(--spacing) * 40); /* 40px */
+  --space-48: calc(var(--spacing) * 48); /* 48px */
+  --space-60: calc(var(--spacing) * 60); /* 60px */
+  --space-64: calc(var(--spacing) * 64); /* 64px */
+  --space-80: calc(var(--spacing) * 80); /* 80px */
+  --space-100: calc(var(--spacing) * 100); /* 100px */
   
-  /* Z-index Scale */
+  /* ===== Container Widths ===== */
+  --container-sm: calc(var(--spacing) * 640);   /* 640px */
+  --container-md: calc(var(--spacing) * 768);   /* 768px */
+  --container-lg: calc(var(--spacing) * 1024);  /* 1024px */
+  --container-xl: calc(var(--spacing) * 1280);  /* 1280px */
+  --container-2xl: calc(var(--spacing) * 1536); /* 1536px */
+  
+  /* ===== Z-Index ===== */
   --z-behind: -1;
-  --z-base: 1;
-  --z-dropdown: 10;
-  --z-sticky: 100;
-  --z-modal: 8;
-  --z-overlay: 1000;
-  --z-tooltip: 9999;
+  --z-base: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-modal: 1000;
+  --z-dropdown: 1100;
+  --z-tooltip: 1200;
+  --z-notification: 1300;
+  --z-max: 9999;
   
-  /* ------------------------- Border Radius -------------------------------------------------- */
-  --radius-2: calc(var(--spacing) * 2); /* 2px */
-  --radius-4: calc(var(--spacing) * 4); /* 4px */
-  --radius-8: calc(var(--spacing) * 8); /* 8px */
-  --radius-full: 9999px; /* Circular */
-  
-  /* ------------------------- Transitions & Animations -------------------------------------------------- */
-  /* Durations */
-  --duration-fast: 0.2s;
-  --duration-normal: 0.35s;
-  --duration-slow: 0.5s;
-  
-  /* Easing Functions */
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  /* ===== Easing ===== */
+  --ease-linear: linear;
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-primary: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-custom: cubic-bezier(0.23, 1, 0.32, 1);
   
-  /* Combined Transitions */
-  --transition-fast: var(--duration-fast) var(--ease-in-out);
-  --transition-normal: var(--duration-normal) var(--ease-in-out);
-  --transition-slow: var(--duration-slow) var(--ease-in-out);
+  /* ===== Animation Duration ===== */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 400ms;
   
-  /* ------------------------- Shadows -------------------------------------------------- */
-  --shadow-border-grey: 0 0 0 1px var(--color-grey);
-  --shadow-border-white: 0 0 0 1px rgba(var(--color-white-rgb), 0.1);
+  /* ===== Shadows ===== */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.5);
   
-  /* ------------------------- Specific Component Sizes -------------------------------------------------- */
-  /* Modal */
-  --modal-width-sm: calc(var(--spacing) * 320); /* 320px */
-  --modal-width-md: calc(var(--spacing) * 400); /* 400px */
-  --modal-width-lg: calc(var(--spacing) * 600); /* 600px */
+  /* ===== Blur ===== */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 20px;
+  --blur-2xl: 40px;
   
-  /* Button */
-  --btn-height: calc(var(--spacing) * 52); /* 52px */
-  --btn-height-sm: calc(var(--spacing) * 44); /* 44px */
+  /* ===== Aspect Ratios ===== */
+  --aspect-square: 1 / 1;
+  --aspect-video: 16 / 9;
+  --aspect-cinema: 21 / 9;
   
-  /* Icon Sizes */
-  --icon-xs: calc(var(--spacing) * 12); /* 12px */
-  --icon-sm: calc(var(--spacing) * 16); /* 16px */
-  --icon-md: calc(var(--spacing) * 20); /* 20px */
-  --icon-lg: calc(var(--spacing) * 24); /* 24px */
-  --icon-xl: calc(var(--spacing) * 32); /* 32px */
+  /* ===== Layout ===== */
+  --layout-min-w: 375;
+  --layout-max-w: 1600;
   
-  /* ------------------------- Breakpoints (for reference in media queries) -------------------------------------------------- */
-  /* These are used in @media queries, not as CSS variables */
-  /* --breakpoint-sm: 640px; */
-  /* --breakpoint-md: 768px; */
-  /* --breakpoint-lg: 1024px; */
-  /* --breakpoint-xl: 1280px; */
+  /* ===== Opacity ===== */
+  --opacity-5: 0.05;
+  --opacity-10: 0.1;
+  --opacity-20: 0.2;
+  --opacity-30: 0.3;
+  --opacity-40: 0.4;
+  --opacity-50: 0.5;
+  --opacity-60: 0.6;
+  --opacity-70: 0.7;
+  --opacity-80: 0.8;
+  --opacity-90: 0.9;
+  --opacity-95: 0.95;
+  
+  /* ===== Backdrop Filter ===== */
+  --backdrop-blur-none: blur(0);
+  --backdrop-blur-sm: blur(4px);
+  --backdrop-blur-md: blur(8px);
+  --backdrop-blur-lg: blur(16px);
+  --backdrop-blur-xl: blur(20px);
+  --backdrop-blur-2xl: blur(40px);
 }
 
-/* ------------------------- Responsive Adjustments -------------------------------------------------- */
-
-/* Tablet & Below (lg breakpoint: 1024px) */
-@media screen and (max-width: 1024px) {
-  :root {
-    --main-grid-columns: 6;
-    --section-padding: calc(var(--spacing) * 48);
-    --container-padding: calc(var(--spacing) * 24);
-  }
-}
-
-/* Mobile (md breakpoint: 768px) */
-@media screen and (max-width: 768px) {
-  :root {
-    --main-grid-gap: calc(var(--spacing) * 24);
-    --gap: calc(var(--spacing) * 12);
-  }
-}
-
-/* Small Mobile (sm breakpoint: 540px) */
-@media screen and (max-width: 540px) {
-  :root {
-    --main-grid-columns: 4;
-    --section-padding: calc(var(--spacing) * 32);
-    --container-padding: calc(var(--spacing) * 16);
-    --main-grid-gap: calc(var(--spacing) * 16);
-  }
-}
-
-/* ------------------------- Dark Mode Support (optional) -------------------------------------------------- */
+/* 다크 모드 변수 (필요시 확장) */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Add dark mode variables if needed */
-  }
-}
-
-/* ------------------------- Print Styles (optional) -------------------------------------------------- */
-@media print {
-  :root {
-    --spacing: 1pt;
+    /* 다크 모드에서는 동일한 변수 사용 (이미 다크) */
   }
 }
