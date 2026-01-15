@@ -1,62 +1,280 @@
-/* Defines font family application, default heading style, and text-related utilities. */
+/* typography.css - 폰트 및 텍스트 스타일 */
 
-/* --- Body Type --- */
-html {
-    background-color: var(--color-light);
+/* ===== Font Faces ===== */
+
+/* Inter Font */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2') format('woff2');
 }
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiA.woff2') format('woff2');
+}
+
+/* Ubuntu Mono Font */
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/ubuntumono/v15/KFOjCneDtsqEr0keqCMhbCc6CsQ.woff2') format('woff2');
+}
+
+/* ===== Base Typography ===== */
 
 body {
-    font-family: 'Helvetica Neue', sans-serif;
-    color: var(--color-text);
-    line-height: 1.5;
-    font-weight: 500;
-    font-style: normal;
-    font-size: clamp(16px, 1.2vw, 19px);
-    background-color: var(--color-light);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-white);
+  letter-spacing: normal;
 }
 
-main {
-    background-color: var(--color-light);
+/* ===== Typography Utilities ===== */
+
+/* Font Families */
+.font-sans {
+  font-family: var(--font-sans);
 }
 
-/* --- Selection --- */
-::selection {
-    background-color: rgba(var(--color-dark-rgb), 1);
-    color: var(--color-light);
-    text-shadow: none;
+.font-mono {
+  font-family: var(--font-mono);
 }
 
-::-moz-selection {
-    background-color: rgba(var(--color-dark-rgb), 1);
-    color: var(--color-light);
-    text-shadow: none;
+/* Font Sizes */
+.text-xs {
+  font-size: var(--text-xs);
 }
 
-/* --- Headings --- */
-h1, h2, h3, h4, h5 {
-    font-weight: 500;
-    font-size: calc(var(--title-size) * 1);
-    line-height: 1;
-    color: var(--color-dark);
+.text-sm {
+  font-size: var(--text-sm);
 }
 
-/* --- Utilities --- */
-:is(h1, h2, h3, h4, h5, span).l, h1 {
-    font-size: calc(var(--title-size) * 0.72);
-    letter-spacing: -0.027em;
-    line-height: 0.99;
-} 
-
-.link.xxl {
-    font-size: calc(var(--title-size) * 0.72);
+.text-base {
+  font-size: var(--text-base);
 }
 
-:is(h1, h2, h3, h4, h5, span).m, h2 {
-    font-size: calc(var(--title-size) * 0.45);
-    letter-spacing: -0.025em;
-    line-height: 1.02;
-} 
+.text-md {
+  font-size: var(--text-md);
+}
 
-.link.xl {
-    font-size: calc(var(--title-size) * 0.45);
+.text-lg {
+  font-size: var(--text-lg);
+}
+
+.text-xl {
+  font-size: var(--text-xl);
+}
+
+.text-2xl {
+  font-size: var(--text-2xl);
+}
+
+.text-3xl {
+  font-size: var(--text-3xl);
+}
+
+.text-4xl {
+  font-size: var(--text-4xl);
+}
+
+.text-5xl {
+  font-size: var(--text-5xl);
+}
+
+/* Font Weights */
+.font-normal {
+  font-weight: var(--font-weight-regular);
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.font-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Line Heights */
+.leading-none {
+  line-height: var(--leading-none);
+}
+
+.leading-tight {
+  line-height: var(--leading-tight);
+}
+
+.leading-snug {
+  line-height: var(--leading-snug);
+}
+
+.leading-normal {
+  line-height: var(--leading-normal);
+}
+
+.leading-relaxed {
+  line-height: var(--leading-relaxed);
+}
+
+.leading-loose {
+  line-height: var(--leading-loose);
+}
+
+/* Text Colors */
+.text-black {
+  color: var(--color-black);
+}
+
+.text-black-deep {
+  color: var(--color-black-deep);
+}
+
+.text-white {
+  color: var(--color-white);
+}
+
+.text-grey {
+  color: var(--color-grey);
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.text-white-70 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.text-white-90 {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Text Alignment */
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Text Transform */
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+/* Text Decoration */
+.underline {
+  text-decoration-line: underline;
+}
+
+.line-through {
+  text-decoration-line: line-through;
+}
+
+.no-underline {
+  text-decoration-line: none;
+}
+
+.underline-offset-2 {
+  text-underline-offset: 2px;
+}
+
+/* Text Overflow */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+.break-words {
+  overflow-wrap: break-word;
+}
+
+/* White Space */
+.whitespace-normal {
+  white-space: normal;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.whitespace-pre {
+  white-space: pre;
+}
+
+.whitespace-pre-line {
+  white-space: pre-line;
+}
+
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+
+/* Letter Spacing */
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+  letter-spacing: 0;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+
+/* User Select */
+.select-none {
+  user-select: none;
+}
+
+.select-text {
+  user-select: text;
+}
+
+.select-all {
+  user-select: all;
+}
+
+.select-auto {
+  user-select: auto;
 }
