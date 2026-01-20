@@ -1213,7 +1213,7 @@ html,body {
 
 body {
     overscroll-behavior: none;
-    height: 100svh;
+    height: 100svh !important;
     font-family: var(--font-sans);
     font-size: var(--text-body-14);
     line-height: var(--tw-leading,var(--text-body-14--line-height));
