@@ -1,0 +1,53 @@
+/* =========================================================
+   Typography Tokens
+========================================================= */
+
+:root {
+  /* font families */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-ubuntu-mono), ui-monospace, monospace;
+
+  /* fluid base */
+  --fluid-min-width: 375;
+  --fluid-max-width: 1600;
+  --fluid-slope: calc(
+    (100vw - calc(var(--space-unit) * var(--fluid-min-width)))
+    / (var(--fluid-max-width) - var(--fluid-min-width))
+  );
+
+  /* text scale */
+  --text-xs: clamp(
+    calc(var(--space-unit) * 10),
+    calc(var(--space-unit) * 10) + (12 - 10) * var(--fluid-slope),
+    calc(var(--space-unit) * 12)
+  );
+
+  --text-sm: clamp(
+    calc(var(--space-unit) * 12),
+    calc(var(--space-unit) * 12) + (14 - 12) * var(--fluid-slope),
+    calc(var(--space-unit) * 14)
+  );
+
+  --text-md: clamp(
+    calc(var(--space-unit) * 14),
+    calc(var(--space-unit) * 14) + (16 - 14) * var(--fluid-slope),
+    calc(var(--space-unit) * 16)
+  );
+
+  --text-lg: clamp(
+    calc(var(--space-unit) * 16),
+    calc(var(--space-unit) * 16) + (18 - 16) * var(--fluid-slope),
+    calc(var(--space-unit) * 18)
+  );
+
+  --text-xl: clamp(
+    calc(var(--space-unit) * 20),
+    calc(var(--space-unit) * 20) + (24 - 20) * var(--fluid-slope),
+    calc(var(--space-unit) * 24)
+  );
+
+  /* defaults */
+  --text-body: var(--text-sm);
+  --text-body-weight: 400;
+  --text-body-line-height: 1.3;
+}
