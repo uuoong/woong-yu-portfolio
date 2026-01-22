@@ -1,0 +1,34 @@
+/* =========================================================
+   Spacing Tokens
+========================================================= */
+
+:root {
+  /* base unit */
+  --space-unit: 0.0625rem;
+
+  /* spacing scale */
+  --space-0: calc(var(--space-unit) * 0);
+  --space-1: calc(var(--space-unit) * 1);
+  --space-2: calc(var(--space-unit) * 2);
+  --space-3: calc(var(--space-unit) * 3);
+  --space-4: calc(var(--space-unit) * 4);
+  --space-5: calc(var(--space-unit) * 5);
+  --space-6: calc(var(--space-unit) * 6);
+  --space-8: calc(var(--space-unit) * 8);
+  --space-10: calc(var(--space-unit) * 10);
+  --space-12: calc(var(--space-unit) * 12);
+  --space-16: calc(var(--space-unit) * 16);
+  --space-18: calc(var(--space-unit) * 18);
+  --space-24: calc(var(--space-unit) * 24);
+  --space-26: calc(var(--space-unit) * 26);
+  --space-28: calc(var(--space-unit) * 28);
+  --space-32: calc(var(--space-unit) * 32);
+  --space-40: calc(var(--space-unit) * 40);
+  --space-60: calc(var(--space-unit) * 60);
+  --space-100: calc(var(--space-unit) * 100);
+  --space-200: calc(var(--space-unit) * 200);
+  --space-320: calc(var(--space-unit) * 320);
+  --space-400: calc(var(--space-unit) * 400);
+  --space-600: calc(var(--space-unit) * 600);
+  --space-800: calc(var(--space-unit) * 800);
+}
