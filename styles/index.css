@@ -1,5 +1,8 @@
 /* styles/index.css */
 
+/* styles/tonts */
+@import "./fonts/fonts.css";
+
 /* styles/tokens */
 @import "./tokens/spacing.css";
 @import "./tokens/colors.css";
