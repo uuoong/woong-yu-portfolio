@@ -1,0 +1,25 @@
+/* styles/index.css */
+
+/* styles/tokens */
+@import "./tokens/spacing.css";
+@import "./tokens/colors.css";
+@import "./tokens/radius.css";
+@import "./tokens/typography.css";
+@import "./tokens/motion.css";
+/* @import "./tokens/z-index.css"; */
+/* @import "./tokens/layout.css"; */
+
+/* styles/base */
+@import "./base/reset.css";
+@import "./base/base.css";
+@import "./base/accessibility.css";
+
+/* styles/themes */
+/* @import "./themes/dark.css"; */
+/* or light.css */
+
+/* styles/utilities */
+@import "./utilities/utilities.css";
+
+/* styles/components */
+@import "./components/header.css";
