@@ -1,9 +1,9 @@
 /* styles/index.css */
 
-/* styles/fonts */
+/* 1. Fonts (resource) */
 @import "./fonts/fonts.css";
 
-/* styles/tokens */
+/* 2. Tokens */
 @import "./tokens/spacing.css";
 @import "./tokens/colors.css";
 @import "./tokens/radius.css";
@@ -12,17 +12,17 @@
 /* @import "./tokens/z-index.css"; */
 /* @import "./tokens/layout.css"; */
 
-/* styles/base */
+/* 3. Base */
 @import "./base/reset.css";
 @import "./base/base.css";
 @import "./base/accessibility.css";
 
-/* styles/themes */
+/* 4. Themes */
 /* @import "./themes/dark.css"; */
 /* or light.css */
 
-/* styles/utilities */
+/* 5. Utilities */
 @import "./utilities/utilities.css";
 
-/* styles/components */
+/* 6. Components */
 @import "./components/header.css";
