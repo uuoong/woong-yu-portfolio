@@ -1,0 +1,39 @@
+/* =========================================================
+   Font Faces
+========================================================= */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/Inter-Regular.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/Inter-Medium.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/Inter-SemiBold.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/UbuntuMono-Regular.woff2')
+    format('woff2');
+}
