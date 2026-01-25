@@ -1,7 +1,7 @@
 /* styles/index.css */
 
-/* 1. Fonts (resource) */
-@import "./fonts/fonts.css";
+/* 1. Fonts */
+@import "./fonts.css";
 
 /* 2. Tokens */
 @import "./tokens/spacing.css";
@@ -17,12 +17,15 @@
 @import "./base/base.css";
 @import "./base/accessibility.css";
 
-/* 4. Themes */
-/* @import "./themes/dark.css"; */
-/* or light.css */
+/* 4. Typography Application Layer */
+@import "./type.css";
 
 /* 5. Utilities */
-@import "./utilities/utilities.css";
+@import "./utilities.css";
 
 /* 6. Components */
-@import "./components/header.css";
+@import "./components/index.css";
+
+/* 7. Themes */
+/* @import "./themes/dark.css"; */
+/* @import "./themes/light.css"; */
