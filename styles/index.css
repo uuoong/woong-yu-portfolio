@@ -24,7 +24,7 @@
 @import "./utilities.css";
 
 /* 6. Components */
-@import "./components/index.css";
+@import "./components/header.css";
 
 /* 7. Themes */
 /* @import "./themes/dark.css"; */
