@@ -63,9 +63,6 @@ main {
 
   display: flex;
   flex-direction: column;
-
-  padding-inline: var(--space-8);
-  padding-bottom: var(--space-8);
 }
 
 /* ---------------------------------------------------------
