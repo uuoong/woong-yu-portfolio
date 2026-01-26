@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.header__inner {
+.header__container {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -20,10 +20,10 @@
 }
 
 /* ---------------------------------------------------------
-   Home
+   Logo
 --------------------------------------------------------- */
 
-.header__home {
+.header__logo {
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
@@ -31,20 +31,20 @@
   color: var(--color-white);
 }
 
-.header__avatar {
+.header__logo-avatar {
   width: 20px;
   height: 20px;
   border-radius: 50%;
 }
 
-.header__name {
+.header__logo-name {
   font-family: var(--font-sans);
   font-size: var(--font-body-1-size);
   line-height: var(--font-body-1-line-height);
   font-weight: var(--font-body-1-weight);
 }
 
-.header__home:hover .header__name {
+.header__logo:hover .header__logo-name {
   opacity: 0.85;
 }
 
