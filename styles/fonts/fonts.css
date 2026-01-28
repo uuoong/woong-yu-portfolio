@@ -1,39 +1,104 @@
-/* =========================================================
-   Font Faces
-========================================================= */
+/* ============================================
+   Pretendard Variable (Sans)
+   ============================================ */
 
+/* Main Font */
 @font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/Inter-Regular.woff2')
-    format('woff2');
+   font-family: 'Pretendard Variable';
+   font-style: normal;
+   font-weight: 45 920;
+   font-display: swap;
+   src: url('https://woong-yu-portfolio.vercel.app/assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+   unicode-range: U+0020-007E, U+00A0-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF, U+2000-206F, U+20A0-20CF, U+2100-214F, U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
 }
 
+/* Fallback 1: 영문 최적화 */
 @font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/Inter-Medium.woff2')
-    format('woff2');
+   font-family: 'Pretendard Fallback EN';
+   src: local('Arial');
+   ascent-override: 88.5%;
+   descent-override: 20.5%;
+   line-gap-override: 0%;
+   size-adjust: 102.5%;
 }
 
+/* Fallback 2: 한글 최적화 - macOS */
 @font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/Inter-SemiBold.woff2')
-    format('woff2');
+   font-family: 'Pretendard Fallback KR Mac';
+   src: local('Apple SD Gothic Neo');
+   ascent-override: 87.2%;
+   descent-override: 19.8%;
+   line-gap-override: 0%;
+   size-adjust: 103.8%;
 }
 
+/* Fallback 3: 한글 최적화 - Windows */
 @font-face {
-  font-family: 'Ubuntu Mono';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('https://YOUR_CDN_DOMAIN/assets/fonts/UbuntuMono-Regular.woff2')
-    format('woff2');
+   font-family: 'Pretendard Fallback KR Win';
+   src: local('Malgun Gothic'), 
+        local('맑은 고딕');
+   ascent-override: 88.0%;
+   descent-override: 20.0%;
+   line-gap-override: 0%;
+   size-adjust: 102.0%;
+}
+
+/* Fallback 4: 범용 (시스템 폰트) */
+@font-face {
+   font-family: 'Pretendard Fallback Universal';
+   src: local('Segoe UI'), 
+        local('SF Pro Display'),
+        local('Roboto'),
+        local('Helvetica Neue'),
+        local('Arial');
+   ascent-override: 88.0%;
+   descent-override: 20.0%;
+   line-gap-override: 0%;
+   size-adjust: 102.5%;
+}
+
+/* ============================================
+   MONASPACE NEON VARIABLE (Mono)
+   ============================================ */
+
+/* Main Font */
+@font-face {
+   font-family: 'Monaspace Neon Variable';
+   font-style: normal;
+   font-weight: 100 900;
+   font-stretch: 100% 125%;
+   font-display: swap;
+   src: url('https://woong-yu-portfolio.vercel.app/assets/fonts/MonaspaceNeonVariable.woff2') format('woff2-variations');
+}
+
+/* Fallback 1: macOS 최적화 */
+@font-face {
+   font-family: 'Monaspace Neon Fallback Mac';
+   src: local('SF Mono'),
+        local('Monaco');
+   ascent-override: 91.8%;
+   descent-override: 24.5%;
+   line-gap-override: 0%;
+   size-adjust: 99.5%;
+}
+
+/* Fallback 2: Windows 최적화 */
+@font-face {
+   font-family: 'Monaspace Neon Fallback Win';
+   src: local('Consolas');
+   ascent-override: 92.5%;
+   descent-override: 25.8%;
+   line-gap-override: 0%;
+   size-adjust: 98.2%;
+}
+
+/* Fallback 3: 범용 */
+@font-face {
+   font-family: 'Monaspace Neon Fallback Universal';
+   src: local('Courier New'),
+        local('Courier');
+   ascent-override: 90.0%;
+   descent-override: 26.0%;
+   line-gap-override: 0%;
+   size-adjust: 97.5%;
 }
