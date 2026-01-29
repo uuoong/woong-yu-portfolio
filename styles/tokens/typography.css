@@ -1,60 +1,90 @@
-/* =========================================================
-   Typography Tokens
-========================================================= */
+/* ============================================
+   TYPOGRAPHY SYSTEM
+   ============================================ */
 
+/* ============================================
+   1. FONT STACKS
+   ============================================ */
 :root {
-  /* -----------------------------------------------------
-     Font Families
-  ----------------------------------------------------- */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, sans-serif;
+   /* Sans-serif: Pretendard Variable (영문/한글 통합) */
+   --font-sans:
+      "Pretendard Variable",
+      "Pretendard Fallback EN",
+      "Pretendard Fallback KR Mac",
+      "Pretendard Fallback KR Win",
+      "Pretendard Fallback Universal",
+      -apple-system,
+      BlinkMacSystemFont,
+      system-ui,
+      sans-serif,
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol";
 
-  --font-mono: 'Ubuntu Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  /* -----------------------------------------------------
-     Headings
-  ----------------------------------------------------- */
-  --font-h1-size: 1.5rem;
-  --font-h1-line-height: 1.3;
-  --font-h1-weight: 600;
-
-  --font-h2-size: 1.25rem;
-  --font-h2-line-height: 1.35;
-  --font-h2-weight: 600;
-
-  --font-h3-size: 1.125rem;
-  --font-h3-line-height: 1.4;
-  --font-h3-weight: 500;
-
-  /* -----------------------------------------------------
-     Body
-  ----------------------------------------------------- */
-  --font-body-1-size: 1rem;
-  --font-body-1-line-height: 1.5;
-  --font-body-1-weight: 400;
-
-  --font-body-2-size: 0.875rem;
-  --font-body-2-line-height: 1.5;
-  --font-body-2-weight: 400;
-
-  /* -----------------------------------------------------
-     Mono
-  ----------------------------------------------------- */
-  --font-mono-1-size: 0.875rem;
-  --font-mono-1-line-height: 1.45;
-  --font-mono-1-weight: 400;
+   /* Monospace: Monaspace Neon Variable */
+   --font-mono:
+      "Monaspace Neon Variable",
+      "Monaspace Neon Fallback Mac",
+      "Monaspace Neon Fallback Win",
+      "Monaspace Neon Fallback Universal",
+      ui-monospace,
+      monospace;
 }
 
-/* ---------------------------------------------------------
-   Responsive Typography (>= 1024px)
---------------------------------------------------------- */
-@media (min-width: 1024px) {
-  :root {
-    --font-h1-size: 1.75rem;
-    --font-h2-size: 1.375rem;
-    --font-h3-size: 1.25rem;
+/* ============================================
+   2. FLUID TYPOGRAPHY BASE SYSTEM
+   ============================================ */
+:root {
+   /* Base Unit (1px = 0.0625rem) */
+   --unit: 0.0625rem;
 
-    --font-body-1-size: 1.0625rem;
-    --font-body-2-size: 0.9375rem;
-  }
+   
+}
+
+
+
+   --layout-min-w: 360;
+   --layout-max-w: 1800;
+
+   --fluid-min-w: var(--layout-min-w, 360);
+   --fluid-max-w: var(--layout-max-w, 1800);
+
+   --fluid-slope: calc((100vw - calc(var(--unit) * var(--fluid-min-w))) / (var(--fluid-max-w) - var(--fluid-min-w)));
+   
+   --font-weight-regular: 400;
+   --font-weight-medium: 500;
+   --font-weight-semibold: 600;
+   --font-weight-bold: 700;
+}
+
+/* ============================================
+   Typography Styles
+   ============================================ */
+
+.font-body {
+   font-family: var(--font-sans);
+   font-size: clamp(calc(var(--unit) * 12), calc(var(--unit) * 12) + (14 - 12) * var(--fluid-slope), calc(var(--unit) * 14));
+   line-height: 1.3rem;
+   font-weight: var(--font-weight-regular);
+}
+
+.font-body-accent {
+   font-family: var(--font-sans);
+   font-size: clamp(calc(var(--unit) * 12), calc(var(--unit) * 12) + (14 - 12) * var(--fluid-slope), calc(var(--unit) * 14));
+   line-height: 1.3rem;
+   font-weight: var(--font-weight-semibold);
+}
+
+.font-mono {
+   font-family: var(--font-mono);
+   font-size: 0.75rem;
+   line-height: 0.9375rem;
+   font-weight: var(--font-weight-regular);
+}
+
+@media screen and (max-width: 22.5rem) {
+   .font-mono {
+      font-size: 0.6875rem;
+      line-height: 0.8125rem;
+   }
 }
