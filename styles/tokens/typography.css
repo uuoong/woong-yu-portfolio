@@ -38,13 +38,21 @@
    /* Base Unit (1px = 0.0625rem) */
    --unit: 0.0625rem;
 
+   /* 기본 vw 설정 (모든 브라우저용) */
+   --fluid-screen: 100vw;
+
+   /* dvw 지원 시 dvw로 덮어쓰기 */
+   @supports (width: 1dvw) {
+      --fluid-screen: 100dvw;
+   }
+
    /* Viewport Boundaries */
    --layout-min-w: 360;
    --layout-max-w: 2560;
 
    /* Fluid Calculation */
    --fluid-slope: calc(
-      (100dvw - calc(var(--unit) * var(--layout-min-w))) / 
+      (var(--fluid-screen) - calc(var(--unit) * var(--layout-min-w))) / 
       (var(--layout-max-w) - var(--layout-min-w))
    );
 }
