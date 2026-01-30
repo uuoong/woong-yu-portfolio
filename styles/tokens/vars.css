@@ -1,0 +1,20 @@
+/* ============================================
+   BREAKPOINTS
+   ============================================ */
+:root {
+   --bp-mobile: 360px;
+   --bp-tablet: 768px;
+   --bp-laptop: 1024px;
+   --bp-desktop: 1440px;
+   --bp-xl: 1920px;
+}
+
+
+/* ============================================
+   MOTION
+   ============================================ */
+:root {
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 150ms var(--ease-standard);
+  --transition-base: 300ms var(--ease-standard);
+}
