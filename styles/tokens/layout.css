@@ -32,7 +32,7 @@
       --fluid-screen: 100dvw;
    }
 
-   /* Fluid Unit */
+   /* Fluid Unit Calculation */
    --fluid-unit: clamp(
       calc(var(--base-min) * 0.0625rem),
       calc(var(--slope) * var(--fluid-screen) + var(--intercept)), /* 기울기 값 */
