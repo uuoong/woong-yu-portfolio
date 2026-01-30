@@ -3,7 +3,7 @@
    ============================================ */
 
 /* ============================================
-   1. FONT STACKS
+   1. Font Stacks
    ============================================ */
 :root {
    /* Sans-serif: Pretendard Variable (영문/한글 통합) */
@@ -32,13 +32,17 @@
 }
 
 /* ============================================
-   2. FLUID TYPOGRAPHY BASE SYSTEM
+   2. Fluid Typography Base System
    ============================================ */
 :root {
+   /* Viewport 범위 (Unitless) */
+   --vp-min: 360;
+   --vp-max: 2560;
+   
    /* Base Unit (1px = 0.0625rem) */
    --unit: 0.0625rem;
 
-   /* 기본 vw 설정 (모든 브라우저용) */
+   /* Base vw 설정 (모든 브라우저용) */
    --fluid-screen: 100vw;
 
    /* dvw 지원 시 dvw로 덮어쓰기 */
@@ -46,31 +50,27 @@
       --fluid-screen: 100dvw;
    }
 
-   /* Viewport Boundaries */
-   --layout-min-w: 360;
-   --layout-max-w: 2560;
-
-   /* Fluid Calculation */
-   --fluid-slope: calc(
-      (var(--fluid-screen) - calc(var(--unit) * var(--layout-min-w))) / 
-      (var(--layout-max-w) - var(--layout-min-w))
+   /* Fluid Unit Calculation */
+   --fluid-unit: calc(
+      (var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
+      (var(--vp-max) - var(--vp-min))
    );
 }
 
 /* ============================================
-   3. FLUID TYPOGRAPHY (Font Sizes)
+   3. Font Sizes
    ============================================ */
 :root {
    /* 12px → 16px */
    --font-size: clamp(
       calc(var(--unit) * 12),
-      calc(var(--unit) * 12) + 4 * var(--fluid-slope),
+      calc(var(--unit) * 12) + 4 * var(--fluid-unit),
       calc(var(--unit) * 16)
    );
 }
 
 /* ============================================
-   4. FONT WEIGHTS
+   4. Font Weights
    ============================================ */
 :root {
    --font-weight-regular: 400;
@@ -80,7 +80,7 @@
 }
 
 /* ============================================
-   5. LINE HEIGHTS (Unitless)
+   5. Line Heights (Unitless)
    ============================================ */
 :root {
    --line-height-tight: 1.15;
@@ -89,7 +89,7 @@
 }
 
 /* ============================================
-   6. LETTER SPACING
+   6. Letter Spacing
    ============================================ */
 :root {
    --letter-spacing-tight: -0.02em;
@@ -98,7 +98,7 @@
 }
 
 /* ============================================
-   7. TYPOGRAPHY UTILITY CLASSES
+   7. Typography Utility Classes
    ============================================ */
 .font-body {
    font-family: var(--font-sans);
