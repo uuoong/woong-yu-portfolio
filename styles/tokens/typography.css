@@ -38,19 +38,33 @@
    /* Base Unit (1px = 0.0625rem) */
    --unit: 0.0625rem;
 
-   
+   /* Viewport Boundaries */
+   --layout-min-w: 360;
+   --layout-max-w: 2560;
+
+   /* Fluid Calculation */
+   --fluid-slope: calc(
+      (100dvw - calc(var(--unit) * var(--layout-min-w))) / 
+      (var(--layout-max-w) - var(--layout-min-w))
+   );
 }
 
+/* ============================================
+   3. FLUID TYPOGRAPHY (Font Sizes)
+   ============================================ */
+:root {
+   /* 12px → 16px */
+   --font-size: clamp(
+      calc(var(--unit) * 12),
+      calc(var(--unit) * 12) + 4 * var(--fluid-slope),
+      calc(var(--unit) * 16)
+   );
+}
 
-
-   --layout-min-w: 360;
-   --layout-max-w: 1800;
-
-   --fluid-min-w: var(--layout-min-w, 360);
-   --fluid-max-w: var(--layout-max-w, 1800);
-
-   --fluid-slope: calc((100vw - calc(var(--unit) * var(--fluid-min-w))) / (var(--fluid-max-w) - var(--fluid-min-w)));
-   
+/* ============================================
+   4. FONT WEIGHTS
+   ============================================ */
+:root {
    --font-weight-regular: 400;
    --font-weight-medium: 500;
    --font-weight-semibold: 600;
@@ -58,33 +72,46 @@
 }
 
 /* ============================================
-   Typography Styles
+   5. LINE HEIGHTS (Unitless)
    ============================================ */
+:root {
+   --line-height-tight: 1.15;
+   --line-height-normal: 1.3;
+   --line-height-relaxed: 1.55;
+}
 
+/* ============================================
+   6. LETTER SPACING
+   ============================================ */
+:root {
+   --letter-spacing-tight: -0.02em;
+   --letter-spacing-normal: 0;
+   --letter-spacing-relaxed: 0.02em;
+}
+
+/* ============================================
+   7. TYPOGRAPHY UTILITY CLASSES
+   ============================================ */
 .font-body {
    font-family: var(--font-sans);
-   font-size: clamp(calc(var(--unit) * 12), calc(var(--unit) * 12) + (14 - 12) * var(--fluid-slope), calc(var(--unit) * 14));
-   line-height: 1.3rem;
+   font-size: var(--font-size);
    font-weight: var(--font-weight-regular);
+   line-height: var(--line-height-normal);
+   letter-spacing: var(--letter-spacing-normal);
 }
 
 .font-body-accent {
    font-family: var(--font-sans);
-   font-size: clamp(calc(var(--unit) * 12), calc(var(--unit) * 12) + (14 - 12) * var(--fluid-slope), calc(var(--unit) * 14));
-   line-height: 1.3rem;
+   font-size: var(--font-size);
    font-weight: var(--font-weight-semibold);
+   line-height: var(--line-height-normal);
+   letter-spacing: var(--letter-spacing-normal);
 }
 
 .font-mono {
    font-family: var(--font-mono);
-   font-size: 0.75rem;
-   line-height: 0.9375rem;
+   font-size: var(--font-size);
    font-weight: var(--font-weight-regular);
-}
-
-@media screen and (max-width: 22.5rem) {
-   .font-mono {
-      font-size: 0.6875rem;
-      line-height: 0.8125rem;
-   }
+   line-height: var(--line-height-normal);
+   letter-spacing: var(--letter-spacing-normal);
 }
