@@ -1,0 +1,67 @@
+/* ============================================
+   LAYOUT SYSTEM
+   ============================================ */
+
+/* ============================================
+   1. Fluid Layout Base System
+   ============================================ */
+:root {
+   /* Viewport 범위 (Unitless) */
+   --vp-min: 360;
+   --vp-max: 2560;
+
+   /* Base Unit (Unitless) */
+   --base-min: 4;  /* 0.25rem */
+   --base-max: 6; /* 0.375rem */
+
+   /* Slope & Intercept Calculation (Linear Interpolation) */
+   --slope: calc(
+      (var(--base-max) - var(--base-min)) / 
+      (var(--vp-max) - var(--vp-min))
+   );
+
+   --intercept: calc(
+      (var(--base-min) - (var(--slope) * var(--vp-min))) * 1px
+   );
+
+   /* Base vw 설정 (모든 브라우저용) */
+   --fluid-screen: 100vw;
+
+   /* dvw 지원 시 dvw로 덮어쓰기 */
+   @supports (width: 1dvw) {
+      --fluid-screen: 100dvw;
+   }
+
+   /* Fluid Unit */
+   --fluid-unit: clamp(
+      calc(var(--base-min) * 0.0625rem),
+      calc(var(--slope) * var(--fluid-screen) + var(--intercept)), /* 기울기 값 */
+      calc(var(--base-max) * 0.0625rem)
+   );
+}
+
+/* ============================================
+   2. Atomic Classes
+   ============================================ */
+:root {
+   /* Spacing Scale */
+   --space-0_5: calc(var(--fluid-unit) * 0.5); /* 2px ~ 3px */
+   --space-1:   var(--fluid-unit);             /* 4px ~ 6px */
+   --space-2:   calc(var(--fluid-unit) * 2);   /* 8px ~ 12px */
+   --space-3:   calc(var(--fluid-unit) * 3);   /* 12px ~ 18px */
+   --space-4:   calc(var(--fluid-unit) * 4);   /* 16px ~ 24px */
+   --space-5:   calc(var(--fluid-unit) * 5);   /* 20px ~ 30px */
+   --space-6:   calc(var(--fluid-unit) * 6);   /* 24px ~ 36px */
+   --space-8:   calc(var(--fluid-unit) * 8);   /* 32px ~ 48px */
+   --space-10:  calc(var(--fluid-unit) * 10);  /* 40px ~ 60px */
+   --space-12:  calc(var(--fluid-unit) * 12);  /* 48px ~ 72px */
+   --space-16:  calc(var(--fluid-unit) * 16);  /* 64px ~ 96px */
+   --space-20:  calc(var(--fluid-unit) * 20);  /* 80px ~ 120px */
+   --space-24:  calc(var(--fluid-unit) * 24);  /* 96px ~ 144px */
+   --space-32:  calc(var(--fluid-unit) * 32);  /* 128px ~ 192px */
+
+   /* Semantic Mapping */
+   --gutter: var(--space-6);
+   
+   --section-spacing: var(--space-20);
+}
