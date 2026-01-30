@@ -1,13 +1,12 @@
-/* =========================================================
-   Radius Tokens
-========================================================= */
-
+/* ============================================
+   RADIUS TOKENS
+   ============================================ */
 :root {
-  --radius-xs: calc(var(--space-unit) * 2);
-  --radius-sm: calc(var(--space-unit) * 4);
-  --radius-md: calc(var(--space-unit) * 6);
-  --radius-lg: calc(var(--space-unit) * 8);
-  --radius-xl: calc(var(--space-unit) * 12);
-  --radius-2xl: calc(var(--space-unit) * 16);
-  --radius-full: 9999px;
+   /* Base Unit (1px = 0.0625rem) */
+   --unit: 0.0625rem;
+   
+   --radius-sm: calc(var(--unit) * 2);
+   --radius-md: calc(var(--unit) * 4);
+   --radius-lg: calc(var(--unit) * 8);
+   --radius-full: 9999px;
 }
