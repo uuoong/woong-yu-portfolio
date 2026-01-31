@@ -1,20 +1,25 @@
 /* ============================================
-   BREAKPOINTS
+   Global Constants
    ============================================ */
 :root {
-   --bp-mobile: 360px;
-   --bp-tablet: 768px;
-   --bp-laptop: 1024px;
-   --bp-desktop: 1440px;
-   --bp-xl: 1920px;
-}
+   /* Viewport 범위 (Unitless) */
+   --vp-min: 360;
+   --vp-max: 2560;
+   
+   /* Base Unit (1px = 0.0625rem) */
+   --unit: 0.0625rem;
 
+   /* Fluid Screen Width (모든 브라우저용) */
+   --fluid-screen: 100vw;
 
-/* ============================================
-   MOTION
-   ============================================ */
-:root {
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: 150ms var(--ease-standard);
-  --transition-base: 300ms var(--ease-standard);
+   /* dvw 지원 시 dvw로 덮어쓰기 */
+   @supports (width: 1dvw) {
+      --fluid-screen: 100dvw;
+   }
+
+   /* Fluid Unit Calculation */
+   --fluid-unit: calc(
+      (var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
+      (var(--vp-max) - var(--vp-min))
+   )
 }
