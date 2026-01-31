@@ -32,45 +32,75 @@
 }
 
 /* ============================================
-   2. Fluid Typography Base System
+   2. Font Sizes (Fluid)
    ============================================ */
 :root {
-   /* Viewport 범위 (Unitless) */
-   --vp-min: 360;
-   --vp-max: 2560;
-   
-   /* Base Unit (1px = 0.0625rem) */
-   --unit: 0.0625rem;
-
-   /* Base vw 설정 (모든 브라우저용) */
-   --fluid-screen: 100vw;
-
-   /* dvw 지원 시 dvw로 덮어쓰기 */
-   @supports (width: 1dvw) {
-      --fluid-screen: 100dvw;
-   }
-
-   /* Fluid Unit Calculation */
-   --fluid-unit: calc(
-      (var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
-      (var(--vp-max) - var(--vp-min))
+   /* Display: 40px → 72px */
+   --font-size-display: clamp(
+      calc(var(--unit) * 40),
+      calc(var(--unit) * 40) + 32 * var(--fluid-unit),
+      calc(var(--unit) * 72)
    );
-}
+   
+   /* Heading-1: 32px → 56px */
+   --font-size-h1: clamp(
+      calc(var(--unit) * 32),
+      calc(var(--unit) * 32) + 24 * var(--fluid-unit),
+      calc(var(--unit) * 56)
+   );
 
-/* ============================================
-   3. Font Sizes
-   ============================================ */
-:root {
-   /* 12px → 16px */
-   --font-size: clamp(
+   /* Heading-2: 24px → 36px */
+   --font-size-h2: clamp(
+      calc(var(--unit) * 24),
+      calc(var(--unit) * 24) + 12 * var(--fluid-unit),
+      calc(var(--unit) * 36)
+   );
+
+   /* Heading-3: 20px → 28px */
+   --font-size-h3: clamp(
+      calc(var(--unit) * 20),
+      calc(var(--unit) * 20) + 8 * var(--fluid-unit),
+      calc(var(--unit) * 28)
+   );
+
+   /* Heading-4: 16px → 20px */
+   --font-size-h4: clamp(
+      calc(var(--unit) * 16),
+      calc(var(--unit) * 16) + 4 * var(--fluid-unit),
+      calc(var(--unit) * 20)
+   );
+   
+   /* Body-Large: 14px → 18px */
+   --font-size-lg: clamp(
+      calc(var(--unit) * 14),
+      calc(var(--unit) * 14) + 4 * var(--fluid-unit),
+      calc(var(--unit) * 18)
+   );
+   
+   /* Body-Regular: 12px → 16px */
+   --font-size-body: clamp(
       calc(var(--unit) * 12),
       calc(var(--unit) * 12) + 4 * var(--fluid-unit),
       calc(var(--unit) * 16)
    );
+   
+   /* Body-Small: 10px → 12px */
+   --font-size-sm: clamp(
+      calc(var(--unit) * 10),
+      calc(var(--unit) * 10) + 2 * var(--fluid-unit),
+      calc(var(--unit) * 12)
+   );
+   
+   /* Mono: 11px → 14px */
+   --font-size-mono: clamp(
+      calc(var(--unit) * 11),
+      calc(var(--unit) * 11) + 3 * var(--fluid-unit),
+      calc(var(--unit) * 14)
+   );
 }
 
 /* ============================================
-   4. Font Weights
+   3. Font Weights
    ============================================ */
 :root {
    --font-weight-regular: 400;
@@ -80,7 +110,7 @@
 }
 
 /* ============================================
-   5. Line Heights (Unitless)
+   4. Line Heights (Unitless)
    ============================================ */
 :root {
    --line-height-tight: 1.15;
@@ -89,7 +119,7 @@
 }
 
 /* ============================================
-   6. Letter Spacing
+   5. Letter Spacing
    ============================================ */
 :root {
    --letter-spacing-tight: -0.02em;
@@ -98,27 +128,31 @@
 }
 
 /* ============================================
-   7. Typography Utility Classes
+   6. Utility Classes
    ============================================ */
+
+/* Body */
 .font-body {
    font-family: var(--font-sans);
-   font-size: var(--font-size);
+   font-size: var(--font-size-body);
    font-weight: var(--font-weight-regular);
    line-height: var(--line-height-normal);
    letter-spacing: var(--letter-spacing-normal);
 }
 
+/* Body Accent */
 .font-body-accent {
    font-family: var(--font-sans);
-   font-size: var(--font-size);
+   font-size: var(--font-size-body);
    font-weight: var(--font-weight-semibold);
    line-height: var(--line-height-normal);
    letter-spacing: var(--letter-spacing-normal);
 }
 
+/* Monospace */
 .font-mono {
    font-family: var(--font-mono);
-   font-size: var(--font-size);
+   font-size: var(--font-size-mono);
    font-weight: var(--font-weight-regular);
    line-height: var(--line-height-normal);
    letter-spacing: var(--letter-spacing-normal);
