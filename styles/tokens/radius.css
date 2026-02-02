@@ -12,6 +12,19 @@
    --radius-2xl: 1.25rem;   /* 20px - Modals */
    --radius-3xl: 1.5rem;    /* 24px - Hero sections */
    --radius-full: 9999px;   /* Circular */
+
+   /* Responsive */
+   --radius-fluid-sm: clamp(
+      calc(var(--unit) * 2),
+      calc(var(--unit) * 2) + 2 * var(--fluid-unit),
+      calc(var(--unit) * 4)
+   );  /* 2px ~ 4px */
+
+   --radius-fluid-md: clamp(
+      calc(var(--unit) * 4),
+      calc(var(--unit) * 4) + 4 * var(--fluid-unit),
+      calc(var(--unit) * 8)
+   );  /* 4px ~ 8px */
    
    /* Specific */
    --radius-window: 0.75rem;     /* 12px - Window corners */
