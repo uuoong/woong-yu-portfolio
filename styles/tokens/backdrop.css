@@ -3,42 +3,118 @@
    ============================================ */
 
 :root {
-  /* Frosted Glass Effect */
-  --backdrop-blur-none: none;
-  --backdrop-blur-sm: blur(8px);
-  --backdrop-blur-md: blur(12px);
-  --backdrop-blur-lg: blur(16px);
-  --backdrop-blur-xl: blur(24px);
-  
-  /* Vibrancy Presets */
-  --vibrancy-light: 
-    saturate(180%) 
-    blur(12px);
+   /* Blur Levels */
+   --backdrop-blur-none: none;
+   --backdrop-blur-sm: blur(12px);
+   --backdrop-blur-md: blur(24px); /* Default */
+   --backdrop-blur-lg: blur(40px);
+   --backdrop-blur-xl: blur(60px);
+
+   /* Glass Materials */
+   --glass-thin: 
+      saturate(180%) 
+      blur(12px) 
+      brightness(1.08)
+      contrast(1.05);
+
+   --glass-regular: 
+      saturate(180%) 
+      blur(24px) 
+      brightness(1.05)
+      contrast(1.08);
+
+   --glass-thick: 
+      saturate(200%) 
+      blur(40px) 
+      brightness(1.02)
+      contrast(1.1);
    
-  --vibrancy-medium: 
-    saturate(180%) 
-    blur(16px);
-   
-  --vibrancy-strong: 
-    saturate(200%) 
-    blur(24px);
-  
-  /* Background Opacity */
-  --bg-opacity-translucent: rgba(255, 255, 255, 0.7);
-  --bg-opacity-frosted: rgba(255, 255, 255, 0.8);
-  --bg-opacity-solid: rgba(255, 255, 255, 0.95);
+   --glass-ultra: 
+      saturate(220%) 
+      blur(60px) 
+      brightness(1.0)
+      contrast(1.12);
+
+   /* Contextual Materials */
+   --material-sidebar: var(--glass-thin);
+   --material-toolbar: var(--glass-regular);
+   --material-menu: var(--glass-thick);
+   --material-modal: var(--glass-ultra);
+
+   /* Light Refraction Effect */
+   --glass-reflection: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0) 100%
+   );
 }
 
+/* Dark Mode Glass Materials */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-opacity-translucent: rgba(30, 30, 30, 0.7);
-    --bg-opacity-frosted: rgba(30, 30, 30, 0.8);
-    --bg-opacity-solid: rgba(30, 30, 30, 0.95);
-  }
+   :root:not([data-theme="light"]) {
+      --glass-thin: 
+         saturate(180%) 
+         blur(12px) 
+         brightness(0.92)
+         contrast(1.1);
+      
+      --glass-regular: 
+         saturate(180%) 
+         blur(24px) 
+         brightness(0.88)
+         contrast(1.15);
+      
+      --glass-thick: 
+         saturate(200%) 
+         blur(40px) 
+         brightness(0.85)
+         contrast(1.2);
+      
+      --glass-ultra: 
+         saturate(220%) 
+         blur(60px) 
+         brightness(0.82)
+         contrast(1.25);
+      
+      --glass-reflection: linear-gradient(
+         135deg,
+         rgba(255, 255, 255, 0.08) 0%,
+         rgba(255, 255, 255, 0.03) 50%,
+         rgba(255, 255, 255, 0) 100%
+      );
+   }
 }
 
 [data-theme="dark"] {
-  --bg-opacity-translucent: rgba(30, 30, 30, 0.7);
-  --bg-opacity-frosted: rgba(30, 30, 30, 0.8);
-  --bg-opacity-solid: rgba(30, 30, 30, 0.95);
+   --glass-thin: 
+      saturate(180%) 
+      blur(12px) 
+      brightness(0.92)
+      contrast(1.1);
+   
+   --glass-regular: 
+      saturate(180%) 
+      blur(24px) 
+      brightness(0.88)
+      contrast(1.15);
+   
+   --glass-thick: 
+      saturate(200%) 
+      blur(40px) 
+      brightness(0.85)
+      contrast(1.2);
+   
+   --glass-ultra: 
+      saturate(220%) 
+      blur(60px) 
+      brightness(0.82)
+      contrast(1.25);
+   
+   --glass-reflection: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 50%,
+      rgba(255, 255, 255, 0) 100%
+   );
 }
