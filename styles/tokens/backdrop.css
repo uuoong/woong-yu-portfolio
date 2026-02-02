@@ -1,0 +1,44 @@
+/* ============================================
+   BACKDROP TOKENS
+   ============================================ */
+
+:root {
+  /* Frosted Glass Effect */
+  --backdrop-blur-none: none;
+  --backdrop-blur-sm: blur(8px);
+  --backdrop-blur-md: blur(12px);
+  --backdrop-blur-lg: blur(16px);
+  --backdrop-blur-xl: blur(24px);
+  
+  /* Vibrancy Presets */
+  --vibrancy-light: 
+    saturate(180%) 
+    blur(12px);
+   
+  --vibrancy-medium: 
+    saturate(180%) 
+    blur(16px);
+   
+  --vibrancy-strong: 
+    saturate(200%) 
+    blur(24px);
+  
+  /* Background Opacity */
+  --bg-opacity-translucent: rgba(255, 255, 255, 0.7);
+  --bg-opacity-frosted: rgba(255, 255, 255, 0.8);
+  --bg-opacity-solid: rgba(255, 255, 255, 0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-opacity-translucent: rgba(30, 30, 30, 0.7);
+    --bg-opacity-frosted: rgba(30, 30, 30, 0.8);
+    --bg-opacity-solid: rgba(30, 30, 30, 0.95);
+  }
+}
+
+[data-theme="dark"] {
+  --bg-opacity-translucent: rgba(30, 30, 30, 0.7);
+  --bg-opacity-frosted: rgba(30, 30, 30, 0.8);
+  --bg-opacity-solid: rgba(30, 30, 30, 0.95);
+}
