@@ -38,10 +38,10 @@
    3. Semantic Spacing
    ============================================ */
 :root {   
-   /* Grid */
+   /* Grid Gap */
    --grid-gap: var(--space-4);                  /* 16px ~ 24px */
-   --grid-column-gap: var(--space-6);           /* 24px ~ 36px */
-   --grid-row-gap: var(--space-8);              /* 32px ~ 48px */
+   --grid-gap-sm: var(--space-2);               /* 8px ~ 12px */
+   --grid-gap-lg: var(--space-6);               /* 24px ~ 36px */
    
    /* Gutter */
    --gutter: var(--space-6);                    /* 24px ~ 36px */
