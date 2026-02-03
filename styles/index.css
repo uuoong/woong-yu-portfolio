@@ -1,31 +1,27 @@
-/* styles/index.css */
-
-/* 1. Fonts */
+/* Fonts */
 @import "./fonts.css";
 
-/* 2. Tokens */
+/* Reset */
+@import "./reset.css";
+
+/* Core Variables */
+@import "./vars.css";
+
+/* Design Tokens */
 @import "./tokens/spacing.css";
 @import "./tokens/colors.css";
 @import "./tokens/radius.css";
-@import "./tokens/typography.css";
+@import './tokens/shadows.css';
+@import './tokens/backdrop.css';
 @import "./tokens/motion.css";
 /* @import "./tokens/z-index.css"; */
-/* @import "./tokens/layout.css"; */
 
-/* 3. Base */
-@import "./base/reset.css";
-@import "./base/base.css";
-@import "./base/accessibility.css";
+/* Systems */
+@import "./typography.css";
+@import "./layout.css";
 
-/* 4. Typography Application Layer */
-@import "./type.css";
+/* Base Styles */
+@import "./base.css";
 
-/* 5. Utilities */
-@import "./utilities.css";
-
-/* 6. Components */
+/* Components */
 @import "./components/index.css";
-
-/* 7. Themes */
-/* @import "./themes/dark.css"; */
-/* @import "./themes/light.css"; */
