@@ -1,10 +1,161 @@
-/* =========================================================
-   Color Tokens
-========================================================= */
+/*
+Primitive Colors
+================
+*/
 
 :root {
-   --color-black: #232323;
-   --color-black-deep: #000000;
-   --color-white: #ffffff;
-   --color-grey: #797878;
+   /* Grayscale Palette */
+   --gray-50: #f9fafb;
+   --gray-100: #f3f4f6;
+   --gray-200: #e5e7eb;
+   --gray-300: #d1d5db;
+   --gray-400: #9ca3af;
+   --gray-500: #6b7280;
+   --gray-600: #4b5563;
+   --gray-700: #374151;
+   --gray-800: #1f2937;
+   --gray-900: #111827;
+   --gray-950: #030712;
+   
+   /* Pure Colors */
+   --white: #ffffff;
+   --black: #000000;
+}
+
+/*
+Light Theme
+===========
+*/
+
+:root,
+[data-theme="light"] {
+   /* Backgrounds */
+   --color-bg-primary: var(--white);
+   --color-bg-secondary: var(--gray-50);
+   --color-bg-tertiary: var(--gray-100);
+   --color-bg-elevated: var(--white);
+   
+   /* Text */
+   --color-text-primary: var(--gray-900);
+   --color-text-secondary: var(--gray-600);
+   --color-text-tertiary: var(--gray-400);
+   --color-text-inverse: var(--white);
+   --color-text-disabled: var(--gray-300);
+   
+   /* Borders */
+   --color-border-primary: var(--gray-200);
+   --color-border-secondary: var(--gray-300);
+   --color-border-focus: var(--blue-500);
+   
+   /* Interactive */
+   --color-interactive-primary: var(--blue-600);
+   --color-interactive-hover: var(--blue-700);
+   --color-interactive-active: var(--blue-800);
+   --color-interactive-disabled: var(--gray-300);
+   
+   /* Overlay */
+   --color-overlay-light: rgba(0, 0, 0, 0.05);
+   --color-overlay-medium: rgba(0, 0, 0, 0.1);
+   --color-overlay-heavy: rgba(0, 0, 0, 0.3);
+   
+   /* Frosted Glass (macOS) */
+   --color-glass-bg: rgba(255, 255, 255, 0.8);
+   --color-glass-border: rgba(255, 255, 255, 0.2);
+   
+   /* Color Scheme */
+   color-scheme: light;
+}
+
+/*
+Dark Theme
+==========
+*/
+
+[data-theme="dark"] {
+   /* Backgrounds */
+   --color-bg-primary: var(--gray-950);
+   --color-bg-secondary: var(--gray-900);
+   --color-bg-tertiary: var(--gray-800);
+   --color-bg-elevated: var(--gray-900);
+   
+   /* Text */
+   --color-text-primary: var(--gray-50);
+   --color-text-secondary: var(--gray-400);
+   --color-text-tertiary: var(--gray-600);
+   --color-text-inverse: var(--gray-900);
+   --color-text-disabled: var(--gray-700);
+   
+   /* Borders */
+   --color-border-primary: var(--gray-800);
+   --color-border-secondary: var(--gray-700);
+   --color-border-focus: var(--blue-500);
+   
+   /* Interactive */
+   --color-interactive-primary: var(--blue-500);
+   --color-interactive-hover: var(--blue-400);
+   --color-interactive-active: var(--blue-300);
+   --color-interactive-disabled: var(--gray-700);
+   
+   /* Overlay */
+   --color-overlay-light: rgba(255, 255, 255, 0.05);
+   --color-overlay-medium: rgba(255, 255, 255, 0.1);
+   --color-overlay-heavy: rgba(255, 255, 255, 0.3);
+   
+   /* Frosted Glass (macOS Dark) */
+   --color-glass-bg: rgba(30, 30, 30, 0.8);
+   --color-glass-border: rgba(255, 255, 255, 0.1);
+   
+   /* Color Scheme */
+   color-scheme: dark;
+}
+
+/*
+System Preference
+=================
+*/
+
+@media (prefers-color-scheme: dark) {
+   :root:not([data-theme="light"]) {
+      /* Dark theme variables (위와 동일) */
+      --color-bg-primary: var(--gray-950);
+      --color-bg-secondary: var(--gray-900);
+      --color-bg-tertiary: var(--gray-800);
+      --color-bg-elevated: var(--gray-900);
+      
+      --color-text-primary: var(--gray-50);
+      --color-text-secondary: var(--gray-400);
+      --color-text-tertiary: var(--gray-600);
+      --color-text-inverse: var(--gray-900);
+      --color-text-disabled: var(--gray-700);
+      
+      --color-border-primary: var(--gray-800);
+      --color-border-secondary: var(--gray-700);
+      --color-border-focus: var(--blue-500);
+      
+      --color-interactive-primary: var(--blue-500);
+      --color-interactive-hover: var(--blue-400);
+      --color-interactive-active: var(--blue-300);
+      --color-interactive-disabled: var(--gray-700);
+      
+      --color-overlay-light: rgba(255, 255, 255, 0.05);
+      --color-overlay-medium: rgba(255, 255, 255, 0.1);
+      --color-overlay-heavy: rgba(255, 255, 255, 0.3);
+      
+      --color-glass-bg: rgba(30, 30, 30, 0.8);
+      --color-glass-border: rgba(255, 255, 255, 0.1);
+      
+      color-scheme: dark;
+   }
+}
+
+/*
+Theme Transition
+================
+*/
+
+:root {
+   transition: 
+      background-color var(--duration-normal) var(--ease-smooth),
+      color var(--duration-normal) var(--ease-smooth),
+      border-color var(--duration-normal) var(--ease-smooth);
 }
