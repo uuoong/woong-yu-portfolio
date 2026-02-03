@@ -1,8 +1,12 @@
-/* ============================================
-   Pretendard Variable (Sans)
-   ============================================ */
+/*
+Pretendard Variable (Sans)
+==========================
+*/
 
-/* Main Font */
+/**
+Main font
+*/
+
 @font-face {
    font-family: 'Pretendard Variable';
    font-style: normal;
@@ -12,7 +16,10 @@
    unicode-range: U+0020-007E, U+00A0-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF, U+2000-206F, U+20A0-20CF, U+2100-214F, U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
 }
 
-/* Fallback 1: 영문 최적화 */
+/**
+Fallback 1: 영문 최적화
+*/
+
 @font-face {
    font-family: 'Pretendard Fallback EN';
    src: local('Arial');
@@ -22,7 +29,10 @@
    size-adjust: 102.5%;
 }
 
-/* Fallback 2: 한글 최적화 - macOS */
+/**
+Fallback 2: 한글 최적화 (macOS)
+*/
+
 @font-face {
    font-family: 'Pretendard Fallback KR Mac';
    src: local('Apple SD Gothic Neo');
@@ -32,7 +42,10 @@
    size-adjust: 103.8%;
 }
 
-/* Fallback 3: 한글 최적화 - Windows */
+/**
+Fallback 3: 한글 최적화 (Windows)
+*/
+
 @font-face {
    font-family: 'Pretendard Fallback KR Win';
    src: local('Malgun Gothic'), 
@@ -43,7 +56,10 @@
    size-adjust: 102.0%;
 }
 
-/* Fallback 4: 범용 (시스템 폰트) */
+/**
+Fallback 4: 범용 (시스템 폰트)
+*/
+
 @font-face {
    font-family: 'Pretendard Fallback Universal';
    src: local('Segoe UI'), 
@@ -57,11 +73,15 @@
    size-adjust: 102.5%;
 }
 
-/* ============================================
-   MONASPACE NEON VARIABLE (Mono)
-   ============================================ */
+/*
+MONASPACE NEON VARIABLE (Mono)
+==============================
+*/
 
-/* Main Font */
+/**
+Main font
+*/
+
 @font-face {
    font-family: 'Monaspace Neon Variable';
    font-style: normal;
@@ -71,7 +91,10 @@
    src: url('https://woong-yu-portfolio.vercel.app/assets/fonts/MonaspaceNeonVariable.woff2') format('woff2-variations');
 }
 
-/* Fallback 1: macOS 최적화 */
+/**
+Fallback 1: macOS 최적화
+*/
+
 @font-face {
    font-family: 'Monaspace Neon Fallback Mac';
    src: local('SF Mono'),
@@ -82,7 +105,10 @@
    size-adjust: 99.5%;
 }
 
-/* Fallback 2: Windows 최적화 */
+/**
+Fallback 2: Windows 최적화
+*/
+
 @font-face {
    font-family: 'Monaspace Neon Fallback Win';
    src: local('Consolas');
@@ -92,7 +118,10 @@
    size-adjust: 98.2%;
 }
 
-/* Fallback 3: 범용 */
+/**
+Fallback 3: 범용
+*/
+
 @font-face {
    font-family: 'Monaspace Neon Fallback Universal';
    src: local('Courier New'),
