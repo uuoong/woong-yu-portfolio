@@ -4,54 +4,55 @@ Primitive Colors
 */
 
 :root {
-   /* Grayscale Palette */
-   --gray-50: #f9fafb;
-   --gray-100: #f3f4f6;
-   --gray-200: #e5e7eb;
-   --gray-300: #d1d5db;
-   --gray-400: #9ca3af;
-   --gray-500: #6b7280;
-   --gray-600: #4b5563;
-   --gray-700: #374151;
-   --gray-800: #1f2937;
-   --gray-900: #111827;
-   --gray-950: #030712;
+   /* Grayscale */
+   --gray-100: #f1f5f9;
+   --gray-200: #e2e8f0;
+   
+   --gray-300: #d9d9d9;
+   --gray-400: #b3b3b3;
+   --gray-500: #757575;
+   --gray-600: #444444;
+   --gray-700: #383838;
+   --gray-800: #2c2c2c;
+   
+   --gray-900: #030712;
    
    /* Pure Colors */
    --white: #ffffff;
    --black: #000000;
+
+   /* Blue */
+   --blue: #aec6f6;
+   --blue-deep: #2756c9;
 }
 
 /*
-Light Theme
+Dark Theme
 ===========
 */
 
 :root,
-[data-theme="light"] {
+[data-theme="dark"] {
    /* Backgrounds */
-   --color-bg-primary: var(--white);
-   --color-bg-secondary: var(--gray-50);
-   --color-bg-tertiary: var(--gray-100);
-   --color-bg-elevated: var(--white);
+   --bg-primary: var(--gray-900);
+   --bg-secondary: var(--gray-800);
+   --bg-tertiary: var(--gray-700);
    
    /* Text */
-   --color-text-primary: var(--gray-900);
-   --color-text-secondary: var(--gray-600);
-   --color-text-tertiary: var(--gray-400);
-   --color-text-inverse: var(--white);
-   --color-text-disabled: var(--gray-300);
+   --text-primary: var(--gray-200);
+   --text-secondary: rgba(229, 231, 235, 0.5);
+   --text-inverse: var(--gray-800);
+   --text-disabled: var(--gray-300);
    
    /* Borders */
-   --color-border-primary: var(--gray-200);
-   --color-border-secondary: var(--gray-300);
-   --color-border-focus: var(--blue-500);
+   --border: rgba(229, 231, 235, 0.3);
+   --border-focus: var(--blue);
    
    /* Interactive */
-   --color-interactive-primary: var(--blue-600);
-   --color-interactive-hover: var(--blue-700);
-   --color-interactive-active: var(--blue-800);
-   --color-interactive-disabled: var(--gray-300);
+   --interactive-primary: var(--blue);
+   --interactive-hover: var(--blue-700);
+   --interactive-active: var(--blue-800);
+   --interactive-disabled: var(--gray-300);
    
    /* Overlay */
    --color-overlay-light: rgba(0, 0, 0, 0.05);
@@ -63,15 +64,15 @@ Light Theme
    --color-glass-border: rgba(255, 255, 255, 0.2);
    
    /* Color Scheme */
-   color-scheme: light;
+   color-scheme: dark;
 }
 
 /*
-Dark Theme
+Light Theme
 ==========
 */
 
-[data-theme="dark"] {
+[data-theme="light"] {
    /* Backgrounds */
    --color-bg-primary: var(--gray-950);
    --color-bg-secondary: var(--gray-900);
@@ -106,7 +107,7 @@ Dark Theme
    --color-glass-border: rgba(255, 255, 255, 0.1);
    
    /* Color Scheme */
-   color-scheme: dark;
+   color-scheme: light;
 }
 
 /*
@@ -114,9 +115,9 @@ System Preference
 =================
 */
 
-@media (prefers-color-scheme: dark) {
-   :root:not([data-theme="light"]) {
-      /* Dark theme variables (위와 동일) */
+@media (prefers-color-scheme: light) {
+   :root:not([data-theme="dark"]) {
+      /* Light theme */
       --color-bg-primary: var(--gray-950);
       --color-bg-secondary: var(--gray-900);
       --color-bg-tertiary: var(--gray-800);
@@ -144,7 +145,7 @@ System Preference
       --color-glass-bg: rgba(30, 30, 30, 0.8);
       --color-glass-border: rgba(255, 255, 255, 0.1);
       
-      color-scheme: dark;
+      color-scheme: light;
    }
 }
 
