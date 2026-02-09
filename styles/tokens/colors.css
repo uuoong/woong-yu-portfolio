@@ -162,6 +162,7 @@ System Preference
 Theme Transition
 ================
 */
+
 @media (prefers-reduced-motion: no-preference) {
    html[data-theme] * {
       transition:
