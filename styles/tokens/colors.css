@@ -2,7 +2,6 @@
 Primitive Colors
 ================
 */
-
 :root {
    /* Grayscale Palette */
    --gray-100: #f2f0ed;
@@ -28,7 +27,6 @@ Primitive Colors
 Dark Theme
 ===========
 */
-
 :root,
 html[data-theme="dark"] {
    /* Backgrounds */
@@ -73,7 +71,6 @@ html[data-theme="dark"] {
 Light Theme
 ==========
 */
-
 html[data-theme="light"] {
    /* Backgrounds */
    --bg-primary: var(--gray-200);
@@ -117,7 +114,6 @@ html[data-theme="light"] {
 System Preference
 =================
 */
-
 @media (prefers-color-scheme: light) {
    :root:not([data-theme]) {
       /* Backgrounds */
@@ -162,7 +158,6 @@ System Preference
 Theme Transition
 ================
 */
-
 @media (prefers-reduced-motion: no-preference) {
    html[data-theme] * {
       transition:
