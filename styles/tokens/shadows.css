@@ -1,154 +1,107 @@
-/* ============================================
-   SHADOW TOKENS
-   ============================================ */
+/*
+Dark Theme
+==========
+*/
+:root,
+html[data-theme="dark"] {
+   /* Elevation 100 - Subtle */
+   --elevation-100: 
+      0 1px 3px 0 rgb(0 0 0 / 0.4),
+      0 0 0.5px 0 rgb(255 255 255 / 0.05);
 
-:root {
-   --shadow-none: none;
-   
-   /* XS - Subtle (Almost invisible) */
-   --shadow-xs: 
-      0 0.5px 1px rgba(0, 0, 0, 0.03),
-      0 0.5px 2px rgba(0, 0, 0, 0.02),
-      0 0 0 0.5px rgba(0, 0, 0, 0.01);
-   
-   /* SM - Elevation 1 (Buttons) */
-   --shadow-sm: 
-      0 1px 2px rgba(0, 0, 0, 0.04),
-      0 2px 4px rgba(0, 0, 0, 0.03),
-      0 0 0 0.5px rgba(0, 0, 0, 0.02);
-   
-   /* MD - Elevation 2 (Cards) */
-   --shadow-md: 
-      0 2px 4px rgba(0, 0, 0, 0.05),
-      0 4px 8px rgba(0, 0, 0, 0.04),
-      0 8px 16px rgba(0, 0, 0, 0.03),
-      0 0 0 0.5px rgba(0, 0, 0, 0.02);
-   
-   /* LG - Elevation 3 (Popovers, Dropdowns) */
-   --shadow-lg: 
-      0 4px 8px rgba(0, 0, 0, 0.06),
-      0 8px 16px rgba(0, 0, 0, 0.05),
-      0 16px 32px rgba(0, 0, 0, 0.04),
-      0 0 0 0.5px rgba(0, 0, 0, 0.03);
-   
-   /* XL - Elevation 4 (Modals) */
-   --shadow-xl: 
-      0 8px 16px rgba(0, 0, 0, 0.08),
-      0 16px 32px rgba(0, 0, 0, 0.06),
-      0 24px 48px rgba(0, 0, 0, 0.05),
-      0 0 0 1px rgba(0, 0, 0, 0.03);
-   
-   /* 2XL - Heavy Elevation */
-   --shadow-2xl: 
-      0 16px 32px rgba(0, 0, 0, 0.1),
-      0 24px 48px rgba(0, 0, 0, 0.08),
-      0 32px 64px rgba(0, 0, 0, 0.06),
-      0 0 0 1px rgba(0, 0, 0, 0.04);
-   
-   /* Inner Shadow (Inset) */
-   --shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+   /* Elevation 200 - Low */
+   --elevation-200: 
+      0 1px 3px 0 rgb(0 0 0 / 0.5),
+      0 3px 8px 0 rgb(0 0 0 / 0.4),
+      0 0 0.5px 0 rgb(255 255 255 / 0.08);
 
-   /* Border Shadow */
-   --shadow-border: 
-      0 0 0 0.5px rgba(0, 0, 0, 0.04),
-      inset 0 0.5px 0 rgba(255, 255, 255, 0.1);
-   
-   /* Focus */
-   --shadow-focus: 
-      0 0 0 4px rgba(0, 122, 255, 0.2),
-      0 0 0 1px rgba(0, 122, 255, 0.4),
-      0 0 8px rgba(0, 122, 255, 0.3);
+   /* Elevation 300 - Medium */
+   --elevation-300: 
+      0 1px 3px 0 rgb(0 0 0 / 0.6),
+      0 5px 12px 0 rgb(0 0 0 / 0.5),
+      0 0 0.5px 0 rgb(255 255 255 / 0.1);
+
+   /* Elevation 400 - High */
+   --elevation-400: 
+      0 2px 5px 0 rgb(0 0 0 / 0.7),
+      0 10px 16px 0 rgb(0 0 0 / 0.6),
+      0 0 1px 0 rgb(255 255 255 / 0.12);
+
+   /* Elevation 500 - Heavy */
+   --elevation-500: 
+      0 2px 5px 0 rgb(0 0 0 / 0.8),
+      0 10px 24px 0 rgb(0 0 0 / 0.7),
+      0 0 1px 0 rgb(255 255 255 / 0.15);
 }
 
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-   :root:not([data-theme="light"]) {
-      --shadow-xs: 
-         0 0.5px 1px rgba(0, 0, 0, 0.3),
-         0 0.5px 2px rgba(0, 0, 0, 0.2),
-         0 0 0 0.5px rgba(255, 255, 255, 0.05);
+/*
+Light Theme
+===========
+*/
+html[data-theme="light"] {
+   /* Elevation 100 - Subtle */
+   --elevation-100: 
+      0 1px 3px 0 rgb(0 0 0 / 0.15),
+      0 0 0.5px 0 rgb(0 0 0 / 0.3);
+   
+   /* Elevation 200 - Low */
+   --elevation-200: 
+      0 1px 3px 0 rgb(0 0 0 / 0.1),
+      0 3px 8px 0 rgb(0 0 0 / 0.1),
+      0 0 0.5px 0 rgb(0 0 0 / 0.18);
+   
+   /* Elevation 300 - Medium */
+   --elevation-300: 
+      0 1px 3px 0 rgb(0 0 0 / 0.1),
+      0 5px 12px 0 rgb(0 0 0 / 0.13),
+      0 0 0.5px 0 rgb(0 0 0 / 0.15);
+   
+   /* Elevation 400 - High */
+   --elevation-400: 
+      0 2px 5px 0 rgb(0 0 0 / 0.15),
+      0 10px 16px 0 rgb(0 0 0 / 0.12),
+      0 0 0.5px 0 rgb(0 0 0 / 0.12);
+   
+   /* Elevation 500 - Heavy */
+   --elevation-500: 
+      0 2px 5px 0 rgb(0 0 0 / 0.15),
+      0 10px 24px 0 rgb(0 0 0 / 0.18),
+      0 0 0.5px 0 rgb(0 0 0 / 0.08);
+}
+
+/*
+System Preference
+=================
+*/
+@media (prefers-color-scheme: light) {
+   :root:not([data-theme]) {
+      /* Elevation 100 - Subtle */
+      --elevation-100: 
+         0 1px 3px 0 rgb(0 0 0 / 0.15),
+         0 0 0.5px 0 rgb(0 0 0 / 0.3);
       
-      --shadow-sm: 
-         0 1px 2px rgba(0, 0, 0, 0.4),
-         0 2px 4px rgba(0, 0, 0, 0.3),
-         0 0 0 0.5px rgba(255, 255, 255, 0.08);
+      /* Elevation 200 - Low */
+      --elevation-200: 
+         0 1px 3px 0 rgb(0 0 0 / 0.1),
+         0 3px 8px 0 rgb(0 0 0 / 0.1),
+         0 0 0.5px 0 rgb(0 0 0 / 0.18);
       
-      --shadow-md: 
-         0 2px 4px rgba(0, 0, 0, 0.5),
-         0 4px 8px rgba(0, 0, 0, 0.4),
-         0 8px 16px rgba(0, 0, 0, 0.3),
-         0 0 0 0.5px rgba(255, 255, 255, 0.1);
+      /* Elevation 300 - Medium */
+      --elevation-300: 
+         0 1px 3px 0 rgb(0 0 0 / 0.1),
+         0 5px 12px 0 rgb(0 0 0 / 0.13),
+         0 0 0.5px 0 rgb(0 0 0 / 0.15);
       
-      --shadow-lg: 
-         0 4px 8px rgba(0, 0, 0, 0.6),
-         0 8px 16px rgba(0, 0, 0, 0.5),
-         0 16px 32px rgba(0, 0, 0, 0.4),
-         0 0 0 0.5px rgba(255, 255, 255, 0.12);
+      /* Elevation 400 - High */
+      --elevation-400: 
+         0 2px 5px 0 rgb(0 0 0 / 0.15),
+         0 10px 16px 0 rgb(0 0 0 / 0.12),
+         0 0 0.5px 0 rgb(0 0 0 / 0.12);
       
-      --shadow-xl: 
-         0 8px 16px rgba(0, 0, 0, 0.7),
-         0 16px 32px rgba(0, 0, 0, 0.6),
-         0 24px 48px rgba(0, 0, 0, 0.5),
-         0 0 0 1px rgba(255, 255, 255, 0.15);
-      
-      --shadow-2xl: 
-         0 16px 32px rgba(0, 0, 0, 0.8),
-         0 24px 48px rgba(0, 0, 0, 0.7),
-         0 32px 64px rgba(0, 0, 0, 0.6),
-         0 0 0 1px rgba(255, 255, 255, 0.18);
-      
-      --shadow-border: 
-         0 0 0 0.5px rgba(255, 255, 255, 0.1),
-         inset 0 0.5px 0 rgba(255, 255, 255, 0.15);
-      
-      --shadow-focus: 
-         0 0 0 4px rgba(10, 132, 255, 0.3),
-         0 0 0 1px rgba(10, 132, 255, 0.5),
-         0 0 12px rgba(10, 132, 255, 0.4);
+      /* Elevation 500 - Heavy */
+      --elevation-500: 
+         0 2px 5px 0 rgb(0 0 0 / 0.15),
+         0 10px 24px 0 rgb(0 0 0 / 0.18),
+         0 0 0.5px 0 rgb(0 0 0 / 0.08);
    }
-}
-
-[data-theme="dark"] {
-   --shadow-xs: 
-      0 0.5px 1px rgba(0, 0, 0, 0.3),
-      0 0.5px 2px rgba(0, 0, 0, 0.2),
-      0 0 0 0.5px rgba(255, 255, 255, 0.05);
-   
-   --shadow-sm: 
-      0 1px 2px rgba(0, 0, 0, 0.4),
-      0 2px 4px rgba(0, 0, 0, 0.3),
-      0 0 0 0.5px rgba(255, 255, 255, 0.08);
-   
-   --shadow-md: 
-      0 2px 4px rgba(0, 0, 0, 0.5),
-      0 4px 8px rgba(0, 0, 0, 0.4),
-      0 8px 16px rgba(0, 0, 0, 0.3),
-      0 0 0 0.5px rgba(255, 255, 255, 0.1);
-   
-   --shadow-lg: 
-      0 4px 8px rgba(0, 0, 0, 0.6),
-      0 8px 16px rgba(0, 0, 0, 0.5),
-      0 16px 32px rgba(0, 0, 0, 0.4),
-      0 0 0 0.5px rgba(255, 255, 255, 0.12);
-   
-   --shadow-xl: 
-      0 8px 16px rgba(0, 0, 0, 0.7),
-      0 16px 32px rgba(0, 0, 0, 0.6),
-      0 24px 48px rgba(0, 0, 0, 0.5),
-      0 0 0 1px rgba(255, 255, 255, 0.15);
-   
-   --shadow-2xl: 
-      0 16px 32px rgba(0, 0, 0, 0.8),
-      0 24px 48px rgba(0, 0, 0, 0.7),
-      0 32px 64px rgba(0, 0, 0, 0.6),
-      0 0 0 1px rgba(255, 255, 255, 0.18);
-   
-   --shadow-border: 
-      0 0 0 0.5px rgba(255, 255, 255, 0.1),
-      inset 0 0.5px 0 rgba(255, 255, 255, 0.15);
-   
-   --shadow-focus: 
-      0 0 0 4px rgba(10, 132, 255, 0.3),
-      0 0 0 1px rgba(10, 132, 255, 0.5),
-      0 0 12px rgba(10, 132, 255, 0.4);
 }
