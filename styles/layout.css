@@ -1,10 +1,7 @@
-/* ============================================
-   LAYOUT SYSTEM
-   ============================================ */
-
-/* ============================================
-   1. Fluid Spacing System
-   ============================================ */
+/*
+Fluid Spacing System
+====================
+*/
 :root {
    /* Base Spacing Unit: 4px → 6px */
    --space-unit: clamp(
@@ -14,11 +11,12 @@
    );
 }
 
-/* ============================================
-   2. Spacing Scale (Fluid)
-   ============================================ */
+/*
+Spacing Scale
+=============
+*/
 :root {
-   --space-0_5: calc(var(--space-unit) * 0.5);   /* 2px ~ 3px */
+   /* Fluid */
    --space-1:   var(--space-unit);               /* 4px ~ 6px */
    --space-2:   calc(var(--space-unit) * 2);     /* 8px ~ 12px */
    --space-3:   calc(var(--space-unit) * 3);     /* 12px ~ 18px */
@@ -32,15 +30,25 @@
    --space-20:  calc(var(--space-unit) * 20);    /* 80px ~ 120px */
    --space-24:  calc(var(--space-unit) * 24);    /* 96px ~ 144px */
    --space-32:  calc(var(--space-unit) * 32);    /* 128px ~ 192px */
+
+   /* Fixed */
+   --space-4px:  0.25rem;
+   --space-8px:  0.5rem;
+   --space-12px: 0.75rem;
+   --space-16px: 1rem;
+   --space-24px: 1.5rem;
+   --space-32px: 2rem;
+   --space-40px: 2.5rem;
 }
 
-/* ============================================
-   3. Semantic Spacing
-   ============================================ */
-:root {   
+/*
+Semantic Spacing
+================
+*/
+:root {
    /* Grid Gap */
-   --grid-gap: var(--space-4);                  /* 16px ~ 24px */
    --grid-gap-sm: var(--space-2);               /* 8px ~ 12px */
+   --grid-gap-md: var(--space-4);               /* 16px ~ 24px */
    --grid-gap-lg: var(--space-6);               /* 24px ~ 36px */
    
    /* Gutter */
@@ -50,8 +58,4 @@
    --section-spacing: var(--space-20);          /* 80px ~ 120px */
    --section-spacing-sm: var(--space-12);       /* 48px ~ 72px */
    --section-spacing-lg: var(--space-32);       /* 128px ~ 192px */
-   
-   /* Component Spacing */
-   --gap: var(--space-4);                       /* 16px ~ 24px */
-   --padding: var(--space-6);                   /* 24px ~ 36px */
 }
