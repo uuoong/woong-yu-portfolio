@@ -11,7 +11,7 @@
 @import "./base/base.css";
 
 /* Components */
-/* @import "./components/_index.css"; */
+@import "./components/_index.css";
 
 /* Pages */
 /* @import "./pages/_index.css"; */
