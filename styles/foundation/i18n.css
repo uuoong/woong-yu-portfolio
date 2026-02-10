@@ -1,0 +1,46 @@
+/* Korean Opt */
+html[lang="ko"],
+html[lang="ko-KR"] {
+  /* Wider */
+	--letter-spacing-default: 0.01em;
+
+  /* Higher */
+	--line-height-adjust: 1.05;
+  
+  /* Line Breaks: Word by Word */
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+
+html[lang="ko"] {
+  font-feature-settings: 
+    "kern" 1,     
+		"liga" 1,     
+		"calt" 1;
+}
+
+/* English Opt */
+html[lang="en"],
+html[lang="en-US"] {
+  /* Tight */
+	--letter-spacing-default: -0.01em;
+
+  /* Standard */
+	--line-height-adjust: 1;
+  
+	/* Line Breaks: Hyphens */
+	hyphens: auto;
+	-webkit-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
+html[lang="en"] {
+	font-feature-settings: 
+		"kern" 1,     
+		"liga" 1,     
+		"calt" 1,
+		"ss01" 1;
+	
+	/* Numeric Sort */
+	font-variant-numeric: tabular-nums;
+}
