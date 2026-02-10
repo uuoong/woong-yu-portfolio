@@ -1,7 +1,4 @@
-/*
-Document
-========
-*/
+/* Document */
 *,
 *::before,
 *::after {
@@ -17,27 +14,27 @@ Document
 
 html {
 	line-height: 1.3;
-	-webkit-text-size-adjust: 100%;
-	-moz-text-size-adjust: 100%;
-	tab-size: 4;
-}
 
-/*
-Sections
-========
-*/
-body {
-	min-height: 100vh;
-	min-height: 100dvh;
+	/* Text Rendering Quality */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-rendering: optimizeLegibility;
+   
+	/* Text Scaling (Mobile) */
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	
+	/* Tab Navigation */
+	tab-size: 4;
 }
 
-/*
-Text-level semantics
-====================
-*/
+body {
+	min-height: 100vh;
+	min-height: 100dvh;
+}
+
+/* Text-level */
 b,
 strong {
 	font-weight: bolder;
@@ -83,38 +80,26 @@ h6 {
     font-weight: inherit;
 }
 
-/*
-Links
-=====
-*/
+/* Links */
 a {
 	color: inherit;
     text-decoration: none;
 }
 
-/*
-Lists
-=====
-*/
+/* Lists */
 ul,
 ol {
 	list-style: none;
 }
 
-/*
-Tabular data
-============
-*/
+/* Tabular data */
 table {
 	border-color: currentcolor;
 	border-collapse: collapse;
     border-spacing: 0;
 }
 
-/*
-Media
-=====
-*/
+/* Media */
 img,
 picture,
 video,
@@ -123,12 +108,13 @@ svg {
 	display: block;
 	max-width: 100%;
 	height: auto;
+
+	/* Image Rendering Quality */
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: crisp-edges;
 }
 
-/*
-Forms
-=====
-*/
+/* Input & Forms */
 button,
 input,
 optgroup,
@@ -145,6 +131,25 @@ button,
 [type='submit'] {
 	-webkit-appearance: button;
 	cursor: pointer;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+[role="button"] {
+	/* Remove Touch Delay */
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+
+input,
+textarea,
+select {
+	/* Remove iOS Default Styles */
+	-webkit-appearance: none;
+	appearance: none;
 }
 
 button {
@@ -179,40 +184,13 @@ progress {
 	font: inherit; 
 }
 
-/*
-Interactive
-===========
-*/
+/* Interactive */
 summary {
 	display: list-item;
 }
 
-/*
-Accessibility
-=============
-*/
+/* Accessibility */
 :focus-visible {
 	outline: 2px solid currentColor;
     outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
-	
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-	}
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	html {
-		scroll-behavior: smooth;
-	}
 }
