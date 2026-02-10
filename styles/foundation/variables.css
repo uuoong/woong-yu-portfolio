@@ -1,46 +1,41 @@
-/*
-Viewport & Fluid System
-=======================
-*/
+/* Fluid System */
 :root {
-   /* Viewport 범위 (Unitless) */
-   --vp-min: 360;
-   --vp-max: 2560;
-   
-   /* Base Unit (1px = 0.0625rem) */
-   --unit: 0.0625rem;
-
-   /* Fluid Screen Width */
-   --fluid-screen: 100vw;
-
-   /* Fluid Unit Calculation */
-   --fluid-unit: calc(
-      (var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
-      (var(--vp-max) - var(--vp-min))
-   )
+	/* Viewport */
+    --vp-min: 360;
+    --vp-max: 2560;
+	
+	/* Base Unit (1px = 0.0625rem) */
+    --unit: 0.0625rem;
+	
+	/* Fluid Screen Width */
+    --fluid-screen: 100vw;
+	
+	/* Fluid Unit Calculation */
+    --fluid-unit: calc(
+		(var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
+		(var(--vp-max) - var(--vp-min))
+	)
 }
 
-/* dvw 지원 브라우저 */
+/* dvw Supported Browsers */
 @supports (width: 1dvw) {
-   :root {
-      --fluid-screen: 100dvw;
+	:root {
+		--fluid-screen: 100dvw;
 	}
 }
 
-/*
-Spacing System
-==============
-*/
+/* Spacing System */
 :root {
-   /* Base Spacing Unit: 4px → 6px */
+	/* Base Spacing Unit: 4px → 6px */
 	--space-unit: clamp(
-      calc(var(--unit) * 4),
+		calc(var(--unit) * 4),
 		calc(var(--unit) * 4) + 2 * var(--fluid-unit),
 		calc(var(--unit) * 6)
 	);
-
-   /* Fluid Scale */
-   --space-1:  var(--space-unit);               /* 4px ~ 6px */
+	
+	/* Fluid Scale */
+	--space-0:  calc(var(--space-unit) * 0);     
+	--space-1:  var(--space-unit);               /* 4px ~ 6px */
 	--space-2:  calc(var(--space-unit) * 2);     /* 8px ~ 12px */
 	--space-3:  calc(var(--space-unit) * 3);     /* 12px ~ 18px */
 	--space-4:  calc(var(--space-unit) * 4);     /* 16px ~ 24px */
@@ -54,8 +49,8 @@ Spacing System
 	--space-20: calc(var(--space-unit) * 20);    /* 80px ~ 120px */
 	--space-24: calc(var(--space-unit) * 24);    /* 96px ~ 144px */
 	--space-32: calc(var(--space-unit) * 32);    /* 128px ~ 192px */
-
-   /* Fixed Scale */
+	
+	/* Fixed Scale */
 	--space-4px:  0.25rem;
 	--space-8px:  0.5rem;
 	--space-12px: 0.75rem;
@@ -65,14 +60,11 @@ Spacing System
 	--space-40px: 2.5rem;
 }
 
-/*
-Typography System
-=================
-*/
+/* Typography System */
 :root {
 	/* Font Stacks */
 	--font-sans: 
-      "Pretendard Variable",
+		"Pretendard Variable",
 		"Pretendard Fallback EN",
 		"Pretendard Fallback KR Mac",
 		"Pretendard Fallback KR Win",
