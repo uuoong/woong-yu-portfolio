@@ -1,7 +1,4 @@
-/*
-Primitive Colors
-================
-*/
+/* Primitive Colors */
 :root {
 	/* Grayscale Palette */
 	--gray-100: #f2f0ed;
@@ -19,10 +16,7 @@ Primitive Colors
 	--black: #000000;
 }
 
-/*
-Motion Tokens
-=============
-*/
+/* Motion Tokens */
 :root {
 	/* Duration */
 	--duration-instant: 0ms;
@@ -50,10 +44,7 @@ Motion Tokens
 	--transition-backdrop: backdrop-filter var(--duration-normal) var(--ease-smooth);
 }
 
-/*
-Border Radius
-=============
-*/
+/* Border Radius */
 :root {
 	--radius-none: 0;
 	--radius-sm: 0.125rem;      /* 2px */
@@ -62,10 +53,7 @@ Border Radius
 	--radius-full: 9999px;      /* Circular */
 }
 
-/*
-Dark Theme
-==========
-*/
+/* Dark Theme */
 :root,
 html[data-theme="dark"] {
 	/* Backgrounds */
@@ -126,10 +114,7 @@ html[data-theme="dark"] {
 	color-scheme: dark;
 }
 
-/*
-Light Theme
-==========
-*/
+/* Light Theme */
 html[data-theme="light"] {
 	/* Backgrounds */
 	--bg-primary: var(--gray-200);
@@ -189,10 +174,7 @@ html[data-theme="light"] {
 	color-scheme: light;
 }
 
-/*
-System Preference
-=================
-*/
+/* System Preference */
 @media (prefers-color-scheme: light) {
 	:root:not([data-theme]) {
 		--bg-primary: var(--gray-200);
@@ -247,10 +229,7 @@ System Preference
 	}
 }
 
-/*
-Theme Transition
-=================
-*/
+/* Theme Transition */
 @media (prefers-reduced-motion: no-preference) {
 	html[data-theme] * {
 		transition:
@@ -260,10 +239,7 @@ Theme Transition
 	}
 }
 
-/*
-Motion Accessibility
-====================
-*/
+/* Motion Accessibility */
 @media (prefers-reduced-motion: reduce) {
 	:root {
 		--duration-fast: 0ms;
