@@ -32,6 +32,11 @@ body::-webkit-scrollbar {
 	display: none;
 }
 
+.framer-1lgd2sq-container {
+	display: flex !important;
+    flex-direction: column !important;
+}
+
 main {
 	min-height: var(--space-0);
 	display: flex;
