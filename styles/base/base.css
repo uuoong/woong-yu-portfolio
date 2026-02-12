@@ -4,8 +4,8 @@ body {
 	overscroll-behavior: none;
 
 	/* Color */
-	background-color: var(--bg-primary);
-	color: var(--text-primary);
+	background-color: var(--bg-primary) !important;
+	color: var(--text-primary) !important;
 
 	display: flex;
 	flex-direction: column;	
