@@ -6,13 +6,13 @@
    display: grid;
    grid-template-columns: auto 1fr;
    
-   gap: calc(var(--unit) * 8);
-   padding: calc(var(--unit) * 8);
-   padding-inline: calc(var(--unit) * 8);
+   gap: var(--space-2);
+   padding: var(--space-2);
+   padding-inline: var(--space-2);
 }
 
 .header__left {
-   grid-column: span 1/span 1;
+   grid-column: span 1 / span 1;
    display: flex;
    align-items: center;
    justify-content: space-between;
@@ -22,7 +22,7 @@
    grid-column: span 1/span 1;
    display: flex;
    align-items: center;
-   gap: calc(var(--unit) * 16);
+   gap: var(--space-4);
 }
 
 /* Logo */
@@ -31,7 +31,7 @@
    display: flex;
    height: calc(var(--unit) * 18);
    align-items: center;
-   gap: calc(var(--unit) * 8);
+   gap: var(--space-2);
 }
 
 .header__logo-avatar {
@@ -59,7 +59,7 @@
    display: flex;
    height: calc(var(--unit) * 18);
    align-items: center;
-   gap: calc(var(--unit) * 8);
+   gap: var(--space-2);
 }
 
 .header__nav-list-item {
@@ -91,14 +91,14 @@
    display: flex;
    height: calc(var(--unit) * 18);
    align-items: center;
-   gap: calc(var(--unit) * 16);
+   gap: var(--space-4);
 }
 
 .header__tools-search {
    display: flex;
    cursor: pointer;
    align-items: center;
-   gap: calc(var(--unit) * 8);
+   gap: var(--space-2);
 }
 
 .header__tools-search-icon {
@@ -111,12 +111,12 @@
    display: flex;
    height: calc(var(--unit) * 18);
    align-items: center;
-   gap: calc(var(--unit) * 4);
+   gap: var(--space-1);
    border-radius: var(--radius-sm);
    border-style: solid;
    border-width: 1px;
    border-color: var(--border);
-   padding-inline: calc(var(--unit) * 4);
+   padding-inline: var(--space-1);
 }
 
 .header__tools-kbd-inner {
@@ -127,7 +127,7 @@
 .header__clock {
    display: flex;
    align-items: center;
-   gap: calc(var(--unit) * 8);
+   gap: var(--space-2);
    font-family: var(--font-mono);
 }
 
@@ -139,7 +139,7 @@
 @container header (min-width: 64rem) {
    .header {
       grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: calc(var(--unit) * 16);
+      gap: var(--space-4);
    }
    
    .header__left {
@@ -153,11 +153,11 @@
    
    .header__nav {
       margin-right: auto;
-      margin-left: calc(var(--unit) * 0);
+      margin-left: var(--space-0);
    }
    
    .header__nav-list {
-      gap: calc(var(--unit) * 16);
+      gap: var(--space-4);
    }
    
    .header__tools {
