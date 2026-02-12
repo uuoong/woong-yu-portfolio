@@ -5,11 +5,20 @@ Pretendard Variable (Sans)
 
 /* Main font */
 @font-face {
-   font-family: 'Pretendard Variable';
+   font-family: 'Pretendard';
    font-style: normal;
-   font-weight: 45 920;
+   font-weight: 400;
    font-display: swap;
-   src: url('https://woong-yu-portfolio.vercel.app/assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+   src: url('https://woong-yu-portfolio.vercel.app/assets/fonts/Pretendard-Regular.woff2') format('woff2');
+   unicode-range: U+0020-007E, U+00A0-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF, U+2000-206F, U+20A0-20CF, U+2100-214F, U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
+}
+
+@font-face {
+   font-family: 'Pretendard';
+   font-style: normal;
+   font-weight: 600;
+   font-display: swap;
+   src: url('https://woong-yu-portfolio.vercel.app/assets/fonts/Pretendard-SemiBold.woff2') format('woff2');
    unicode-range: U+0020-007E, U+00A0-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF, U+2000-206F, U+20A0-20CF, U+2100-214F, U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
 }
 
