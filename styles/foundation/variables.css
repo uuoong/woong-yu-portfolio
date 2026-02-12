@@ -1,71 +1,56 @@
-/* ============================================
-   Container-Based Responsive System
-   ============================================ */
-
-/* Container Query 활성화 */
-html {
-	container-type: inline-size;
-	container-name: viewport;
-}
-
+/* Fluid System */
 :root {
-	/* Base Unit */
-	--unit: 0.0625rem;
+	/* Viewport */
+    --vp-min: 360;
+    --vp-max: 2560;
 	
-	/* Default Scale */
-	--fluid-scale: 1;
+	/* Base Unit (1px = 0.0625rem) */
+    --unit: 0.0625rem;
+	
+	/* Fluid Screen Width */
+    --fluid-screen: 100vw;
+	
+	/* Fluid Unit Calculation */
+    --fluid-unit: calc(
+		(var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
+		(var(--vp-max) - var(--vp-min))
+	)
 }
 
-/* Container Query: Mobile (< 768px) */
-@container viewport (max-width: 47.9375rem) {
+/* dvw Supported Browsers */
+@supports (width: 1dvw) {
 	:root {
-		--fluid-scale: 0.75;
+		--fluid-screen: 100dvw;
 	}
 }
 
-/* Container Query: Tablet (768px ~ 1023px) */
-@container viewport (min-width: 48rem) and (max-width: 63.9375rem) {
-	:root {
-		--fluid-scale: 0.875;
-	}
-}
-
-/* Container Query: Desktop (1024px ~ 1439px) */
-@container viewport (min-width: 64rem) and (max-width: 89.9375rem) {
-	:root {
-		--fluid-scale: 0.95;
-	}
-}
-
-/* Container Query: Large Desktop (1440px+) */
-@container viewport (min-width: 90rem) {
-	:root {
-		--fluid-scale: 1;
-	}
-}
-
-/* ============================================
-   Spacing System
-   ============================================ */
+/* Spacing System */
 :root {
-	--space-base: calc(var(--unit) * 4 * var(--fluid-scale));
+	/* Base Spacing Unit: 4px → 6px */
+	--space-unit: clamp(
+		calc(var(--unit) * 4),
+		calc(var(--unit) * 4) + 2 * var(--fluid-unit),
+		calc(var(--unit) * 6)
+	);
 	
-	--space-1:  calc(var(--space-base) * 1);
-	--space-2:  calc(var(--space-base) * 2);
-	--space-3:  calc(var(--space-base) * 3);
-	--space-4:  calc(var(--space-base) * 4);
-	--space-5:  calc(var(--space-base) * 5);
-	--space-6:  calc(var(--space-base) * 6);
-	--space-8:  calc(var(--space-base) * 8);
-	--space-10: calc(var(--space-base) * 10);
-	--space-12: calc(var(--space-base) * 12);
-	--space-16: calc(var(--space-base) * 16);
-	--space-18: calc(var(--space-base) * 18);
-	--space-20: calc(var(--space-base) * 20);
-	--space-24: calc(var(--space-base) * 24);
-	--space-32: calc(var(--space-base) * 32);
+	/* Fluid Scale */
+	--space-0:  calc(var(--space-unit) * 0);     
+	--space-1:  var(--space-unit);               /* 4px ~ 6px */
+	--space-2:  calc(var(--space-unit) * 2);     /* 8px ~ 12px */
+	--space-3:  calc(var(--space-unit) * 3);     /* 12px ~ 18px */
+	--space-4:  calc(var(--space-unit) * 4);     /* 16px ~ 24px */
+	--space-5:  calc(var(--space-unit) * 5);     /* 20px ~ 30px */
+	--space-6:  calc(var(--space-unit) * 6);     /* 24px ~ 36px */
+	--space-8:  calc(var(--space-unit) * 8);     /* 32px ~ 48px */
+	--space-10: calc(var(--space-unit) * 10);    /* 40px ~ 60px */
+	--space-12: calc(var(--space-unit) * 12);    /* 48px ~ 72px */
+	--space-16: calc(var(--space-unit) * 16);    /* 64px ~ 96px */
+	--space-18: calc(var(--space-unit) * 18);    /* 72px ~ 108px */
+	--space-20: calc(var(--space-unit) * 20);    /* 80px ~ 120px */
+	--space-24: calc(var(--space-unit) * 24);    /* 96px ~ 144px */
+	--space-32: calc(var(--space-unit) * 32);    /* 128px ~ 192px */
 	
-	/* Fixed */
+	/* Fixed Scale */
 	--space-4px:  0.25rem;
 	--space-8px:  0.5rem;
 	--space-12px: 0.75rem;
@@ -75,12 +60,10 @@ html {
 	--space-40px: 2.5rem;
 }
 
-/* ============================================
-   Typography System
-   ============================================ */
+/* Typography System */
 :root {
 	/* Font Stacks */
-	--font-sans:
+	--font-sans: 
 		"Pretendard Variable",
 		"Pretendard Fallback EN",
 		"Pretendard Fallback KR Mac",
@@ -89,7 +72,10 @@ html {
 		-apple-system,
 		BlinkMacSystemFont,
 		system-ui,
-		sans-serif;
+		sans-serif,
+		"Apple Color Emoji",
+		"Segoe UI Emoji",
+		"Segoe UI Symbol";
 
 	--font-mono:
 		"Monaspace Neon Variable",
@@ -99,15 +85,54 @@ html {
 		ui-monospace,
 		monospace;
 
-	/* Font Sizes */
-	--font-size-display: calc(var(--unit) * 48 * var(--fluid-scale));
-	--font-size-h1: calc(var(--unit) * 32 * var(--fluid-scale));
-	--font-size-h2: calc(var(--unit) * 24 * var(--fluid-scale));
-	--font-size-h3: calc(var(--unit) * 18 * var(--fluid-scale));
-	--font-size-lg: calc(var(--unit) * 16 * var(--fluid-scale));
-	--font-size-md: calc(var(--unit) * 14 * var(--fluid-scale));
-	--font-size-sm: calc(var(--unit) * 12 * var(--fluid-scale));
-	--font-size-mono: calc(var(--unit) * 13 * var(--fluid-scale));
+	/* Font Sizes (Fluid) */
+	--font-size-display: clamp(
+		calc(var(--unit) * 48),
+		calc(var(--unit) * 48) + 32 * var(--fluid-unit),
+		calc(var(--unit) * 80)
+	);
+	
+	--font-size-h1: clamp(
+		calc(var(--unit) * 24),
+		calc(var(--unit) * 24) + 24 * var(--fluid-unit),
+		calc(var(--unit) * 48)
+	);
+
+	--font-size-h2: clamp(
+		calc(var(--unit) * 16),
+		calc(var(--unit) * 16) + 12 * var(--fluid-unit),
+		calc(var(--unit) * 28)
+	);
+
+	--font-size-h3: clamp(
+		calc(var(--unit) * 14),
+		calc(var(--unit) * 14) + 8 * var(--fluid-unit),
+		calc(var(--unit) * 22)
+	);
+	
+	--font-size-lg: clamp(
+		calc(var(--unit) * 14),
+		calc(var(--unit) * 14) + 4 * var(--fluid-unit),
+		calc(var(--unit) * 18)
+	);
+	
+	--font-size-md: clamp(
+		calc(var(--unit) * 12),
+		calc(var(--unit) * 12) + 4 * var(--fluid-unit),
+		calc(var(--unit) * 16)
+	);
+	
+	--font-size-sm: clamp(
+		calc(var(--unit) * 10),
+		calc(var(--unit) * 10) + 2 * var(--fluid-unit),
+		calc(var(--unit) * 12)
+	);
+	
+	--font-size-mono: clamp(
+		calc(var(--unit) * 11),
+		calc(var(--unit) * 11) + 3 * var(--fluid-unit),
+		calc(var(--unit) * 14)
+	);
 
 	/* Font Weights */
 	--font-weight-regular: 450;
