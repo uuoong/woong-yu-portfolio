@@ -18,11 +18,11 @@
 }
 
 /* dvw Supported Browsers */
-@supports (width: 1dvw) {
+/* @supports (width: 1dvw) {
 	:root {
 		--fluid-screen: 100dvw;
 	}
-}
+} */
 
 /* Spacing System */
 :root {
