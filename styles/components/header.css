@@ -1,5 +1,8 @@
 /* Layout */
 .header {
+   container-type: inline-size;
+	container-name: header;
+   
    display: grid;
    grid-template-columns: auto 1fr;
    
@@ -133,7 +136,7 @@
 }
 
 /* Responsive size */
-@media (min-width: 64rem) {
+@container header (min-width: 64rem) {
    .header {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       gap: calc(var(--unit) * 16);
