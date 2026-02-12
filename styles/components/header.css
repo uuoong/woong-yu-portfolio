@@ -1,5 +1,8 @@
 /* Layout */
 .header {
+   container-type: inline-size;
+   container-name: header;
+   
    display: grid;
    grid-template-columns: auto 1fr;
    
@@ -132,7 +135,7 @@
    text-transform: uppercase;
 }
 
-/* Responsive size */
+/* Desktop (1024px~) */
 @container header (min-width: 64rem) {
    .header {
       grid-template-columns: repeat(12, minmax(0, 1fr));
