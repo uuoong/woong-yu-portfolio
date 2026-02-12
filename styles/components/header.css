@@ -1,8 +1,5 @@
 /* Layout */
 .header {
-   container-type: inline-size;
-	container-name: header;
-   
    display: grid;
    grid-template-columns: auto 1fr;
    
