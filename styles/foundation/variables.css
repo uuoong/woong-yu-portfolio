@@ -64,7 +64,7 @@
 :root {
 	/* Font Stacks */
 	--font-sans: 
-		"Pretendard Variable",
+		"Pretendard",
 		"Pretendard Fallback EN",
 		"Pretendard Fallback KR Mac",
 		"Pretendard Fallback KR Win",
@@ -135,8 +135,8 @@
 	);
 
 	/* Font Weights */
-	--font-weight-regular: 450;
-	--font-weight-semibold: 550;
+	--font-weight-regular: 400;
+	--font-weight-semibold: 600;
 
 	/* Line Heights */
 	--line-height-tight: 1.15;
