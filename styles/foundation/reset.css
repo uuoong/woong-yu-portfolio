@@ -1,19 +1,4 @@
 /* Document */
-[data-framer-name] * {
-	font-size: inherit !important;
-}
-
-/* Framer의 기본 여백 무시 */
-[data-framer-component-type] {
-	padding: 0 !important;
-	margin: 0 !important;
-}
-
-/* Framer Stack 컨테이너 리셋 */
-[data-framer-component-type="Stack"] {
-	gap: 0 !important;
-}
-
 *,
 *::before,
 *::after {
