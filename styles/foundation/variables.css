@@ -1,69 +1,61 @@
-/* ============================================
-   Viewport & Fluid System (Framer 최적화)
-   ============================================ */
+/* Fluid System */
 :root {
+	/* Viewport 범위 (Unitless) */
+	--vp-min: 360;
+	--vp-max: 2560;
+	
 	/* Base Unit (1px = 0.0625rem) */
 	--unit: 0.0625rem;
 
-	/* Viewport 기준값 */
-	--vp-base: 1440; /* 기준 디자인 사이즈 */
-	
-	/* Fluid Multiplier (단순화) */
-	--fluid-scale: 1;
-}
+	/* Container Width 기준 (100cqw) */
+	--fluid-screen: 100cqw;
 
-/* Mobile: 360px ~ 767px */
-@media (max-width: 47.9375rem) {
-	:root {
-		--fluid-scale: 0.75; /* 75% 크기 */
+	/* Fallback: cqw 미지원 브라우저 */
+	@supports not (width: 1cqw) {
+		--fluid-screen: 100vw;
 	}
+
+	/* Fluid Unit Calculation */
+	--fluid-unit: calc(
+		(var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
+		(var(--vp-max) - var(--vp-min))
+	);
 }
 
-/* Tablet: 768px ~ 1023px */
-@media (min-width: 48rem) and (max-width: 63.9375rem) {
+/* dvw Supported Browsers */
+/* @supports (width: 1dvw) {
 	:root {
-		--fluid-scale: 0.875; /* 87.5% 크기 */
+		--fluid-screen: 100dvw;
 	}
-}
+} */
 
-/* Desktop: 1024px ~ 1439px */
-@media (min-width: 64rem) and (max-width: 89.9375rem) {
-	:root {
-		--fluid-scale: 0.95; /* 95% 크기 */
-	}
-}
-
-/* Large Desktop: 1440px+ */
-@media (min-width: 90rem) {
-	:root {
-		--fluid-scale: 1; /* 100% 크기 */
-	}
-}
-
-/* ============================================
-   Spacing System (단순화)
-   ============================================ */
+/* Spacing System */
 :root {
-	/* Base Spacing */
-	--space-base: calc(var(--unit) * 4 * var(--fluid-scale));
+	/* Base Spacing Unit: 4px → 6px */
+	--space-unit: clamp(
+		calc(var(--unit) * 4),
+		calc(var(--unit) * 4) + 2 * var(--fluid-unit),
+		calc(var(--unit) * 6)
+	);
 	
-	/* Scale */
-	--space-1:  calc(var(--space-base) * 1);    /* 4px * scale */
-	--space-2:  calc(var(--space-base) * 2);    /* 8px * scale */
-	--space-3:  calc(var(--space-base) * 3);    /* 12px * scale */
-	--space-4:  calc(var(--space-base) * 4);    /* 16px * scale */
-	--space-5:  calc(var(--space-base) * 5);    /* 20px * scale */
-	--space-6:  calc(var(--space-base) * 6);    /* 24px * scale */
-	--space-8:  calc(var(--space-base) * 8);    /* 32px * scale */
-	--space-10: calc(var(--space-base) * 10);   /* 40px * scale */
-	--space-12: calc(var(--space-base) * 12);   /* 48px * scale */
-	--space-16: calc(var(--space-base) * 16);   /* 64px * scale */
-	--space-18: calc(var(--space-base) * 18);   /* 72px * scale */
-	--space-20: calc(var(--space-base) * 20);   /* 80px * scale */
-	--space-24: calc(var(--space-base) * 24);   /* 96px * scale */
-	--space-32: calc(var(--space-base) * 32);   /* 128px * scale */
-
-	/* Fixed (scale 적용 안 함) */
+	/* Fluid Scale */
+	--space-0:  calc(var(--space-unit) * 0);     
+	--space-1:  var(--space-unit);               /* 4px ~ 6px */
+	--space-2:  calc(var(--space-unit) * 2);     /* 8px ~ 12px */
+	--space-3:  calc(var(--space-unit) * 3);     /* 12px ~ 18px */
+	--space-4:  calc(var(--space-unit) * 4);     /* 16px ~ 24px */
+	--space-5:  calc(var(--space-unit) * 5);     /* 20px ~ 30px */
+	--space-6:  calc(var(--space-unit) * 6);     /* 24px ~ 36px */
+	--space-8:  calc(var(--space-unit) * 8);     /* 32px ~ 48px */
+	--space-10: calc(var(--space-unit) * 10);    /* 40px ~ 60px */
+	--space-12: calc(var(--space-unit) * 12);    /* 48px ~ 72px */
+	--space-16: calc(var(--space-unit) * 16);    /* 64px ~ 96px */
+	--space-18: calc(var(--space-unit) * 18);    /* 72px ~ 108px */
+	--space-20: calc(var(--space-unit) * 20);    /* 80px ~ 120px */
+	--space-24: calc(var(--space-unit) * 24);    /* 96px ~ 144px */
+	--space-32: calc(var(--space-unit) * 32);    /* 128px ~ 192px */
+	
+	/* Fixed Scale */
 	--space-4px:  0.25rem;
 	--space-8px:  0.5rem;
 	--space-12px: 0.75rem;
@@ -73,12 +65,10 @@
 	--space-40px: 2.5rem;
 }
 
-/* ============================================
-   Typography System (단순화)
-   ============================================ */
+/* Typography System */
 :root {
 	/* Font Stacks */
-	--font-sans:
+	--font-sans: 
 		"Pretendard Variable",
 		"Pretendard Fallback EN",
 		"Pretendard Fallback KR Mac",
@@ -87,7 +77,10 @@
 		-apple-system,
 		BlinkMacSystemFont,
 		system-ui,
-		sans-serif;
+		sans-serif,
+		"Apple Color Emoji",
+		"Segoe UI Emoji",
+		"Segoe UI Symbol";
 
 	--font-mono:
 		"Monaspace Neon Variable",
@@ -97,15 +90,54 @@
 		ui-monospace,
 		monospace;
 
-	/* Font Sizes (breakpoint 기반) */
-	--font-size-display: calc(var(--unit) * 48 * var(--fluid-scale));
-	--font-size-h1: calc(var(--unit) * 32 * var(--fluid-scale));
-	--font-size-h2: calc(var(--unit) * 24 * var(--fluid-scale));
-	--font-size-h3: calc(var(--unit) * 18 * var(--fluid-scale));
-	--font-size-lg: calc(var(--unit) * 16 * var(--fluid-scale));
-	--font-size-md: calc(var(--unit) * 14 * var(--fluid-scale));
-	--font-size-sm: calc(var(--unit) * 12 * var(--fluid-scale));
-	--font-size-mono: calc(var(--unit) * 13 * var(--fluid-scale));
+	/* Font Sizes (Fluid) */
+	--font-size-display: clamp(
+		calc(var(--unit) * 48),
+		calc(var(--unit) * 48) + 32 * var(--fluid-unit),
+		calc(var(--unit) * 80)
+	);
+	
+	--font-size-h1: clamp(
+		calc(var(--unit) * 24),
+		calc(var(--unit) * 24) + 24 * var(--fluid-unit),
+		calc(var(--unit) * 48)
+	);
+
+	--font-size-h2: clamp(
+		calc(var(--unit) * 16),
+		calc(var(--unit) * 16) + 12 * var(--fluid-unit),
+		calc(var(--unit) * 28)
+	);
+
+	--font-size-h3: clamp(
+		calc(var(--unit) * 14),
+		calc(var(--unit) * 14) + 8 * var(--fluid-unit),
+		calc(var(--unit) * 22)
+	);
+	
+	--font-size-lg: clamp(
+		calc(var(--unit) * 14),
+		calc(var(--unit) * 14) + 4 * var(--fluid-unit),
+		calc(var(--unit) * 18)
+	);
+	
+	--font-size-md: clamp(
+		calc(var(--unit) * 12),
+		calc(var(--unit) * 12) + 4 * var(--fluid-unit),
+		calc(var(--unit) * 16)
+	);
+	
+	--font-size-sm: clamp(
+		calc(var(--unit) * 10),
+		calc(var(--unit) * 10) + 2 * var(--fluid-unit),
+		calc(var(--unit) * 12)
+	);
+	
+	--font-size-mono: clamp(
+		calc(var(--unit) * 11),
+		calc(var(--unit) * 11) + 3 * var(--fluid-unit),
+		calc(var(--unit) * 14)
+	);
 
 	/* Font Weights */
 	--font-weight-regular: 450;
