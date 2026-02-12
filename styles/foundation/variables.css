@@ -1,33 +1,28 @@
 /* Fluid System */
 :root {
-	/* Viewport 범위 (Unitless) */
-	--vp-min: 360;
-	--vp-max: 2560;
+	/* Viewport */
+    --vp-min: 360;
+    --vp-max: 2560;
 	
 	/* Base Unit (1px = 0.0625rem) */
-	--unit: 0.0625rem;
-
-	/* Container Width 기준 (100cqw) */
-	--fluid-screen: 100cqw;
-
-	/* Fallback: cqw 미지원 브라우저 */
-	@supports not (width: 1cqw) {
-		--fluid-screen: 100vw;
-	}
-
+    --unit: 0.0625rem;
+	
+	/* Fluid Screen Width */
+    --fluid-screen: 100vw;
+	
 	/* Fluid Unit Calculation */
-	--fluid-unit: calc(
+    --fluid-unit: calc(
 		(var(--fluid-screen) - calc(var(--unit) * var(--vp-min))) / 
 		(var(--vp-max) - var(--vp-min))
-	);
+	)
 }
 
 /* dvw Supported Browsers */
-/* @supports (width: 1dvw) {
+@supports (width: 1dvw) {
 	:root {
 		--fluid-screen: 100dvw;
 	}
-} */
+}
 
 /* Spacing System */
 :root {
