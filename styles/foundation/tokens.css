@@ -60,6 +60,7 @@ html[data-theme="dark"] {
 	--bg-primary: var(--gray-900);
 	--bg-secondary: var(--gray-800);
 	--bg-tertiary: var(--gray-700);
+	--bg-inverse: var(--gray-200);
 	
 	/* Text */
 	--text-primary: var(--gray-200);
@@ -120,6 +121,7 @@ html[data-theme="light"] {
 	--bg-primary: var(--gray-200);
 	--bg-secondary: var(--gray-100);
 	--bg-tertiary: var(--gray-300);
+	--bg-inverse: var(--gray-800);
 	
 	/* Text */
 	--text-primary: var(--gray-800);
@@ -180,6 +182,7 @@ html[data-theme="light"] {
 		--bg-primary: var(--gray-200);
 		--bg-secondary: var(--gray-100);
 		--bg-tertiary: var(--gray-300);
+		--bg-inverse: var(--gray-800);
 		
 		--text-primary: var(--gray-800);
 		--text-secondary: color-mix(in srgb, var(--gray-800) 50%, transparent);
