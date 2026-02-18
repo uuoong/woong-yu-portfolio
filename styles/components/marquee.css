@@ -1,0 +1,44 @@
+/* Container */
+.marquee-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Track */
+.marquee-track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: max-content;
+  will-change: transform;
+  cursor: grab;
+}
+
+.marquee-track:active {
+  cursor: grabbing;
+}
+
+/* Slides */
+.marquee-slide {
+  flex: 0 0 auto;
+  padding: 0 calc(var(--marquee-gap, var(--space-1)) / 2);
+}
+
+/* Image */
+.marquee-image {
+  display: contents;
+  max-width: 100%;
+  width: auto;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* No data */
+.marquee-empty {
+  padding: var(--space-4);
+  font-size: var(--font-size-mono);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
