@@ -1,5 +1,5 @@
 export const marqueeData = {
-    "project-alpha": [
+    "about": [
         {
             src: "https://picsum.photos/1920/1080?random=1",
             alt: "Alpha – Scene 01",
@@ -22,7 +22,7 @@ export const marqueeData = {
         },
     ],
 
-    "project-beta": [
+    "works": [
         {
             src: "https://picsum.photos/1920/1080?random=1",
             alt: "Beta – Scene 01",
