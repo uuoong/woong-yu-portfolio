@@ -1,0 +1,29 @@
+#canvas {
+  background-color: var(--bg-primary);
+  width: 105vw;
+  height: 100vh; 
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  overflow: hidden; 
+}
+
+@supports (height: 100dvh) {
+  #canvas {
+    height: 100dvh;
+  }
+}
+
+.block {
+  width: var(--space-4);
+  height: var(--space-4);
+  border: 0.5px solid var(--border);
+  transition: border-color var(--duration-fast) var(--ease-smooth);
+  box-sizing: border-box;
+}
+ 
+.block.highlight {
+  border-color: var(--bg-inverse);
+  transition: border-color 0s;
+}
