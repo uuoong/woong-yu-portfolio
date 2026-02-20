@@ -1,18 +1,12 @@
 #canvas {
   background-color: var(--bg-primary);
-  width: 105vw;
-  height: 100vh; 
+  width: 105%;
+  height: 100%; 
   display: flex; 
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
   overflow: hidden; 
-}
-
-@supports (height: 100dvh) {
-  #canvas {
-    height: 100dvh;
-  }
 }
 
 .block {
