@@ -4,7 +4,7 @@ body {
 	overscroll-behavior: none;
 
 	/* Color */
-	background-color: var(--bg-primary) !important;
+	background-color: var(--bg-secondary) !important;
 	color: var(--text-primary) !important;
 }
 
