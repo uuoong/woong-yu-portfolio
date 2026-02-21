@@ -1,25 +1,21 @@
 /* Container */
 .marquee-container {
   width: 100%;
+  min-width: 0;
   overflow: hidden;
+  position: relative;
+  padding: var(--marquee-gap) 0;
   user-select: none;
   cursor: grab;
-  padding: var(--marquee-gap) 0;
-}
-
-.marquee-container:active {
-  cursor: grabbing;
 }
 
 /* Track */
 .marquee-track {
   display: flex;
-  gap: var(--marquee-gap);
   width: max-content;
   will-change: transform;
 }
 
-/* Slides */
 .marquee-slide {
   flex-shrink: 0;
 }
