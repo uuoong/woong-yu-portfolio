@@ -1,29 +1,60 @@
-/* Container */
+/* ── Keyframe ────────────────────────────────────────────────────────────
+   track 전체 너비의 -50% = 원본 1세트 너비
+   끝에 도달하면 시작점과 동일한 이미지가 이어져 seamless loop 완성
+*/
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* ── Container ───────────────────────────────────────────────────────────
+   overflow: hidden 으로 track이 넘치는 부분을 클리핑.
+   width: 100% 이지만 내용물(track)이 부모를 밀지 않음.
+*/
 .marquee-container {
-  width: 100%;
-  min-width: 0;
-  overflow: hidden;
-  position: relative;
-  padding: var(--marquee-gap) 0;
-  user-select: none;
-  cursor: grab;
+    width: 100%;
+    overflow: hidden;
+    /* 좌우 페이드 마스크 */
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 5%,
+        black 95%,
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 5%,
+        black 95%,
+        transparent 100%
+    );
 }
 
-/* Track */
+/* ── Track ───────────────────────────────────────────────────────────────
+   width: max-content → 모든 이미지를 한 줄에 배치
+   animation이 transform만 변경 → 레이아웃에 영향 없음
+*/
 .marquee-track {
-  display: flex;
-  width: max-content;
-  will-change: transform;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    will-change: transform;
+    animation: marquee-scroll linear infinite;
 }
 
-.marquee-slide {
-  flex-shrink: 0;
+/* hover 시 일시 정지 */
+.marquee-container:hover .marquee-track {
+    animation-play-state: paused;
 }
 
-/* Image */
+/* ── Image ───────────────────────────────────────────────────────────────
+   height는 inline style로 제어, width는 원본 비율 자동 유지
+*/
 .marquee-image {
-  display: block;
-  width: auto;
-  object-fit: cover;
-  pointer-events: none;
+    display: block;
+    flex-shrink: 0;
+    width: auto;
+    object-fit: cover;
+    pointer-events: none;
 }
