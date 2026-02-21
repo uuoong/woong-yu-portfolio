@@ -1,0 +1,11 @@
+.toggle-window {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+}
+
+.toggle-window:hover {
+  background-color: var(--button-hover);
+}
