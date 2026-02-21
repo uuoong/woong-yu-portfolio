@@ -1,141 +1,116 @@
-import { useEffect, useRef, useCallback } from "react"
-import Core from "https://unpkg.com/smooothy"
-import { marqueeData } from "./data.js"
+/**
+ * src/components/Marquee/Marquee.jsx
+ *
+ * framer-motion 기반 infinite marquee.
+ *
+ * - useMotionValue    : React 리렌더 없이 GPU transform 직접 제어
+ * - useAnimationFrame : framer 내장 RAF (캔버스와 동일한 루프 공유)
+ * - 포인터 이벤트     : drag 중 autoplay 일시 정지 + 관성 감속
+ *
+ * Props:
+ *   windowId {string}        - data/marquee.js 키
+ *   height  {number}        - 이미지 높이 배수 (calc(var(--unit) * height))
+ *   speed   {number}        - autoplay 속도 px/frame (기본 1)
+ *   gap     {string|number} - CSS 값 문자열 or 숫자(px)
+ */
 
-const MIN_CLONES = 3
+import { useRef } from "react"
+import { motion, useMotionValue, useAnimationFrame } from "framer-motion"
+import { marqueeData } from "../../data/_index.js"
 
-export default function Marquee({
-    modalId,
+const Marquee = ({
+    windowId,
     height = 60,
-    speed = 0.8,
+    speed = 1,
     gap = "var(--space-1)",
-    snap = false,
-    lerpFactor = 0.07,
-}) {
-    const containerRef = useRef(null)
+}) => {
+    const images = marqueeData[windowId] ?? []
+    const items = images.length > 0 ? [...images, ...images] : []
+
     const trackRef = useRef(null)
-    const sliderRef = useRef(null)
-    const rafRef = useRef(null)
-    const isDraggingRef = useRef(false)
-    const autoSpeedRef = useRef(speed)
+    const x = useMotionValue(0) // GPU 가속 transform 제어
+    const isDragging = useRef(false)
+    const velocity = useRef(0) // 드래그 종료 후 관성 초기값
+    const prevPointer = useRef(0)
 
-    useEffect(() => {
-        autoSpeedRef.current = speed
-    }, [speed])
+    useAnimationFrame(() => {
+        if (!trackRef.current || items.length === 0 || isDragging.current)
+            return
 
-    const images = marqueeData[modalId] ?? []
+        const totalWidth = trackRef.current.scrollWidth
+        const halfWidth = totalWidth / 2
 
-    const repeatedImages =
-        images.length > 0
-            ? Array.from(
-                  { length: Math.ceil(MIN_CLONES * 1) },
-                  () => images
-              ).flat()
-            : []
-
-    const initSlider = useCallback(() => {
-        if (!trackRef.current) return
-
-        if (sliderRef.current) {
-            sliderRef.current.destroy?.()
-            sliderRef.current = null
-        }
-        cancelAnimationFrame(rafRef.current)
-
-        const slider = new Core(trackRef.current, {
-            infinite: true,
-            snap,
-            lerpFactor,
-            dragSensitivity: 0.006,
-            virtualScroll: {
-                mouseMultiplier: 0.8,
-                touchMultiplier: 1.4,
-            },
-        })
-        sliderRef.current = slider
-
-        const track = trackRef.current
-
-        const onDragStart = () => {
-            isDraggingRef.current = true
-        }
-        const onDragEnd = () => {
-            isDraggingRef.current = false
+        // 관성 및 자동 재생 로직
+        if (Math.abs(velocity.current) > 0.1) {
+            velocity.current *= 0.95
+            x.set(x.get() + velocity.current)
+        } else {
+            velocity.current = 0
+            x.set(x.get() - speed)
         }
 
-        track.addEventListener("mousedown", onDragStart)
-        track.addEventListener("touchstart", onDragStart, { passive: true })
-        window.addEventListener("mouseup", onDragEnd)
-        window.addEventListener("touchend", onDragEnd)
+        // 루프 포인트 리셋
+        const currentX = x.get()
+        if (currentX <= -halfWidth) x.set(currentX + halfWidth)
+        if (currentX > 0) x.set(currentX - halfWidth)
+    })
 
-        const animate = () => {
-            if (sliderRef.current) {
-                if (
-                    !isDraggingRef.current &&
-                    sliderRef.current.target !== undefined
-                ) {
-                    sliderRef.current.target += autoSpeedRef.current
-                }
-                sliderRef.current.update()
-            }
-            rafRef.current = requestAnimationFrame(animate)
-        }
-        rafRef.current = requestAnimationFrame(animate)
-
-        return () => {
-            cancelAnimationFrame(rafRef.current)
-            track.removeEventListener("mousedown", onDragStart)
-            track.removeEventListener("touchstart", onDragStart)
-            window.removeEventListener("mouseup", onDragEnd)
-            window.removeEventListener("touchend", onDragEnd)
-            slider.destroy?.()
-        }
-    }, [snap, lerpFactor])
-
-    useEffect(() => {
-        const id = setTimeout(() => {
-            const cleanup = initSlider()
-            return cleanup
-        }, 50)
-
-        return () => {
-            clearTimeout(id)
-            cancelAnimationFrame(rafRef.current)
-            sliderRef.current?.destroy?.()
-        }
-    }, [modalId, initSlider])
-
-    if (images.length === 0) {
-        return (
-            <div className="marquee-empty">
-                이미지 데이터를 찾을 수 없습니다: <code>{modalId}</code>
-            </div>
-        )
+    const onPointerDown = (e) => {
+        isDragging.current = true
+        velocity.current = 0
+        prevPointer.current = e.clientX
+        e.currentTarget.setPointerCapture(e.pointerId)
     }
 
+    const onPointerMove = (e) => {
+        if (!isDragging.current) return
+        const delta = e.clientX - prevPointer.current
+        velocity.current = delta
+        prevPointer.current = e.clientX
+        x.set(x.get() + delta)
+    }
+
+    const onPointerUp = () => {
+        isDragging.current = false
+    }
+
+    if (images.length === 0) return null
+
     return (
-        <div className="marquee-container" ref={containerRef}>
-            <div
-                className="marquee-track"
-                ref={trackRef}
-                style={{
-                    "--marquee-gap": typeof gap === "number" ? `${gap}px` : gap,
-                }}
-            >
-                {repeatedImages.map((img, i) => (
-                    <div className="marquee-slide" key={`${modalId}-${i}`}>
-                        <img
-                            className="marquee-image"
-                            src={img.src}
-                            alt={img.alt}
-                            draggable={false}
-                            loading="lazy"
-                            decoding="async"
-                            style={{ height: `calc(var(--unit) * ${height})` }}
-                        />
-                    </div>
-                ))}
+        <div>
+            <div className="marquee-container">
+                <motion.div
+                    ref={trackRef}
+                    className="marquee-track"
+                    style={{
+                        x,
+                        gap: typeof gap === "number" ? `${gap}px` : gap,
+                    }}
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerUp}
+                    onPointerLeave={onPointerUp}
+                >
+                    {items.map((img, i) => (
+                        <div className="marquee-slide" key={`${windowId}-${i}`}>
+                            <img
+                                className="marquee-image"
+                                src={img.src}
+                                alt={img.alt || ""}
+                                draggable={false}
+                                loading="eager"
+                                decoding="async"
+                                style={{
+                                    display: "block",
+                                    height: `calc(var(--unit) * ${height})`,
+                                }}
+                            />
+                        </div>
+                    ))}
+                </motion.div>
             </div>
         </div>
     )
 }
+
+export default Marquee
