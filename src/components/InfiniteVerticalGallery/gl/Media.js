@@ -1,7 +1,7 @@
 import { Mesh, Program, Texture } from "ogl"
 
-import fragment from "../shader/fragment.js"
-import vertex from "../shader/vertex.js"
+import { fragment } from "../shader/fragment.js"
+import { vertex } from "../shader/vertex.js"
 
 class Media {
     constructor({ element, geometry, gl, height, scene, screen, viewport }) {
