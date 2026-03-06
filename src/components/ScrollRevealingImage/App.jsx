@@ -1,6 +1,6 @@
 import { addEffect } from "@react-three/fiber"
 import Lenis from "@studio-freight/lenis"
-import EmergingImage from "./EmergingImage.jsx"
+import EmergingImage from "./components/EmergingImage.jsx"
 import Scene from "./Scene.jsx"
 import { useState } from "react"
 import { useEffect } from "react"
