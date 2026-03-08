@@ -1,0 +1,12 @@
+@import "@/styles/shared";
+/* stylelint-disable-next-line block-no-empty */
+.PageTransition {
+}
+
+.page {
+  background-color: var(--bg);
+
+  // &.hasNextItem {
+  //   margin-bottom: var(--next-item-height);
+  // }
+}
