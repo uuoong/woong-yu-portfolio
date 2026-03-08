@@ -1,0 +1,118 @@
+@import "@/styles/shared";
+/* stylelint-disable-next-line block-no-empty */
+.Preloader {
+  @include z-index(preloader);
+  @include position-100(absolute);
+  height: 100svh;
+  opacity: 0;
+}
+
+.logoContainer {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: px(201);
+  display: grid;
+  grid-template-areas: 'a';
+  position: relative;
+
+  @include bp(tablet) {
+    width: px(523);
+  }
+}
+
+.logoLeftContainer,
+.logoRightContainer {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  grid-area: a;
+  display: block;
+
+  svg {
+    display: block;
+  }
+}
+
+.logoLeft {
+  [data-character='3'],
+  [data-character='4'] {
+    opacity: 0;
+  }
+}
+
+.logoRight {
+  [data-character='1'],
+  [data-character='2'] {
+    opacity: 0;
+  }
+}
+
+.bottom {
+  overflow: hidden;
+  position: absolute;
+  padding: 0 px(18) px(18) px(18);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loadingText {
+  @include font-body-mono;
+}
+
+.percentText {
+  @include font-body-mono;
+}
+
+.imageRotator {
+  @include gpu;
+  display: grid;
+  grid-template-areas: 'a';
+  position: absolute;
+  top: 50%;
+  left: 50.5%;
+  transform: translate(#{px(-38)}, -50%);
+  width: px(77);
+
+  @include bp(tablet) {
+    transform: translate(#{px(-100)}, -50%);
+    width: px(200);
+  }
+}
+
+.productImageContainer__leftMask,
+.productImageContainer__rightMask {
+  @include gpu;
+  position: absolute;
+  top: -1%;
+  width: 52%;
+  height: 102%;
+  background-color: var(--bg);
+  z-index: 20;
+  opacity: 0.999;
+}
+
+.productImageContainer__leftMask {
+  left: -1%;
+}
+
+.productImageContainer__rightMask {
+  right: -1%;
+}
+
+.productImageContainer {
+  @include gpu;
+  grid-area: a;
+  position: relative;
+  overflow: hidden;
+  opacity: 0.999;
+}
+
+.productImage {
+  width: 100%;
+  height: auto;
+}
