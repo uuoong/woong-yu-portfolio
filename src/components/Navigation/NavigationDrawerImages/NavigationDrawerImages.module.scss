@@ -1,0 +1,39 @@
+@import "@/styles/shared";
+/* stylelint-disable-next-line block-no-empty */
+.NavigationDrawerImages {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: px(191);
+  clip-path: polygon(0% 0%, 100% 0%, 100% var(--left-y), 0% var(--right-y));
+
+  --left-y: 0%;
+  --right-y: 0%;
+}
+
+.inner {
+  display: grid;
+  grid-template-areas: 'a';
+}
+
+.productImageContainer {
+  grid-area: a;
+  position: relative;
+  aspect-ratio: 191/260;
+  clip-path: polygon(0% var(--left-y), 100% var(--right-y), 100% 100%, 0% 100%);
+  transition: clip-path 1.2s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --left-y: 100%;
+  --right-y: 100%;
+
+  &.isActive {
+    --left-y: 0%;
+    --right-y: 0%;
+  }
+}
+
+.image {
+  @include position-100(absolute);
+  object-fit: cover;
+}
