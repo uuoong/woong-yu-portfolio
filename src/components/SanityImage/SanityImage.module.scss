@@ -1,0 +1,11 @@
+@import "@/styles/shared";
+.SanityImage {
+  &:not(.hasDataUri) {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  &.loaded {
+    opacity: 1;
+  }
+}
