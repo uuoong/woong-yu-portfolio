@@ -1,0 +1,67 @@
+@import "@/styles/shared";
+/* stylelint-disable-next-line block-no-empty */
+.Cursor {
+  @include z-index(cursor);
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  mix-blend-mode: difference;
+  opacity: 0;
+
+  @include bp(tablet, true) {
+    display: none !important;
+  }
+}
+
+.crosshair {
+  width: var(--cross-width);
+  height: var(--cross-width);
+  position: relative;
+
+  --cross-width: #{px(18)};
+}
+
+.crosshair__vertical {
+  width: 1px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: calc(50% - 0.5px);
+  background-color: $white;
+}
+
+.crosshair__horizontal {
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  top: calc(50% - 0.5px);
+  left: 0;
+  background-color: $white;
+}
+
+.text {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  display: grid;
+  grid-template-areas: 'a';
+}
+
+.text__explore,
+.text__dblClickClose,
+.text__dblClickExpand {
+  @include font-body-mono-2;
+  text-align: center;
+  white-space: nowrap;
+  grid-area: a;
+  color: $white;
+  transform: translateY(105%);
+  display: block;
+}
