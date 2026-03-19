@@ -47,18 +47,14 @@
 import { useEffect, useRef } from "react"
 import { Texture, Program, Mesh } from "ogl"
 import gsap from "gsap"
-import { useScene } from "https://framer.com/m/scene-OZ8hbL.js@8qS4IvODM4RIw2MjdapQ"
-import {
-    buildPlane,
-    hexToFloat32,
-} from "https://framer.com/m/utils-F27url.js@1BBpe5gzOuuHevG4Z7Wg"
-import {
-    vertex,
-    fragmentPixel,
-    fragmentWave,
-} from "https://framer.com/m/shaders-eHCRuL.js@kWRYsjAsrSft450sMpc0"
+import { useScene } from "./core/scene.js"
+import { buildPlane } from "./utils/geometry.js"
+import { hexToFloat32 } from "./utils/color.js"
+import { vertex } from "./shader/vertex.js"
+import { fragmentPixel } from "./shader/fragment-pixel.js"
+import { fragmentWave } from "./shader/fragment-wave.js"
 
-export default function GLImage({
+export default function ScrollRevealImage({
     src,
     alt = "",
     type = "pixel",
