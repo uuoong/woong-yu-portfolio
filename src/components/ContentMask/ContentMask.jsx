@@ -1,135 +1,169 @@
-import classnames from 'classnames'
-import styles from './ContentMask.module.scss'
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
-import gsap from 'gsap'
-import useInView from '@/hooks/use-in-view'
-import useStore from '@/store'
+/**
+ * ContentMask.jsx — 텍스트/콘텐츠 마스크 슬라이드 인/아웃
+ *
+ * 레퍼런스: components/ContentMask/ContentMask.jsx
+ *
+ * ─── 변경사항 ─────────────────────────────────────────────────────────────
+ *
+ *  제거: CSS module, classnames, useStore
+ *  유지: forwardRef + useImperativeHandle (내부 컴포넌트 → Framer canvas 문제 없음)
+ *        animateIn / animateOut 명령형 API
+ *        isInView + loaderAnimationComplete 연동
+ *        startPos UP / DOWN
+ *
+ * ─── 사용법 ───────────────────────────────────────────────────────────────
+ *
+ *  const ref = useRef()
+ *  <ContentMask ref={ref} text="Hello\nWorld" />
+ *  ref.current.animateIn()
+ *  ref.current.animateOut({ direction: "DOWN" })
+ */
 
-const EASE = 'Power3.easeOut'
+import React, {
+    forwardRef,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+} from "react"
+import gsap from "https://esm.sh/gsap"
+import useInView from "https://framer.com/m/use-in-view-xncvJM.js@qHxupyUmAZKnO7gTx142"
+import { useAppContext } from "https://framer.com/m/App-bSRL7k.js@OSIlKrR0H91ZCA9r9DU7"
+
+const EASE = "power3.out"
 const DURATION = 1.2
 
-// startPos === UP, DOWN
 const ContentMask = forwardRef(
-  (
-    {
-      className,
-      innerClassName,
-      element,
-      text,
-      startPos = 'DOWN',
-      children,
-      animateInView,
-      delay = 0,
-      onInView,
-      duration,
-    },
-    ref,
-  ) => {
-    const Element = element || 'div'
-    const innerRefs = useRef([])
-    const containerRef = useRef()
-    const { setElementToObserve, isInView } = useInView()
-    const textLines = text?.split('\n')
-    const loaderAnimationComplete = useStore(state => state.loaderAnimationComplete)
+    (
+        {
+            element,
+            text,
+            startPos = "DOWN", // "UP" | "DOWN"
+            children,
+            animateInView,
+            delay = 0,
+            duration,
+            onInView,
+            style,
+            innerStyle,
+        },
+        ref
+    ) => {
+        const Element = element || "div"
+        const innerRefs = useRef([])
+        const containerRef = useRef(null)
 
-    const animateIn = options => {
-      if (!innerRefs.current?.length) return
-      gsap.killTweensOf(innerRefs.current)
+        const { setElementToObserve, isInView } = useInView({
+            useIntersection: true,
+            intersectionMargin: "-5%",
+        })
 
-      const config = {
-        y: 0,
-        ease: EASE,
-        duration: options?.duration || DURATION,
-        delay: options?.delay || 0,
-      }
+        const { loaderAnimationComplete } = useAppContext()
 
-      if (config?.stagger || innerRefs.current?.length > 1) {
-        config.stagger = config?.stagger || 0.1
-      }
+        const textLines = typeof text === "string" ? text.split("\n") : null
 
-      gsap.to(innerRefs.current, config)
-    }
+        // ── animateIn ─────────────────────────────────────────────────────
+        const animateIn = (options = {}) => {
+            const els = innerRefs.current.filter(Boolean)
+            if (!els.length) return
+            gsap.killTweensOf(els)
 
-    const animateOut = options => {
-      if (!innerRefs.current?.length) return
-      gsap.killTweensOf(innerRefs.current)
+            const cfg = {
+                y: 0,
+                ease: EASE,
+                duration: options.duration ?? duration ?? DURATION,
+                delay: options.delay ?? 0,
+            }
+            if (els.length > 1) cfg.stagger = 0.1
 
-      // direction === UP, DOWN
-      let y = '-105%'
-      if (options?.direction === 'DOWN') {
-        y = '105%'
-      }
+            gsap.to(els, cfg)
+        }
 
-      const config = {
-        y,
-        ease: EASE,
-        duration: options?.duration || DURATION,
-        delay: options?.delay || 0,
-      }
+        // ── animateOut ────────────────────────────────────────────────────
+        const animateOut = (options = {}) => {
+            const els = innerRefs.current.filter(Boolean)
+            if (!els.length) return
+            gsap.killTweensOf(els)
 
-      if (config?.stagger || innerRefs.current?.length > 1) {
-        config.stagger = config?.stagger || 0.1
-      }
+            const y = options.direction === "DOWN" ? "105%" : "-105%"
 
-      gsap.to(innerRefs.current, config)
-    }
+            const cfg = {
+                y,
+                ease: EASE,
+                duration: options.duration ?? duration ?? DURATION,
+                delay: options.delay ?? 0,
+            }
+            if (els.length > 1) cfg.stagger = 0.1
 
-    useEffect(() => {
-      if (isInView && animateInView && loaderAnimationComplete) {
-        setTimeout(() => {
-          if (onInView) onInView()
-          animateIn({
-            duration: duration || DURATION,
-          })
-        }, delay * 1000)
-      }
-    }, [isInView, animateInView, delay, onInView, duration, loaderAnimationComplete])
+            gsap.to(els, cfg)
+        }
 
-    useImperativeHandle(ref, () => ({
-      animateIn,
-      animateOut,
-    }))
+        // ── animateInView 트리거 ──────────────────────────────────────────
+        useEffect(() => {
+            if (isInView && animateInView && loaderAnimationComplete) {
+                setTimeout(() => {
+                    onInView?.()
+                    animateIn({ duration: duration ?? DURATION })
+                }, delay * 1000)
+            }
+        }, [isInView, animateInView, loaderAnimationComplete]) // eslint-disable-line
 
-    return (
-      <Element
-        ref={ref => {
-          containerRef.current = ref
-          setElementToObserve(ref)
-        }}
-        className={classnames(styles.ContentMask, className)}
-        data-start-pos={startPos}
-      >
-        {textLines?.length > 0 && (
-          <>
-            {textLines.map((line, i) => (
-              <span
-                className={classnames(styles.inner, innerClassName)}
-                ref={ref => {
-                  innerRefs.current[i] = ref
+        // ── 명령형 API 노출 ───────────────────────────────────────────────
+        useImperativeHandle(ref, () => ({ animateIn, animateOut }))
+
+        // ── 초기 y 위치 (startPos) ────────────────────────────────────────
+        const initialY = startPos === "UP" ? "-105%" : "105%"
+
+        const containerStyle = {
+            position: "relative",
+            overflow: "hidden",
+            display: "block",
+            ...style,
+        }
+
+        const getInnerStyle = () => ({
+            width: "100%",
+            display: "block",
+            transform: `translateY(${initialY})`,
+            ...innerStyle,
+        })
+
+        return (
+            <Element
+                ref={(node) => {
+                    containerRef.current = node
+                    setElementToObserve(node)
                 }}
-                key={i}
-                data-themed="color"
-              >
-                {line}
-              </span>
-            ))}
-          </>
-        )}
-        {children && !text && (
-          <span
-            ref={ref => {
-              innerRefs.current[0] = ref
-            }}
-            className={classnames(styles.inner, innerClassName)}
-          >
-            {children}
-          </span>
-        )}
-      </Element>
-    )
-  },
+                style={containerStyle}
+                data-start-pos={startPos}
+            >
+                {/* 멀티라인 텍스트 */}
+                {textLines?.map((line, i) => (
+                    <span
+                        key={i}
+                        ref={(node) => {
+                            innerRefs.current[i] = node
+                        }}
+                        style={getInnerStyle()}
+                    >
+                        {line}
+                    </span>
+                ))}
+
+                {/* children (text 없을 때) */}
+                {children && !textLines && (
+                    <span
+                        ref={(node) => {
+                            innerRefs.current[0] = node
+                        }}
+                        style={getInnerStyle()}
+                    >
+                        {children}
+                    </span>
+                )}
+            </Element>
+        )
+    }
 )
 
-ContentMask.displayName = 'ContentMask'
-
+ContentMask.displayName = "ContentMask"
 export default ContentMask
