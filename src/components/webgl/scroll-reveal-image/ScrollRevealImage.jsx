@@ -47,12 +47,12 @@
 import { useEffect, useRef } from "react"
 import { Texture, Program, Mesh } from "ogl"
 import gsap from "gsap"
-import { useScene } from "./core/scene.js"
-import { buildPlane } from "./utils/geometry.js"
-import { hexToFloat32 } from "./utils/color.js"
-import { vertex } from "./shader/vertex.js"
-import { fragmentPixel } from "./shader/fragment-pixel.js"
-import { fragmentWave } from "./shader/fragment-wave.js"
+import { useScene } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/core/scene.js"
+import { buildPlane } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/utils/geometry.js"
+import { hexToFloat32 } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/utils/color.js"
+import { vertex } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/shader/vertex.js"
+import { fragmentPixel } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/shader/fragment-pixel.js"
+import { fragmentWave } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/shader/fragment-wave.js"
 
 export default function ScrollRevealImage({
     src,
