@@ -1,176 +1,91 @@
-import { forwardRef, useContext } from 'react'
-import classnames from 'classnames'
-import NextLink from 'next/link'
+/**
+ * Link.jsx — 범용 Link 컴포넌트
+ *
+ * ─── Framer canvas 호환 ────────────────────────────────────────────────────
+ *
+ *  - forwardRef 제거 (Framer canvas 직렬화 충돌)
+ *  - default export 사용
+ *  - ScrollContext를 optional하게 사용 (Provider 밖에서도 안전)
+ */
 
-import { HEADER_ID } from '@/components/Navigation/Navigation'
-import useCurrentPage from '@/hooks/use-current-page'
+import React, { useContext } from "react"
+import { ScrollContext } from "https://framer.com/m/Scroll-szavc7.js@zOGCrgWorLBsFdQI7czl"
 
-import styles from './Link.module.scss'
-import { ScrollContext } from '@/context/Scroll'
-import { getUrlFromPageType } from '@/utils'
-import useStore from '@/store'
-
-const Link = forwardRef(
-  (
-    {
-      className,
-      children,
-      link,
-      onMouseEnter,
-      onMouseLeave,
-      linkOnly,
-      ariaLabel,
-      onClick,
-      disableOpenNewTab = false,
-      disableThemeAttribute,
-      dataTheme,
-    },
-    ref,
-  ) => {
-    const { linkType, label, link: url, hash } = link
+export default function Link({
+    href,
+    children,
+    external = false,
+    className,
+    style,
+    onClick,
+    onMouseEnter,
+    onMouseLeave,
+    ariaLabel,
+    disabled = false,
+}) {
+    // ScrollContext가 없어도 안전하게 동작
     const { scroll } = useContext(ScrollContext)
-    const { currentPath } = useCurrentPage()
-    const setCursorState = useStore(state => state.setCursorState)
 
-    if (linkType === 'disabled') {
-      return null
-    }
+    if (!href) return null
 
-    if (typeof url !== 'string' && linkType === 'external') {
-      return null
-    }
+    const isHash = href.startsWith("#")
+    const isExternal =
+        external || href.startsWith("http") || href.startsWith("//")
 
-    if (typeof url !== 'object' && linkType === 'internal') {
-      return null
-    }
+    const isSamePage = (() => {
+        if (typeof window === "undefined") return false
+        if (isHash || isExternal) return false
+        return window.location.pathname === href
+    })()
 
-    const handleMouseEnter = event => {
-      setCursorState('FOCUS')
+    const isInactive = disabled || isSamePage
 
-      if (onMouseEnter) {
-        onMouseEnter(event)
-      }
-    }
+    const handleClick = (e) => {
+        onClick?.(e)
 
-    const handleMouseLeave = event => {
-      setCursorState(null)
-
-      if (onMouseLeave) {
-        onMouseLeave(event)
-      }
-    }
-
-    const handleClick = event => {
-      if (onClick) {
-        onClick(event)
-      }
-    }
-
-    if (linkType === 'external') {
-      return (
-        <a
-          ref={ref}
-          aria-label={ariaLabel}
-          {...(ariaLabel && !label && !children && { name: ariaLabel })}
-          href={typeof url === 'string' ? url : ''}
-          className={classnames(className)}
-          target={disableOpenNewTab ? '_self' : '_blank'}
-          rel="noreferrer"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={handleClick}
-          data-themed={disableThemeAttribute ? '' : 'color'}
-        >
-          {label && !children && !linkOnly && <span data-themed="color">{label}</span>}
-          {children && children}
-        </a>
-      )
-    } else if (linkType === 'internal') {
-      const urlObject = url
-      const slug = typeof url === 'object' ? url.slug : ''
-      const path = getUrlFromPageType(urlObject?._type, slug)
-      const goesToOtherPage = currentPath !== path
-      const hasHashOnSamePage = !goesToOtherPage && hash
-
-      const props = {
-        'aria-label': ariaLabel,
-        ref: ref,
-        className: classnames(
-          className,
-          { [styles.hashLink]: hasHashOnSamePage },
-          {
-            [styles.inactive]: !hasHashOnSamePage && currentPath === path,
-          },
-        ),
-        onClick: e => {
-          if (onClick) {
-            onClick(e)
-          }
-
-          if (hasHashOnSamePage) {
+        if (isHash) {
             e.preventDefault()
-            const header = document.getElementById(HEADER_ID)
-            const id = document.getElementById(hash)
+            const target = document.querySelector(href)
 
-            if (id && scroll && header) {
-              const distance = Math.abs(id?.offsetTop - header.offsetTop)
-              const duration = 1 + distance / 20000
-
-              scroll.scrollTo(id, {
-                offset: header.offsetHeight * 2 * -1,
-                //easeInOutCirc function
-                easing: x =>
-                  x < 0.5
-                    ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
-                    : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2,
-                // immediate: true,
-                duration,
-              })
+            if (target && scroll) {
+                const distance = Math.abs(target.offsetTop - window.scrollY)
+                const duration = Math.max(
+                    0.8,
+                    Math.min(2.5, 1 + distance / 5000)
+                )
+                scroll.scrollTo(target, {
+                    duration,
+                    easing: (x) =>
+                        x < 0.5
+                            ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
+                            : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2,
+                })
+                history.pushState(null, "", href)
+            } else if (target) {
+                target.scrollIntoView({ behavior: "smooth" })
             }
-          }
-        },
-        onMouseEnter: event => {
-          setCursorState('FOCUS')
-
-          if (onMouseEnter) {
-            onMouseEnter(event)
-          }
-        },
-        onMouseLeave: event => {
-          setCursorState(null)
-
-          if (onMouseLeave) {
-            onMouseLeave(event)
-          }
-        },
-      }
-
-      if (!disableThemeAttribute) {
-        props['data-themed'] = dataTheme || 'color'
-      }
-
-      if (hasHashOnSamePage) {
-        return (
-          <span {...props}>
-            {label && !children && <span>{label}</span>}
-            {children && children}
-          </span>
-        )
-      }
-
-      props.scroll = false
-      props.href = `${path}${hash ? `#${hash}` : ''}`
-
-      return (
-        <NextLink {...props}>
-          {label && !children && <span>{label}</span>}
-          {children && children}
-        </NextLink>
-      )
+        }
     }
-  },
-)
 
-Link.displayName = 'Link'
+    return (
+        <a
+            href={isInactive ? undefined : href}
+            className={className}
+            style={{
+                cursor: isInactive ? "default" : undefined,
+                pointerEvents: isInactive ? "none" : undefined,
+                ...style,
+            }}
+            aria-label={ariaLabel}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noreferrer noopener" : undefined}
+            onClick={handleClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
+            {children}
+        </a>
+    )
+}
 
-export default Link
+Link.displayName = "Link"
