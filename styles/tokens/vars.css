@@ -59,3 +59,9 @@
 	--space-32px: 2rem;
 	--space-40px: 2.5rem;
 }
+
+:root {
+	--gutter: calc(var(--unit) * 24);
+	--page-gutter: var(--space-4);
+	--section-spacing: var(--space-32);
+}
