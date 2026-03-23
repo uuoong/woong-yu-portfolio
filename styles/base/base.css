@@ -16,7 +16,7 @@ body {
 	flex-direction: column;
 	
 	/* Typography */
-	font-family: var(--font-sans);
+	font-family: var(--font-primary);
 	font-size: var(--font-size-md);
 	font-weight: var(--font-weight-regular);
 	line-height: calc(var(--line-height-normal) * var(--line-height-adjust, 1));
@@ -33,7 +33,7 @@ body::-webkit-scrollbar {
 }
 
 .font-body {
-	font-family: var(--font-sans);
+	font-family: var(--font-primary);
 	font-size: var(--font-size-md);
 	font-weight: var(--font-weight-regular);
 	line-height: var(--line-height-normal);
@@ -41,7 +41,7 @@ body::-webkit-scrollbar {
 }
 
 .font-body-accent {
-	font-family: var(--font-sans);
+	font-family: var(--font-primary);
 	font-size: var(--font-size-md);
 	font-weight: var(--font-weight-semibold);
 	line-height: var(--line-height-normal);
@@ -49,7 +49,7 @@ body::-webkit-scrollbar {
 }
 
 .font-mono {
-	font-family: var(--font-mono);
+	font-family: var(--font-secondary);
 	font-size: var(--font-size-mono);
 	font-weight: var(--font-weight-regular);
 	line-height: var(--line-height-normal);
