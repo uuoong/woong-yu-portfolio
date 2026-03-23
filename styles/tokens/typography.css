@@ -20,20 +20,8 @@
   --font-secondary: var(--font-mono);
 }
 
-@mixin font-body-5 {
-  font-family: $body-fonts;
-  font-style: normal;
-  font-weight: 500;
-  font-size: px(12);
-  line-height: px(12);
-
-  @include bp(tablet) {
-    font-size: px(14);
-    line-height: px(16);
-  }
-}
-
-	/* Font Sizes (Fluid) */
+/* Font Sizes (Fluid) */
+:root {
 	--font-size-display: clamp(
 		calc(var(--unit) * 48),
 		calc(var(--unit) * 48) + 32 * var(--fluid-unit),
