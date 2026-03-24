@@ -53,9 +53,9 @@
   font-style: normal;
   font-weight: var(--font-weight-semibold);
   font-size: clamp(
-    calc(var(--unit) * 12),
-		calc(var(--unit) * 12) + 4 * var(--fluid-unit),
-		calc(var(--unit) * 16)
+	  calc(var(--unit) * 12),
+	  calc(var(--unit) * 12) + 4 * var(--fluid-unit),
+	  calc(var(--unit) * 16)
 	);
   line-height: var(--line-height-tight);
   text-align: center;
