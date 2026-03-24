@@ -29,11 +29,11 @@ html::-webkit-scrollbar {
 
 body {
 	font-family: var(--font-primary);
-	font-size: calc(var(--unit) * 24);
+	font-size: var(--font-size-md);
 	margin: 0;
 	padding: 0;
 	min-height: 100%;
-	height: auto;	
+	height: auto;
 }
 
 body::-webkit-scrollbar {
@@ -114,26 +114,12 @@ a {
 }
 
 ::selection {
-	background-color: var(--text-primary);
-	color: var(--bg-primary);
+	background-color: var(--fg-primary);
+	color: var(--bg);
 }
 
 :focus-visible {
-	outline: 1px solid var(--text-primary);
-}
-
-@media print {
-	header,
-	footer,
-	nav,
-	.no-print {
-		display: none !important;
-	}
-	
-	* {
-		background: transparent !important;
-		box-shadow: none !important;
-	}
+	outline: 1px solid var(--fg-primary);
 }
 
 html.lenis {
