@@ -9,8 +9,8 @@ body {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
 	
-	background-color: var(--bg-secondary) !important;
-	color: var(--text-primary) !important;
+	background-color: var(--bg) !important;
+	color: var(--fg-primary) !important;
 }
 
 html {
