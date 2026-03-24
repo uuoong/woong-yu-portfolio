@@ -4,8 +4,8 @@
 /* Foundation */
 @import "./base/reset.css";
 @import "./tokens/vars.css";
-@import "./foundation/colors.css";
-@import "./foundation/typography.css";
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
 
 /* Base */
 @import "./base/base.css";
