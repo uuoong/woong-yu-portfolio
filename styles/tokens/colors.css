@@ -21,6 +21,9 @@ html[data-theme="dark"] {
 	--bg: var(--dark-1);
 	--bg-inverse: var(--light-2);
 	
+	--image-bg: color-mix(in srgb, var(--white) 24%, transparent);
+	--image-bg-inverse: color-mix(in srgb, var(--black) 18%, transparent);
+	
 	/* Text */
 	--fg-primary: var(--light-2);
 	--fg-secondary: color-mix(in srgb, var(--light-2) 50%, transparent);
@@ -60,6 +63,9 @@ html[data-theme="light"] {
 	/* Backgrounds */
 	--bg: var(--light-2);
 	--bg-inverse: var(--dark-1);
+
+	--image-bg: color-mix(in srgb, var(--black) 18%, transparent);
+	--image-bg-inverse: color-mix(in srgb, var(--white) 24%, transparent);
 	
 	/* Text */
 	--fg-primary: var(--dark-2);
@@ -101,6 +107,9 @@ html[data-theme="light"] {
 		/* Backgrounds */
 	    --bg: var(--dark-1);
 	    --bg-inverse: var(--light-2);
+
+		--image-bg: color-mix(in srgb, var(--white) 24%, transparent);
+		--image-bg-inverse: color-mix(in srgb, var(--black) 18%, transparent);
 		
 		/* Text */
 		--fg-primary: var(--light-2);
