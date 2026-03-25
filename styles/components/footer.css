@@ -1,0 +1,113 @@
+.Footer {
+   padding-left: var(--page-gutter);
+   padding-right: var(--page-gutter);
+   padding-bottom: var(--page-gutter);
+}
+
+.Footer_grid {
+   display: grid;
+   grid-template-columns: .2fr .15fr .25fr .15fr .1fr .15fr;
+   align-items: flex-end;
+}
+
+.Footer_title {
+   text-transform: uppercase;
+}
+
+.Footer_aboutTitle,
+.Footer_contactTitle__contactText,
+.Footer_contactTitle,
+.Footer_copyright,
+.Footer_locationTitle,
+.Footer_titleCopyright,
+.Footer_title {
+   font-family: var(--font-primary);
+   font-style: normal;
+   font-weight: var(--font-weight-semibold);
+   font-size: calc(var(--unit) * 20);
+   line-height: var(--line-height-tight);
+   white-space: pre-line;
+   display: block;
+}
+
+.Footer_socialLinks {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+}
+
+.Footer_linkWithArrow__link {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 0.5rem;
+}
+
+.Footer_linkWithArrow__linkLabel {
+   font-family: var(--font-primary);
+   font-style: normal;
+   font-weight: var(--font-weight-semibold);
+   font-size: calc(var(--unit) * 36);
+   line-height: var(--line-height-normal);
+}
+
+.Footer_linkWithArrow__arrow {
+   width: 0.8rem;
+}
+
+.Footer_getInTouch {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+}
+
+@media(max-width: 60.4375rem) {
+   .Footer_grid {
+      grid-template-columns:.5fr .5fr;
+      row-gap: 1.5rem;
+   }
+   
+   .Footer_aboutTitle {
+      order: 3;
+   }
+   
+   .Footer_titleCopyright {
+      text-align: right;
+      order: 4;
+    }
+   
+   .Footer_contactTitle__rQcVF {
+      order: 1;
+   }
+   
+   .Footer_getInTouch,
+   .Footer_locationTitle {
+      display: none !important;
+   }
+
+   .Footer_socialLinks {
+      order: 2;
+   }
+
+   .Footer_linkWithArrow__linkLabel {
+      font-size: calc(var(--unit) * 26);
+      line-height: var(--line-height-tight);
+   }
+
+   .Footer_linkWithArrow__arrow {
+      width: 0.5rem;
+   }
+}
+
+@media(min-width: 60.4375rem) {
+   .Footer_aboutTitle,
+   .Footer_contactTitle__contactText,
+   .Footer_contactTitle,
+   .Footer_copyright,
+   .Footer_locationTitle,
+   .Footer_titleCopyright,
+   .Footer_title {
+      font-size: calc(var(--unit) * 22);
+      line-height: var(--line-height-normal);
+    }
+}
