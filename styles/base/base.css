@@ -61,7 +61,7 @@ body[data-enable-interaction=false] * {
 }
 
 main {
-    /* z-index: 102; */
+    z-index: 102;
     min-height: 100svh;
     position: relative;
 }
