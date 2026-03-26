@@ -1,0 +1,323 @@
+.MobileNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 108;
+  height: 100svh;
+  color: var(--fg-inverse);
+  pointer-events: none;
+}
+
+.MobileNav.MobileNav_navIsOpen {
+  pointer-events: all;
+}
+
+.MobileNav_bgContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: var(--page-gutter);
+  background-color: var(--bg-inverse);
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% var(--left-y, 0%), 0 var(--right-y, 0%));
+  clip-path: polygon(0 0, 100% 0, 100% var(--left-y, 0%), 0 var(--right-y, 0%));
+  --left-y: 0%;
+  --right-y: 0%;
+}
+
+.MobileNav_header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.MobileNav_title {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  text-transform: uppercase;
+}
+
+.MobileNav_topRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.MobileNav_close {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  text-align: inherit;
+  letter-spacing: inherit;
+  font-size: inherit;
+  text-transform: inherit;
+  display: inline-block;
+  margin: 0;
+  text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.MobileNav_close__text {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+}
+
+.MobileNav_close__line {
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid var(--fg-inverse);
+  position: absolute;
+  pointer-events: none;
+}
+
+.MobileNav_navigationContainer {
+  margin-top: 8.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.MobileNav_navigationContainer__titleContainer {
+  margin-bottom: 1rem;
+}
+
+.MobileNav_navigationContainer__title {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  opacity: 0.5;
+  display: block;
+}
+
+.MobileNav_informationButton {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  text-align: inherit;
+  letter-spacing: inherit;
+  font-size: inherit;
+  text-transform: inherit;
+  display: inline-block;
+  margin: 0;
+  text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: currentColor;
+  width: 100%;
+}
+
+.MobileNav_informationButton,
+.MobileNav_linkList__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.MobileNav_linkList__link__line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--fg-inverse);
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.MobileNav_linkList__link__line.MobileNav_last {
+  bottom: 0;
+  top: auto;
+}
+
+.MobileNav_informationButton__label,
+.MobileNav_linkList__link__label {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 56);
+  line-height: var(--line-height-tight);
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.MobileNav_isActive .MobileNav_informationButton__label,
+.MobileNav_isActive .MobileNav_linkList__link__label {
+  opacity: 1;
+}
+
+.MobileNav_informationButton__number,
+.MobileNav_linkList__link__number {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 56);
+  line-height: var(--line-height-tight);
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.MobileNav_isActive .MobileNav_informationButton__number,
+.MobileNav_isActive .MobileNav_linkList__link__number {
+  opacity: 1;
+}
+
+.MobileNav_descriptionContainer {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  position: relative;
+  overflow: hidden;
+  height: 0;
+}
+
+.MobileNav_safari .MobileNav_descriptionContainer {
+  perspective: none;
+}
+
+.MobileNav_descriptionContainer__inner {
+  padding: 2.5rem 0 1.2rem;
+}
+
+.MobileNav_descriptionContainer__title {
+  font-family: var(--font-secondary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  opacity: 0.5;
+}
+
+.MobileNav_descriptionContainer__description {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  width: 28.8rem;
+  line-height: 1.5;
+  margin-top: 1rem;
+  opacity: 0;
+}
+
+.MobileNav_safari .MobileNav_descriptionContainer__description {
+  perspective: none;
+}
+
+.MobileNav_descriptionLine {
+  bottom: 0;
+  top: auto;
+}
+
+.MobileNav_bottomContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  padding: var(--page-gutter);
+}
+
+.MobileNav_socialLinks {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--page-gutter);
+  margin-bottom: 1.5rem;
+}
+
+.MobileNav_socialLinks__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.MobileNav_socialLinks__linkLabel {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+}
+
+.MobileNav_socialLinks__arrow {
+  width: 0.6rem
+}
+
+.MobileNav_bottomTitles {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.MobileNav_aboutTitle,
+.MobileNav_locationTitle {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  white-space: pre-line;
+}
+
+@media(min-width: 60.4375rem) {
+  .MobileNav_title {
+    font-size: calc(var(--unit) * 26);
+    line-height: var(--line-height-tight);
+  }
+
+  .MobileNav_close__text {
+    font-size: calc(var(--unit) * 26);
+    line-height: var(--line-height-tight);
+  }
+
+   .MobileNav_navigationContainer__title {
+     font-size: calc(var(--unit) * 26);
+     line-height: var(--line-height-tight);
+   }
+
+  .MobileNav_descriptionContainer__title {
+    font-size: calc(var(--unit) * 22);
+    line-height: var(--line-height-normal);
+  }
+
+  .MobileNav_descriptionContainer__description {
+    font-size: calc(var(--unit) * 26);
+    line-height: var(--line-height-tight);
+  }
+
+  .MobileNav_socialLinks__linkLabel {
+    font-size: calc(var(--unit) * 26);
+    line-height: var(--line-height-tight);
+  }
+}
