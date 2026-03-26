@@ -1,0 +1,23 @@
+.Clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  gap: 1rem;
+}
+
+.Clock_time {
+  font-family: var(--font-secondary);
+  opacity: 0.5;
+}
+
+@media(min-width: 60.4375rem) {
+  .Clock {
+    font-size: calc(var(--unit) * 26);
+    line-height: var(--line-height-tight);
+  }
+}
