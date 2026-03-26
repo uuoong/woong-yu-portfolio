@@ -1,0 +1,37 @@
+.ThemeToggle_container {
+  position: relative;
+}
+
+.ThemeToggle_spacer {
+  min-width: 1rem;
+  min-height: 1rem;
+}
+
+.ThemeToggle {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  text-align: inherit;
+  letter-spacing: inherit;
+  font-size: inherit;
+  text-transform: inherit;
+  display: inline-block;
+  margin: 0;
+  text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: currentColor;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+  padding: 1rem;
+}
+
+.ThemeToggle_dot {
+  min-width: 1rem;
+  min-height: 1rem;
+  border-radius: 50%;
+  background-color: var(--fg-primary);
+}
