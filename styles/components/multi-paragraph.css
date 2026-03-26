@@ -1,0 +1,118 @@
+.MultiParagraphWithLinks {
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
+}
+
+.MultiParagraphWithLinks_topParagraph p {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 22);
+  line-height: var(--line-height-normal);
+}
+
+.MultiParagraphWithLinks_topParagraph sup {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  display: block;
+  margin-bottom: 1.6rem;
+}
+
+.MultiParagraphWithLinks_bottomContent {
+  margin-top: 3.9rem;
+  gap: 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.MultiParagraphWithLinks_bottomContent__descriptionContainer {
+  width: 100%;
+}
+
+.MultiParagraphWithLinks_bottomContent__descriptionContainer p {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  line-height: 1.5
+}
+
+.MultiParagraphWithLinks_bottomContent__descriptionContainer p:not(:first-child) {
+  margin-top: 2rem;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer {
+  width: 27.3rem;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__title {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  margin-bottom: 1.6rem;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__listItem {
+  width: 100%;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__listItemLine {
+  border-top: 1px solid var(--fg-primary);
+  width: 100%;
+  display: block;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__link {
+  padding: 1.1rem 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__linkBg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--fg-primary);
+  z-index: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__linkLabel {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  z-index: 2;
+  position: relative;
+  transition: color 0.4s, transform 0.4s;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__linkArrow {
+  z-index: 2;
+  position: relative;
+  transition: color 0.4s, transform 0.4s;
+}
+
+.MultiParagraphWithLinks_bottomContent__linksContainer__linkArrow svg {
+  width: 1rem;
+}
