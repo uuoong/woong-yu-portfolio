@@ -1,0 +1,29 @@
+.SectionContainer {
+  color: var(--fg-primary);
+}
+
+.SectionContainer[data-component] {
+  margin: calc(var(--section-spacing) * 0.5) 0;
+}
+
+.SectionContainer:first-child {
+  margin-top: 0;
+  padding-top: var(--section-spacing);
+}
+
+.SectionContainer:last-child {
+  margin-bottom: 0;
+  padding-bottom: calc(var(--section-spacing) * 0.5);
+}
+
+.SectionContainer_isInfiniteDuplicate {
+  height: 100svh;
+  overflow: hidden;
+  position: relative;
+  margin-top: 0;
+  padding-top: var(--section-spacing);
+}
+
+.SectionContainer[data-component=lithLogo]+.SectionContainer[data-component=logoWithProducts] {
+  margin-top: -7rem !important;
+}
