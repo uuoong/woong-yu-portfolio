@@ -16,7 +16,7 @@
   padding-bottom: calc(var(--section-spacing) * 0.5);
 }
 
-.SectionContainer_isInfiniteDuplicate {
+.SectionContainer.isInfiniteDuplicate {
   height: 100svh;
   overflow: hidden;
   position: relative;
@@ -24,6 +24,8 @@
   padding-top: var(--section-spacing);
 }
 
-.SectionContainer[data-component=lithLogo]+.SectionContainer[data-component=logoWithProducts] {
-  margin-top: -7rem !important;
+@media(max-width: 60.4375rem) {
+  .SectionContainer.hiddenOnMobile {
+    display: none !important;
+  }
 }
