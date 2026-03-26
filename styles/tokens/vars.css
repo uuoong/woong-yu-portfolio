@@ -61,7 +61,14 @@
 }
 
 :root {
-	--gutter: calc(var(--unit) * 24);
-	--page-gutter: var(--space-4);
-	--section-spacing: var(--space-32);
+	--gutter: 2.1rem;
+	--page-gutter: 1.5rem;
+	--section-spacing: 12rem;
+}
+
+@media(min-width: 60.4375rem) {
+	:root {
+		--page-gutter: 2.1rem;
+        --section-spacing: 26rem;
+    }
 }
