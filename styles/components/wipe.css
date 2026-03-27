@@ -1,0 +1,51 @@
+.Wipe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 110;
+  pointer-events: none;
+  color: var(--fg-inverce);
+}
+
+.Wipe_wipeBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-inverce);
+  -webkit-clip-path: polygon(0 var(--left-y, 100%), 100% var(--right-y, 100%), 100% 100%, 0 100%);
+  clip-path: polygon(0 var(--left-y, 100%), 100% var(--right-y, 100%), 100% 100%, 0 100%);
+  --left-y: 100%;
+  --right-y: 100%;
+}
+
+.Wipe_titleLeft,
+.Wipe_titleRight {
+  font-family: var(--font-primary);
+  font-style: normal;
+  font-size: calc(var(--unit) * 20);
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-semibold);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Wipe_titleLeft {
+  left: var(--page-gutter);
+}
+
+.Wipe_titleRight {
+  right: var(--page-gutter);
+}
+
+.Wipe_titleLeft__inner,
+.Wipe_titleRight__inner {
+  white-space: pre-line;
+  display: inline-block;
+  transform: translateY(4rem);
+  opacity: 0;
+}
