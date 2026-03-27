@@ -1,96 +1,97 @@
-/**
- * ThemeToggle.jsx — 다크/라이트 모드 토글
- *
- * 레퍼런스: components/ThemeToggle/ThemeToggle.jsx
- * 변경: useStore → useAppContext, CSS module → inline style
- *
- * ─── CSS 변수 ─────────────────────────────────────────────────────────────
- *
- *  document.body.dataset.theme = "dark" | "light"
- *
- *  [data-theme="dark"]  { --bg: #0e0e0e; --fg: #f0f0f0; ... }
- *  [data-theme="light"] { --bg: #f0f0f0; --fg: #0e0e0e; ... }
- *
- *  CSS 변수는 Layout.jsx의 <style> 태그에서 정의됨.
- */
-
 import React, { useEffect, useRef } from "react"
-import { useAppContext } from "https://framer.com/m/App-bSRL7k.js@OSIlKrR0H91ZCA9r9DU7"
+import { useAppContext } from "../../context/App.js"
 
-const TRANSITION_DURATION = 0.4
+const THEME_TRANSITION_DURATION = 0.4
 
-export default function ThemeToggle({ style }) {
+const ThemeToggle = () => {
     const { theme, setTheme, setCursorState } = useAppContext()
-    const timeoutRef = useRef(null)
-
     const inactiveTheme = theme === "light" ? "dark" : "light"
+    const timeoutRef = useRef()
+    const buttonRef = useRef(null)
 
-    // theme 변경 시 data-themed 속성 트랜지션
-    const animateThemed = (reset = false) => {
-        document.querySelectorAll("[data-themed]").forEach((el) => {
-            if (reset) {
-                el.style.removeProperty("transition")
-            } else {
-                const props = el.dataset.themed.split(",").map((p) => p.trim())
-                el.style.transition = props
-                    .map((p) => `${p} ${TRANSITION_DURATION}s`)
-                    .join(", ")
+    const animateAllComponents = (reset = false) => {
+        const themedElements = document.querySelectorAll("[data-themed]")
+        const elements = []
+        for (let i = 0; i < themedElements.length; i++) {
+            elements.push(themedElements[i])
+        }
+        elements.forEach((element) => {
+            if (!element) return
+            if (reset && element) {
+                element.style.removeProperty("transition")
+                return
             }
+            if (!element.dataset.themed) return
+            const toTransition = element.dataset.themed.split(",")
+            element.style.transition = toTransition
+                .map((p) => `${p.trim()} ${THEME_TRANSITION_DURATION}s`)
+                .join(", ")
         })
+    }
+
+    const handleClick = () => {
+        setTheme(inactiveTheme)
     }
 
     useEffect(() => {
         if (!theme) return
-        document.body.dataset.theme = theme
-        clearTimeout(timeoutRef.current)
-        animateThemed()
+        if (timeoutRef.current) clearTimeout(timeoutRef.current)
+        animateAllComponents()
         timeoutRef.current = setTimeout(
-            () => animateThemed(true),
-            TRANSITION_DURATION * 1.1 * 1000
+            () => {
+                animateAllComponents(true)
+            },
+            THEME_TRANSITION_DURATION * 1.1 * 1000
         )
     }, [theme])
 
-    // 시스템 테마 초기값
     useEffect(() => {
-        const prefersDark = window.matchMedia?.(
-            "(prefers-color-scheme: dark)"
-        ).matches
-        setTheme(prefersDark ? "dark" : "light")
+        const saved = (() => {
+            try {
+                return localStorage.getItem("app-theme")
+            } catch {
+                return null
+            }
+        })()
+        if (saved) return
+
+        let isLight = true
+        if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+            isLight = false
+        }
+        setTheme(isLight ? "light" : "dark")
     }, [])
 
-    return (
-        <div style={{ position: "relative", ...style }}>
-            {/* 크기 확보용 스페이서 */}
-            <div style={{ minWidth: 10, minHeight: 10 }} />
+    useEffect(() => {
+        if (!theme) return
+        document.documentElement.dataset.theme = theme
+    }, [theme])
 
+    return (
+        <div className="ThemeToggle_container">
+            <div className="ThemeToggle_spacer" />
             <button
-                onClick={() => setTheme(inactiveTheme)}
-                aria-label={`Turn on ${inactiveTheme} theme`}
+                ref={buttonRef}
+                onClick={handleClick}
+                className="ThemeToggle"
+                aria-label={`Turn on ${inactiveTheme} theme.`}
                 data-themed="background-color"
-                onMouseEnter={() => setCursorState?.("FOCUS")}
-                onMouseLeave={() => setCursorState?.(null)}
-                style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    padding: 10,
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
+                onMouseEnter={() => {
+                    setCursorState("FOCUS")
+                }}
+                onMouseLeave={() => {
+                    setCursorState(null)
                 }}
             >
-                <div
-                    style={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: "50%",
-                        backgroundColor: "var(--fg, #f0f0f0)",
-                    }}
-                />
+                <div className="ThemeToggle_dot" />
             </button>
         </div>
     )
 }
 
 ThemeToggle.displayName = "ThemeToggle"
+
+export default ThemeToggle
