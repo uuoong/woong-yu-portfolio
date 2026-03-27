@@ -1,8 +1,4 @@
-/**
- * hexToFloat32
- * "#403fb7" → Float32Array([r, g, b])
- */
-export function hexToFloat32(hex) {
+export const hexToFloat32 = (hex) => {
     const h = hex.replace("#", "")
     return new Float32Array([
         parseInt(h.slice(0, 2), 16) / 255,
