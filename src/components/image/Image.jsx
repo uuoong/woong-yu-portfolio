@@ -1,86 +1,77 @@
-/**
- * Image.jsx — 최적화된 이미지 컴포넌트
- *
- * ─── SanityImage 대체 ─────────────────────────────────────────────────────
- *
- *  제거: next-sanity-image, next/image, Sanity client
- *  유지: blur-up 패턴, 반응형 srcSet, onLoad 콜백
- *
- * ─── Vercel CDN 사용 방식 ────────────────────────────────────────────────
- *
- *  GitHub → Vercel 연결 시 /public 폴더 이미지는
- *  자동으로 CDN (https://project.vercel.app/images/...) 에서 서빙됨.
- *
- *  Next.js Image Optimization API가 없으므로 srcSet을 수동으로 구성.
- *  (필요 시 Cloudinary / imgix URL 변환 함수 사용 가능)
- *
- * ─── Props ────────────────────────────────────────────────────────────────
- *
- *  src          string   이미지 경로 (Vercel CDN URL 또는 /public 상대경로)
- *  alt          string
- *  width?       number   표시 너비 (px)
- *  height?      number   표시 높이 (px)
- *  sizes?       string   반응형 sizes 속성
- *  priority?    boolean  true → fetchpriority="high", loading="eager"
- *  className?   string
- *  style?       object
- *  onLoad?      function
- *  objectFit?   "cover" | "contain" | "fill" (기본값: "cover")
- */
-
 import React, { useState } from "react"
+import { getImageUrl, getSrcSet } from "../../utils/index.js"
 
-export const BASE_IMAGE_URL =
-    "https://woong-yu-portfolio.vercel.app/assets/images"
-
-// src={buildImageUrl(src)}
-export const buildImageUrl = (src) => {
-    if (!src) return ""
-    if (src.startsWith("http")) return src
-
-    const path = src.startsWith("/") ? src : `/${src}`
-    return `${BASE_IMAGE_URL}${path}`
-}
-
-export default function Image({
+const Image = ({
     src,
     alt = "",
     width,
     height,
-    sizes = "100vw",
+    sizes = "75vw",
     priority = false,
     className,
     style,
     onLoad,
     objectFit = "cover",
-}) {
+    breakpoints,
+}) => {
     const [loaded, setLoaded] = useState(false)
 
-    const handleLoad = () => {
-        setLoaded(true)
-        onLoad?.()
+    const imageStyle = {
+        objectFit,
+        opacity: loaded || priority ? 1 : 0,
+        transition: "opacity 0.3s",
+        display: "block",
+        width: "100%",
+        height: "100%",
+        ...style,
     }
 
-    return (
+    // Vercel CDN
+    const optimizedSrc = getImageUrl(src, { width: width || undefined })
+    const generatedSrcSet = width ? undefined : getSrcSet(src)
+
+    const imageElement = (
         <img
-            src={src}
+            onLoad={() => {
+                if (onLoad) onLoad()
+                setLoaded(true)
+            }}
+            src={optimizedSrc || src}
+            srcSet={generatedSrcSet}
+            sizes={sizes}
             alt={alt}
             width={width}
             height={height}
-            sizes={sizes}
             loading={priority ? "eager" : "lazy"}
             fetchpriority={priority ? "high" : "auto"}
             decoding="async"
             className={className}
-            onLoad={handleLoad}
-            style={{
-                objectFit,
-                opacity: loaded || priority ? 1 : 0,
-                transition: "opacity 0.3s ease",
-                ...style,
-            }}
+            style={imageStyle}
         />
     )
+
+    // Breakpoints
+    if (breakpoints?.length) {
+        const sorted = [...breakpoints].sort((a, b) => b.minWidth - a.minWidth)
+        return (
+            <picture>
+                {sorted.map((bp, i) => (
+                    <source
+                        key={i}
+                        srcSet={
+                            getImageUrl(bp.src, { width: bp.width }) || bp.src
+                        }
+                        media={`(min-width: ${bp.minWidth}px)`}
+                    />
+                ))}
+                {imageElement}
+            </picture>
+        )
+    }
+
+    return imageElement
 }
 
 Image.displayName = "Image"
+
+export default Image
