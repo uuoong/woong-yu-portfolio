@@ -1,57 +1,94 @@
 /**
- * NavigationDrawer.jsx — 데스크톱 네비게이션 드로어
+ * Drawer.jsx
  *
- * 레퍼런스: NavigationDrawer.jsx
- * 변경: useStore → useAppContext, CSS module → inline styles, Link props 단순화
+ * 레퍼런스: Drawer.jsx (원본)
+ *
+ * ─── drawerData 경로 변경 ─────────────────────────────────────────────────
+ *  원본: globalData?.navigation?.DrawerContent
+ *  현재: navData?.drawerContent  (AppContext의 navData)
+ *
+ * ─── materialsListProduct → worksListItems ───────────────────────────────
+ *  원본: drawerData.materialsListProduct.productData.variants (Sanity 제품 변형)
+ *  현재: drawerData.worksListItems [{ label, image }] (직접 관리)
+ *  이유: Sanity CMS 없음, 작업 목록을 data.js에서 직접 관리
+ *
+ * ─── 원본 구조 그대로 ─────────────────────────────────────────────────────
+ *  forwardRef + useImperativeHandle (getElement)
+ *  animateIn / animateOut — 원본 GSAP 로직 그대로
+ *  ContentMask refs (upperItems, bottomItems 분류)
+ *  materialImages state → 첫 번째 이미지 초기화 + hover 스택 추가
  */
 
-import React, {
+import {
     forwardRef,
     useCallback,
     useEffect,
     useImperativeHandle,
     useRef,
+    useState,
 } from "react"
-import gsap from "https://esm.sh/gsap"
-import ContentMask from "https://framer.com/m/ContentMask-SFhmmh.js@gyLq4kNUPMtuOB9HFX2T"
-import NavigationDrawerImages from "https://framer.com/m/NavigationDrawerImages-piB9VF.js@LHDADXcDAuUjLkm9iSMZ"
-import Link from "https://framer.com/m/Link-WYbAN8.js@wnolvlc648LPw7gRt3YF"
-import ArrowRight from "https://framer.com/m/ArrowRight-0X33Uw.js@Nl5ZtegsmTHhiqauDWCA"
-import { useAppContext } from "https://framer.com/m/App-bSRL7k.js@OSIlKrR0H91ZCA9r9DU7"
+import gsap from "gsap"
+import ContentMask from "../../content_mask/ContentMask.jsx"
+import DrawerImages from "./DrawerImages.jsx"
+import Link from "../../link/Link.jsx"
+import ArrowRight from "../../_svg/ArrowRight.js"
+import { useAppContext } from "../../../context/App.js"
 
 export const DRAWER_ANIMATION_CONFIG = {
     IN: { duration: 1.3, ease: "Power3.easeInOut" },
     OUT: { duration: 0.8, ease: "Power3.easeOut" },
 }
 
-export const DRAWER_INNER_ID = "nav-drawer-inner"
+export const DRAWER_INNER_ID = "drawer-innnnurrrrr"
 
-const NavigationDrawer = forwardRef(({ drawerContent }, ref) => {
-    const { navigationIsOpen, setNavigationIsOpen, setCursorState } =
-        useAppContext()
+const Drawer = forwardRef(({ className }, ref) => {
+    const {
+        navData,
+        navigationIsOpen,
+        setNavigationIsOpen,
+        setCursorState,
+        setDrawerHeight,
+    } = useAppContext()
 
-    const containerRef = useRef(null)
-    const bgRef = useRef(null)
-    const overlayRef = useRef(null)
-    const descriptionRef = useRef(null)
-    const productImagesRef = useRef(null)
+    const drawerData = navData?.drawerContent
 
-    // ContentMask refs
-    const closeButtonTextRef = useRef(null)
-    const materialTitleRef = useRef(null)
-    const descriptionTitleRef = useRef(null)
-    const aboutTitleRef = useRef(null)
-    const locationTitleRef = useRef(null)
-    const contactTitleRef = useRef(null)
+    const [materialImages, setMaterialImages] = useState([])
+
+    const containerRef = useRef()
+    const bgRef = useRef()
+    const closeButtonTextRef = useRef()
+    const materialItemRefs = useRef([])
     const socialLinkMaskRefs = useRef([])
+    const materialTitleRef = useRef()
+    const descriptionTitleRef = useRef()
+    const descriptionRef = useRef()
+    const aboutTitleRef = useRef()
+    const locationTitleRef = useRef()
+    const contactTitleRef = useRef()
+    const overlayRef = useRef()
+    const productImagesRef = useRef()
+
+    useEffect(() => {
+        const el =
+            containerRef.current || document.getElementById(DRAWER_INNER_ID)
+        if (el && setDrawerHeight) setDrawerHeight(el.offsetHeight)
+    }, [])
+
+    useEffect(() => {
+        const firstItem = drawerData?.worksListItems?.[0]
+        if (!firstItem?.image) return
+        setMaterialImages([firstItem.image])
+    }, [drawerData])
 
     const animateIn = useCallback(() => {
-        const { duration, ease } = DRAWER_ANIMATION_CONFIG.IN
         gsap.killTweensOf([
             bgRef.current,
             descriptionRef.current,
             overlayRef.current,
         ])
+
+        const duration = DRAWER_ANIMATION_CONFIG.IN.duration
+        const ease = DRAWER_ANIMATION_CONFIG.IN.ease
 
         gsap.to(bgRef.current, { scaleY: 1, duration, ease })
         gsap.to(overlayRef.current, { autoAlpha: 0.5, duration, ease })
@@ -64,6 +101,7 @@ const NavigationDrawer = forwardRef(({ drawerContent }, ref) => {
 
         const upperItems = [
             closeButtonTextRef.current,
+            ...materialItemRefs.current,
             materialTitleRef.current,
             descriptionTitleRef.current,
         ].filter(Boolean)
@@ -90,12 +128,14 @@ const NavigationDrawer = forwardRef(({ drawerContent }, ref) => {
     }, [])
 
     const animateOut = useCallback(() => {
-        const { duration, ease } = DRAWER_ANIMATION_CONFIG.OUT
         gsap.killTweensOf([
             bgRef.current,
             descriptionRef.current,
             overlayRef.current,
         ])
+
+        const duration = DRAWER_ANIMATION_CONFIG.OUT.duration
+        const ease = DRAWER_ANIMATION_CONFIG.OUT.ease
 
         gsap.to(bgRef.current, { scaleY: 0, duration, ease })
         gsap.to(overlayRef.current, { autoAlpha: 0, duration, ease })
@@ -107,6 +147,7 @@ const NavigationDrawer = forwardRef(({ drawerContent }, ref) => {
 
         const upperItems = [
             closeButtonTextRef.current,
+            ...materialItemRefs.current,
             materialTitleRef.current,
             descriptionTitleRef.current,
         ].filter(Boolean)
@@ -127,135 +168,138 @@ const NavigationDrawer = forwardRef(({ drawerContent }, ref) => {
         })
     }, [])
 
-    useImperativeHandle(ref, () => ({
-        getElement: () => containerRef.current,
-    }))
+    useImperativeHandle(ref, () => ({ getElement: () => containerRef.current }))
 
     useEffect(() => {
         if (navigationIsOpen) animateIn()
         else animateOut()
     }, [navigationIsOpen, animateIn, animateOut])
 
-    if (!drawerContent) return null
-
-    const {
-        titleDescription,
-        description,
-        titleType,
-        titleLocation,
-        contactEmail,
-        socialLinks = [],
-        drawerImages = [],
-    } = drawerContent
+    if (!drawerData) return null
 
     return (
         <div
             ref={containerRef}
-            style={{
-                ...styles.drawer,
-                pointerEvents: navigationIsOpen ? "all" : "none",
-            }}
+            className="Drawer"
             aria-hidden={!navigationIsOpen}
         >
-            <div id={DRAWER_INNER_ID} style={styles.drawerInner}>
-                {/* 배경 */}
-                <div ref={bgRef} style={styles.bg} />
+            <div className="Drawer_navigationDrawerInner" id={DRAWER_INNER_ID}>
+                <div className="Drawer_bg" ref={bgRef} />
 
-                <div style={styles.drawerContent}>
-                    {/* 닫기 버튼 */}
+                <div className="Drawer_navigationDrawerInner__content">
                     <button
-                        style={styles.closeButton}
+                        className="Drawer_closeButton"
                         onClick={() => setNavigationIsOpen(false)}
                     >
                         <ContentMask element="span" ref={closeButtonTextRef}>
                             <span
-                                onMouseEnter={() => setCursorState("FOCUS")}
-                                onMouseLeave={() => setCursorState(null)}
+                                onMouseEnter={() => setCursorState?.("FOCUS")}
+                                onMouseLeave={() => setCursorState?.(null)}
                             >
                                 (Close)
                             </span>
                         </ContentMask>
                     </button>
 
-                    {/* 상단 영역 */}
-                    <div style={styles.top}>
-                        <div>
-                            {/* 설명 타이틀 */}
-                            <p style={styles.descriptionTitle}>
+                    <div className="Drawer_top">
+                        <div className="Drawer_description">
+                            <p className="Drawer_description__title">
                                 <ContentMask
                                     element="span"
                                     ref={descriptionTitleRef}
-                                    text={titleDescription}
+                                    text={drawerData?.titleDescription}
                                 />
                             </p>
-                            {/* 설명 본문 */}
                             <p
+                                className="Drawer_description__description"
                                 ref={descriptionRef}
-                                style={{
-                                    ...styles.descriptionText,
-                                    opacity: 0,
-                                }}
                             >
-                                {description}
+                                {drawerData?.description}
                             </p>
                         </div>
 
-                        {/* 소재 타이틀 (이미지 있는 경우) */}
-                        {drawerImages.length > 0 && (
-                            <div>
-                                <p>
+                        {drawerData?.worksListItems?.length > 0 && (
+                            <div className="Drawer_finishesListContainer">
+                                <p className="Drawer_finishesListTitle">
                                     <ContentMask
                                         element="span"
                                         ref={materialTitleRef}
-                                        text="Finishes"
+                                        text="Works"
                                     />
                                 </p>
+                                <ul className="Drawer_finishesList">
+                                    {drawerData.worksListItems.map(
+                                        (item, i) => (
+                                            <li
+                                                key={i}
+                                                className="Drawer_finishesList__item"
+                                            >
+                                                <button
+                                                    className="Drawer_finishesList__button"
+                                                    onMouseEnter={() => {
+                                                        if (item.image) {
+                                                            setMaterialImages(
+                                                                (prev) => [
+                                                                    ...prev,
+                                                                    item.image,
+                                                                ]
+                                                            )
+                                                        }
+                                                    }}
+                                                >
+                                                    <ContentMask
+                                                        element="span"
+                                                        ref={(r) => {
+                                                            materialItemRefs.current[
+                                                                i
+                                                            ] = r
+                                                        }}
+                                                        text={item.label}
+                                                    />
+                                                </button>
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
                             </div>
                         )}
                     </div>
 
-                    {/* 하단 영역 */}
-                    <div style={styles.bottom}>
-                        {titleType && (
-                            <p>
-                                <ContentMask element="span" ref={aboutTitleRef}>
-                                    <span>{titleType}</span>
-                                </ContentMask>
-                            </p>
-                        )}
-                        {titleLocation && (
-                            <p>
-                                <ContentMask
-                                    element="span"
-                                    ref={locationTitleRef}
-                                >
-                                    <span>{titleLocation}</span>
-                                </ContentMask>
-                            </p>
-                        )}
-                        {contactEmail && (
-                            <p>
-                                <ContentMask
-                                    element="span"
-                                    ref={contactTitleRef}
-                                >
-                                    <span style={{ display: "block" }}>
-                                        Contact
-                                    </span>
-                                    <Link
-                                        href={`mailto:${contactEmail}`}
-                                        external
-                                        style={{ display: "block" }}
+                    <div className="Drawer_bottom">
+                        <p className="Drawer_aboutTitle">
+                            <ContentMask element="span" ref={aboutTitleRef}>
+                                <span>{drawerData?.titleType}</span>
+                            </ContentMask>
+                        </p>
+
+                        <p className="Drawer_locationTitle">
+                            <ContentMask element="span" ref={locationTitleRef}>
+                                <span>{drawerData?.titleLocation}</span>
+                            </ContentMask>
+                        </p>
+
+                        <p className="Drawer_contactTitle">
+                            <ContentMask element="span" ref={contactTitleRef}>
+                                <span className="Drawer_contactTitle__contactText">
+                                    Contact
+                                </span>
+                                <Link
+                                    link={{
+                                        linkType: "external",
+                                        link: `mailto:${drawerData?.contactEmail}`,
+                                        label: drawerData?.contactEmail,
+                                    }}
+                                />
+                            </ContentMask>
+                        </p>
+
+                        {drawerData?.socialLinks?.length > 0 && (
+                            <ul className="Drawer_socialLinks">
+                                {drawerData.socialLinks.map((link, i) => (
+                                    <li
+                                        className="Drawer_socialLinks__item"
+                                        key={i}
                                     >
-                                        {contactEmail}
-                                    </Link>
-                                </ContentMask>
-                            </p>
-                        )}
-                        {socialLinks.length > 0 && (
-                            <ul style={styles.socialList}>
-                                {socialLinks.map((link, i) => (
-                                    <li key={i}>
                                         <ContentMask
                                             element="span"
                                             ref={(r) => {
@@ -264,121 +308,35 @@ const NavigationDrawer = forwardRef(({ drawerContent }, ref) => {
                                             }}
                                         >
                                             <Link
-                                                href={link.href}
-                                                external
-                                                style={styles.socialLink}
+                                                className="Drawer_socialLinks__link"
+                                                link={link}
                                             >
-                                                <span>{link.label}</span>
-                                                <ArrowRight
-                                                    style={{ width: 6 }}
-                                                />
+                                                <span className="Drawer_socialLinks__linkLabel">
+                                                    {link.label}
+                                                </span>
+                                                <ArrowRight className="Drawer_socialLinks__arrow" />
                                             </Link>
                                         </ContentMask>
                                     </li>
                                 ))}
                             </ul>
                         )}
-
-                        {/* 드로어 이미지 */}
-                        <NavigationDrawerImages
+                        <DrawerImages
                             ref={productImagesRef}
-                            images={drawerImages}
+                            productImages={materialImages}
                         />
                     </div>
                 </div>
             </div>
-
-            {/* 오버레이 (클릭 시 닫기) */}
             <div
+                className="Drawer_overlay"
                 ref={overlayRef}
                 onClick={() => setNavigationIsOpen(false)}
-                style={styles.overlay}
             />
         </div>
     )
 })
 
-NavigationDrawer.displayName = "NavigationDrawer"
-export default NavigationDrawer
+Drawer.displayName = "Drawer"
 
-const styles = {
-    drawer: {
-        position: "fixed",
-        left: 0,
-        top: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: 200,
-    },
-    drawerInner: {
-        width: "100%",
-        padding: "var(--page-gutter, 24px)",
-        position: "relative",
-        zIndex: 2,
-        color: "var(--fg-invert, #0e0e0e)",
-    },
-    bg: {
-        position: "absolute",
-        inset: 0,
-        background: "var(--bg-invert, #f0f0f0)",
-        transform: "scaleY(0)",
-        transformOrigin: "top",
-    },
-    drawerContent: {
-        position: "relative",
-        zIndex: 3,
-        height: 300,
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "column",
-    },
-    closeButton: {
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        position: "absolute",
-        top: 0,
-        right: 0,
-        zIndex: 5,
-        font: "inherit",
-        color: "inherit",
-    },
-    top: {
-        display: "grid",
-        gridTemplateColumns: "449px 1fr",
-        gap: "106px",
-    },
-    descriptionTitle: {
-        opacity: 0.5,
-        marginBottom: 20,
-    },
-    descriptionText: {
-        lineHeight: 1.5,
-    },
-    bottom: {
-        display: "grid",
-        gridTemplateColumns: "240px 185px 587px 1fr",
-        alignItems: "flex-end",
-        position: "relative",
-    },
-    socialList: {
-        listStyle: "none",
-        padding: 0,
-        margin: 0,
-    },
-    socialLink: {
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 4,
-        textDecoration: "none",
-        color: "inherit",
-    },
-    overlay: {
-        position: "absolute",
-        inset: 0,
-        background: "var(--bg, #0e0e0e)",
-        zIndex: 1,
-        opacity: 0,
-        cursor: "pointer",
-    },
-}
+export default Drawer
