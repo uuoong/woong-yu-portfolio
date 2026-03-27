@@ -1,206 +1,191 @@
 /**
- * Navigation.jsx — 헤더 네비게이션
+ * Navigation.jsx
  *
- * 레퍼런스: components/Navigation/Navigation.jsx
+ * 레퍼런스: Navigation.jsx (원본)
  *
- * ─── 변경사항 ─────────────────────────────────────────────────────────────
+ * ─── 원본 구조 그대로 ─────────────────────────────────────────────────────
+ *  navigationData = navData (원본 globalData?.navigation)
+ *  Clock — props 없이 AppContext에서 직접 읽음
+ *  percentScrolled — 원본 scroll progress 로직 그대로
+ *  debouncedProductHovering → 현재: debouncedWorkHovering (work로 변경)
+ *  SCROLL_CALLBACK_KEY
  *
- *  제거: useStore, CSS module, next/router, globalData (Sanity)
- *  유지: onScrollCallback 기반 스크롤 퍼센트, showMainContent fade-in,
- *        navigationIsOpen y offset (데스크톱), Clock, ThemeToggle,
- *        NavigationDrawer (데스크톱), MobileNav (모바일)
- *
- * ─── Props ────────────────────────────────────────────────────────────────
- *
- *  navData   AppContext의 navData (AppProvider 설정 시 자동)
- *            또는 직접 prop으로 전달 가능
- *
- * ─── 사용법 ───────────────────────────────────────────────────────────────
- *
- *  // Layout.jsx에서
- *  import Navigation from "./Navigation.jsx"
- *  <Layout navigation={<Navigation />}>...</Layout>
- *
- *  // AppProvider에서 navData 설정
- *  const { setNavData } = useAppContext()
- *  useEffect(() => { setNavData({ title: "...", mainLinks: [...] }) }, [])
+ * ─── 원본 대비 변경사항 (최소화) ─────────────────────────────────────────
+ *  useStore            → useAppContext
+ *  CSS module          → inline style + CSS transition (visibility 없음)
+ *  DOC_TYPES + HOME_SLUG → Link link prop에 사용
  */
 
-import React, { useContext, useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import gsap from "https://esm.sh/gsap"
-import { ScrollContext } from "https://framer.com/m/Scroll-szavc7.js@zOGCrgWorLBsFdQI7czl"
-import { useAppContext } from "https://framer.com/m/App-bSRL7k.js@OSIlKrR0H91ZCA9r9DU7"
-import useBreakpoint from "https://framer.com/m/use-breakpoint-4NS6fo.js@5Zwmkgszp7ZMiYMHaXUS"
-import Link from "https://framer.com/m/Link-WYbAN8.js@wnolvlc648LPw7gRt3YF"
-import Clock from "https://framer.com/m/Clock-lam4um.js@Skw9n5H9vM3PG0oBiMbZ"
-import ThemeToggle from "https://framer.com/m/ThemeToggle-icEqb2.js@QX7kNPzQNZ3NwWI2vc9L"
-import NavigationDrawer, {
-    DRAWER_ANIMATION_CONFIG,
-    DRAWER_INNER_ID,
-} from "https://framer.com/m/NavigationDrawer-fV7fqT.js@v0eTaRVMP4xsqdQUyetA"
-import MobileNav from "https://framer.com/m/MobileNav-YSjf7H.js@Vb7J7DH3G4rCSQrHvHxo"
+import { ScrollContext } from "../../context/Scroll.js"
+import { useAppContext } from "../../context/App.js"
+import useBreakpoint from "../../hooks/use_breakpoint.js"
+import Clock from "../clock/Clock.jsx"
+import Link from "../link/Link.jsx"
+import ThemeToggle from "../theme_toggle/ThemeToggle.jsx"
+import Drawer, { DRAWER_ANIMATION_CONFIG } from "./drawer/Drawer.jsx"
+import MobileNav from "./mobile/MobileNav.jsx"
+import { DOC_TYPES, HOME_SLUG } from "../../data/index.js"
 
 export const HEADER_ID = "site-header"
+const SCROLL_CALLBACK_KEY = "scrollkeeeeeee"
 
-const SCROLL_CALLBACK_KEY = "__navigation_scroll__"
-
-export default function Navigation() {
-    const { onScrollCallback } = useContext(ScrollContext)
+const Navigation = () => {
     const {
-        navData,
+        navData: navigationData,
         navigationIsOpen,
         setNavigationIsOpen,
         showMainContent,
         setCursorState,
+        workHovering,
     } = useAppContext()
+
+    const { onScrollCallback } = React.useContext(ScrollContext)
+    const percentScrolledRef = useRef()
+    const navigationRef = useRef()
+    const drawerElementRef = useRef()
+    const debounceTimeoutRef = useRef()
 
     const { isMobile } = useBreakpoint()
 
-    const navigationRef = useRef(null)
-    const percentScrollRef = useRef(null)
-    const drawerElRef = useRef(null)
+    const [debouncedWorkHovering, setDebouncedWorkHovering] = useState(false)
 
-    // ── showMainContent → header fade-in ──────────────────────────────────
     useEffect(() => {
-        if (!navigationRef.current) return
-        gsap.to(navigationRef.current, {
-            autoAlpha: showMainContent ? 1 : 0,
-            duration: 0.6,
-        })
-    }, [showMainContent])
+        if (isMobile) return
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current)
+        }
 
-    // ── navigationIsOpen → nav y offset (데스크톱만) ──────────────────────
+        debounceTimeoutRef.current = setTimeout(() => {
+            setDebouncedWorkHovering(workHovering)
+        }, 100)
+    }, [workHovering, isMobile])
+
     useEffect(() => {
         if (!navigationRef.current || isMobile) return
-
-        const drawerHeight = drawerElRef.current?.offsetHeight || 0
         const config = DRAWER_ANIMATION_CONFIG[navigationIsOpen ? "IN" : "OUT"]
-
         gsap.killTweensOf(navigationRef.current)
         gsap.to(navigationRef.current, {
-            y: navigationIsOpen ? drawerHeight : 0,
+            y: navigationIsOpen
+                ? document.getElementById("drawer-innnnurrrrr")?.offsetHeight ||
+                  0
+                : 0,
             ease: config.ease,
             duration: config.duration,
         })
     }, [navigationIsOpen, isMobile])
 
-    // ── 스크롤 퍼센트 표시 ─────────────────────────────────────────────────
     useEffect(() => {
         onScrollCallback({
             key: SCROLL_CALLBACK_KEY,
             callback: (e) => {
-                if (!percentScrollRef.current) return
-                const pct = Math.floor((e.progress || 0) * 100)
-                const abs = Math.abs(pct)
-                const formatted = `${abs < 10 ? "0" + abs : abs}%`
-                percentScrollRef.current.innerHTML =
-                    pct < 0 ? `-${formatted}` : formatted
+                const percent = Math.floor(e.progress * 100)
+                let positivePercent = Math.abs(percent)
+                if (positivePercent < 10)
+                    positivePercent = `0${positivePercent}`
+                positivePercent = `${positivePercent}%`
+                if (percent < 0) positivePercent = `-${positivePercent}`
+                if (percentScrolledRef.current) {
+                    percentScrolledRef.current.innerHTML = positivePercent
+                }
             },
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    if (!navData) return null
-
-    const { title, timeZone, location, mainLinks = [], drawerContent } = navData
+    if (!navigationData) return null
 
     return (
         <>
-            {/* 데스크톱 드로어 */}
-            {!isMobile && drawerContent && (
-                <NavigationDrawer
-                    drawerContent={drawerContent}
+            {!isMobile && (
+                <Drawer
                     ref={(r) => {
-                        if (r) drawerElRef.current = r.getElement()
+                        if (r) drawerElementRef.current = r.getElement()
                     }}
                 />
             )}
 
-            {/* 모바일 네비게이션 */}
-            {isMobile && <MobileNav navData={navData} />}
+            {isMobile && <MobileNav />}
 
-            {/* 헤더 */}
             <header
                 id={HEADER_ID}
+                className="Navigation"
                 ref={navigationRef}
                 style={{
-                    ...navStyles.header,
-                    opacity: 0.001, // showMainContent로 GSAP 제어
+                    opacity: showMainContent ? 1 : 0.001,
+                    transition: "opacity 0.6s",
+                    visibility: "visible",
                 }}
             >
-                <nav style={navStyles.nav}>
-                    {/* 좌측 */}
-                    <div style={navStyles.left}>
-                        <Link href="/" style={navStyles.title}>
-                            {title}
+                <nav className="Navigation_nav">
+                    <div className="Navigation_left">
+                        <Link
+                            link={{
+                                linkType: DOC_TYPES.PAGE,
+                                link: HOME_SLUG,
+                            }}
+                            className="Navigation_title"
+                            data-themed="color"
+                        >
+                            {navigationData?.title}
                         </Link>
 
-                        {!isMobile && (
-                            <p style={{ margin: 0 }}>
-                                <Clock
-                                    timeZone={timeZone}
-                                    location={location}
-                                    style={{ fontSize: "0.75rem" }}
-                                />
-                            </p>
-                        )}
+                        <p className="Navigation_clock">
+                            <Clock />
+                        </p>
 
                         <p
-                            ref={percentScrollRef}
-                            style={{ margin: 0, fontSize: "0.75rem" }}
+                            className="Navigation_percentScrolled"
+                            ref={percentScrolledRef}
                             data-themed="color"
                         >
                             00%
                         </p>
+
+                        {debouncedWorkHovering && !isMobile && (
+                            <p className="Navigation_hoveredProduct">
+                                <span>{debouncedWorkHovering?.model}</span>
+                                <span>{debouncedWorkHovering?.title}</span>
+                            </p>
+                        )}
                     </div>
 
-                    {/* 우측 */}
-                    <div style={navStyles.right}>
+                    <div className="Navigation_right">
                         {!isMobile &&
-                            mainLinks.map((link, i) => (
+                            navigationData?.mainLinks?.map((link, i) => (
                                 <Link
+                                    link={link}
                                     key={i}
-                                    href={link.href}
-                                    style={navStyles.navLink}
-                                    onMouseEnter={() => setCursorState("FOCUS")}
-                                    onMouseLeave={() => setCursorState(null)}
+                                    className="Navigation_link"
                                 >
-                                    <span
-                                        style={{
-                                            opacity: 0.5,
-                                            fontVariant: "tabular-nums",
-                                        }}
-                                    >
+                                    <span className="Navigation_link__number">
                                         {i + 1}.
-                                    </span>{" "}
-                                    {link.label}
+                                    </span>
+                                    <span className="Navigation_link__label">
+                                        {link.label}
+                                    </span>
                                 </Link>
                             ))}
 
-                        {/* Information 버튼 (데스크톱) */}
-                        {!isMobile && drawerContent && (
-                            <button
-                                style={navStyles.drawerBtn}
-                                onClick={() => setNavigationIsOpen(true)}
-                                onMouseEnter={() => setCursorState("FOCUS")}
-                                onMouseLeave={() => setCursorState(null)}
+                        <button
+                            className="Navigation_drawerButton"
+                            onClick={() => setNavigationIsOpen(true)}
+                            onMouseEnter={() => setCursorState?.("FOCUS")}
+                            onMouseLeave={() => setCursorState?.(null)}
+                        >
+                            <span
+                                className="Navigation_link__number"
+                                data-themed="color"
                             >
-                                <span style={{ opacity: 0.5 }}>
-                                    {mainLinks.length + 1}.
-                                </span>{" "}
+                                {navigationData?.mainLinks?.length + 1}.
+                            </span>
+                            <span
+                                className="Navigation_link__label"
+                                data-themed="color"
+                            >
                                 {isMobile ? "Menu" : "Information"}
-                            </button>
-                        )}
-
-                        {/* 모바일 햄버거 */}
-                        {isMobile && (
-                            <button
-                                style={navStyles.drawerBtn}
-                                onClick={() => setNavigationIsOpen(true)}
-                            >
-                                Menu
-                            </button>
-                        )}
+                            </span>
+                        </button>
 
                         <ThemeToggle />
                     </div>
@@ -212,49 +197,4 @@ export default function Navigation() {
 
 Navigation.displayName = "Navigation"
 
-const navStyles = {
-    header: {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        zIndex: 100,
-        paddingTop: "var(--page-gutter, 24px)",
-    },
-    nav: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 var(--page-gutter, 24px)",
-        width: "100%",
-    },
-    left: {
-        display: "flex",
-        alignItems: "center",
-        gap: 24,
-    },
-    title: {
-        textDecoration: "none",
-        color: "var(--fg, #f0f0f0)",
-        textTransform: "uppercase",
-        fontSize: "0.75rem",
-    },
-    right: {
-        display: "flex",
-        alignItems: "center",
-        gap: 24,
-    },
-    navLink: {
-        textDecoration: "none",
-        color: "var(--fg, #f0f0f0)",
-        fontSize: "0.75rem",
-    },
-    drawerBtn: {
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        color: "var(--fg, #f0f0f0)",
-        font: "inherit",
-        fontSize: "0.75rem",
-    },
-}
+export default Navigation
