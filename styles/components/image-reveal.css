@@ -1,0 +1,30 @@
+.ImageReveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.ImageReveal_backgroundColor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--image-bg);
+}
+
+.ImageReveal_hasBackgroundColor .ImageReveal_backgroundColor {
+  background-color: var(--bg);
+  opacity: 0.5;
+}
+
+.ImageReveal_imageContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  opacity: 0.001;
+  z-index: 2;
+}
+
+.ImageReveal_showContent .ImageReveal_imageContainer {
+  opacity: 1;
+}
