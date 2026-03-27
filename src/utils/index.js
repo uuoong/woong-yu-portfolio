@@ -1,296 +1,175 @@
-import { DOC_TYPES, HOME_SLUG, PRODUCTS_SLUG } from '@/data'
+/**
+ * utils.js — 프로젝트 공통 유틸리티
+ *
+ * ─── getDeviceInfo 수정 (Fix 5) ───────────────────────────────────────────
+ *  원본: @jam3/detect (npm 패키지) → Framer 환경 사용 불가
+ *  변경: navigator.userAgent + navigator.maxTouchPoints 기반 직접 감지
+ *
+ *  원본 deviceInfo 구조 그대로 유지:
+ *    { device: { type, isDesktop }, browser: { chrome }, isTouchDevice }
+ *  → Scroll.js가 deviceInfo.device.type, deviceInfo.browser.chrome를 그대로 사용 가능
+ */
 
-export const wait = (ms = 0) => {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+// ─── 기본 유틸 ────────────────────────────────────────────────────────────────
 
-export const lerp = (currentValue, targetValue, ease = 0.1) => {
-  return currentValue + (targetValue - currentValue) * ease
-}
+export const wait = (ms = 0) => new Promise((r) => setTimeout(r, ms))
 
-export const getCssVar = variable => {
-  return window.getComputedStyle(document.body).getPropertyValue(`--${variable}`)
-}
+export const lerp = (cur, target, ease = 0.1) => cur + (target - cur) * ease
+
+export const getCssVar = (variable) =>
+    window.getComputedStyle(document.body).getPropertyValue(`--${variable}`)
+
+export const buildIdFromText = (input) =>
+    input
+        .trim()
+        .replace(/[^\w\s+]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
 
 export const formatBytes = (bytes, decimals = 2) => {
-  if (!+bytes) return { unit: 'Bytes', size: 0 }
-
-  const k = 1024
-  const dm = decimals < 0 ? 0 : decimals
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-  return {
-    size: parseFloat((bytes / Math.pow(k, i)).toFixed(dm)),
-    unit: sizes[i],
-  }
-}
-
-export const bytesToMb = bytes => {
-  const { size, unit } = formatBytes(bytes)
-
-  let value = size
-
-  if (unit === 'KB') {
-    value = value / 1024
-  }
-
-  return value
-}
-
-export const buildIdFromText = input => {
-  return input
-    .trim()
-    .replace(/[^\w\s+]/g, '')
-    .replace(/\s+/g, '-')
-    .toLowerCase()
-}
-
-export const generateMetadataReturn = ({
-  title,
-  description,
-  shareImageUrl,
-  parentData,
-  allowCrawlers = true,
-  themeColor = '#ffffff',
-}) => {
-  const shareImagesParent = parentData?.openGraph?.images
-  const imageChild = shareImagesParent?.length ? shareImagesParent[0] : null
-
-  return {
-    title: title || parentData?.title?.absolute,
-    description: description || parentData?.description,
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || ''),
-    themeColor,
-    // manifest: '/manifest.webmanifest',
-    openGraph: {
-      title: title || parentData?.title?.absolute,
-      description: description || parentData?.description,
-      images: [`${shareImageUrl ? shareImageUrl : imageChild ? imageChild.url : shareImageUrl}`],
-    },
-    robots: {
-      index: allowCrawlers,
-      follow: allowCrawlers,
-      nocache: !allowCrawlers,
-      googleBot: {
-        index: allowCrawlers,
-        follow: allowCrawlers,
-        noimageindex: !allowCrawlers,
-      },
-    },
-  }
-}
-
-export const getImageUrl = (
-  image,
-  { width = null, height = null, fit = null, crop = null, quality = 80, invert = false, fm = 'webp', sat, rect = null },
-) => {
-  if (!image?.asset?.url) {
-    console.warn('No image.asset.url in image object supplied. ', image)
-    return null
-  }
-
-  let url = image.asset.url
-
-  const params = []
-  if (width) params.push(`w=${width}`)
-  if (height) params.push(`h=${height}`)
-  if (quality) params.push(`q=${quality}`)
-  if (invert) params.push(`invert=${invert}`)
-  if (fm) params.push(`fm=${fm}`)
-  if (sat) params.push(`sat=${sat}`)
-  if (rect) params.push(`rect=${rect}`)
-  if (fit) params.push(`fit=${fit}`)
-  if (crop) params.push(`crop=${crop}`)
-
-  url = `${url}?${params.join('&')}`
-
-  return url
-}
-
-export const mergeSiteSettings = (pageData, settingsData) => {
-  const settingsMetaData = settingsData?.siteSettingsMetadata
-  if (!settingsMetaData) return pageData
-
-  const ignoreNulls = {}
-  Object.keys(pageData?.metadata).forEach(key => {
-    if (pageData?.metadata[key] !== null) {
-      ignoreNulls[key] = pageData?.metadata[key]
+    if (!+bytes) return { unit: "Bytes", size: 0 }
+    const k = 1024
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return {
+        size: parseFloat(
+            (bytes / Math.pow(k, i)).toFixed(decimals < 0 ? 0 : decimals)
+        ),
+        unit: sizes[i],
     }
-
-    if (key === 'title' && pageData?.metadata?.title && settingsMetaData?.title) {
-      ignoreNulls.title = `${pageData.metadata.title} | ${settingsMetaData?.title}`
-    }
-  })
-
-  const merged = {
-    ...settingsMetaData,
-    ...ignoreNulls,
-  }
-
-  pageData.metadata = merged
-
-  // Global settings
-  pageData.globalSettings = {
-    navigation: null,
-  }
-
-  // Add navigation data
-  if (settingsData?.navigation) {
-    pageData.globalSettings.navigation = settingsData?.navigation
-  }
-
-  return pageData
 }
 
-export const formatPageSections = pageData => {
-  const newPageData = pageData
-  let pageSections = pageData.sections || []
-
-  if (pageData._type === 'product') {
-    const firstSection = {
-      section: [
-        {
-          _type: 'productHero',
-          _id: 'productHero',
-          cmsSettings: {
-            isHidden: false,
-            cmsTitle: 'Product Hero',
-          },
-          title: pageData.title,
-          ...pageData.productData,
-        },
-      ],
-    }
-    pageSections = [firstSection, ...pageSections]
-  }
-
-  newPageData.sections = pageSections
-
-  return newPageData
+export const bytesToMb = (bytes) => {
+    const { size, unit } = formatBytes(bytes)
+    return unit === "KB" ? size / 1024 : size
 }
-
-export const formatSiteSettingsResponse = response => {
-  if (!response) return {}
-
-  const formatted = {}
-
-  response?.forEach(setting => {
-    if (!formatted[setting._type]) {
-      formatted[setting._type] = setting
-    }
-  })
-
-  return formatted
-}
-
-export const getPagePathBySlug = slug => {
-  if (slug === HOME_SLUG) return '/'
-  return `/${slug}`
-}
-
-export const getDeviceInfo = () => {
-  const isBrowser = typeof window !== 'undefined'
-
-  /* eslint-disable */
-  const detect = {
-    device: {},
-    browser: {},
-    os: {},
-    bots: {},
-    isTouchDevice: isBrowser && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
-  }
-  if (isBrowser) {
-    detect.device = require('@jam3/detect').device
-    detect.browser = require('@jam3/detect').browser
-    detect.os = require('@jam3/detect').os
-    detect.bots = require('@jam3/detect').bots
-  }
-
-  /* eslint-disable */
-
-  return detect
-}
-
-export const deviceInfo = getDeviceInfo()
 
 export const simpleImagesPreload = ({ urls, onComplete, onProgress }) => {
-  let loadedCounter = 0
-  const toBeLoadedNumber = urls.length
-
-  urls.forEach(function (url) {
-    preloadImage(url, function () {
-      loadedCounter++
-      if (onProgress) {
-        onProgress(loadedCounter / toBeLoadedNumber, url)
-      }
-      if (loadedCounter === toBeLoadedNumber) {
-        if (onComplete) onComplete()
-      }
+    let loaded = 0
+    urls.forEach((url) => {
+        const img = new window.Image()
+        img.onload = () => {
+            loaded++
+            onProgress?.(loaded / urls.length, url)
+            if (loaded === urls.length) onComplete?.()
+        }
+        img.src = url
     })
-  })
-
-  function preloadImage(url, anImageLoadedCallback) {
-    const img = new Image()
-    img.onload = anImageLoadedCallback
-    img.src = url
-  }
 }
 
-export const getCropOptions = (productImageOrientation, desiredOrentation, imageOptions) => {
-  if (!productImageOrientation || !desiredOrentation) return {}
+// ─── getDeviceInfo (원본 구조 유지, @jam3/detect 대체) ────────────────────────
+/**
+ * 원본:
+ *   deviceInfo.device.type        → 'mobile' | 'tablet' | 'desktop'
+ *   deviceInfo.device.isDesktop   → boolean
+ *   deviceInfo.browser.chrome     → boolean
+ *   deviceInfo.isTouchDevice      → boolean
+ *
+ * Scroll.js 사용 패턴 (원본):
+ *   const isMobileChrome = deviceInfo.device.type === 'mobile' && deviceInfo.browser.chrome
+ *   const isDesktop = deviceInfo.device.isDesktop || isMobileChrome
+ */
+export const getDeviceInfo = () => {
+    const isBrowser = typeof window !== "undefined"
 
-  let options = {}
+    if (!isBrowser) {
+        return {
+            device: {
+                type: "desktop",
+                isDesktop: true,
+                isMobile: false,
+                isTablet: false,
+            },
+            browser: {
+                chrome: false,
+                safari: false,
+                firefox: false,
+                edge: false,
+            },
+            isTouchDevice: false,
+        }
+    }
 
-  switch (productImageOrientation) {
-    case 'square':
-      if (desiredOrentation === 'portrait' || desiredOrentation === 'wide') {
-        options = { fit: 'crop' }
-      }
-      break
-    case 'portrait':
-      if (desiredOrentation === 'square' || desiredOrentation === 'wide') {
-        options = { fit: 'crop' }
-      }
-      break
-    case 'wide':
-      if (desiredOrentation === 'square' || desiredOrentation === 'portrait') {
-        options = { fit: 'crop', crop: 'top,left' }
-      } else if (desiredOrentation === 'wide') {
-        options = { fit: 'crop' }
-      }
-      break
-    default:
-      break
-  }
+    const ua = navigator.userAgent
 
-  options = {
-    ...options,
-    ...imageOptions,
-  }
+    // Touch 감지
+    const isTouchDevice =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0
 
-  return options
+    // 기기 타입 감지
+    const isMobileUA = /Mobi|Android|iPhone|iPod/i.test(ua)
+    const isTabletUA =
+        /iPad/i.test(ua) || (isTouchDevice && /Macintosh/i.test(ua)) // iPad + desktop Safari
+    const isMobile = isMobileUA && !isTabletUA
+    const isTablet =
+        isTabletUA || (!isMobile && isTouchDevice && window.innerWidth <= 1024)
+    const isDesktop = !isMobile && !isTablet
+
+    // 브라우저 감지
+    const isEdge = /Edg\//i.test(ua)
+    const isChrome = /Chrome\//i.test(ua) && !isEdge && !/OPR\//i.test(ua)
+    const isSafari = /Safari\//i.test(ua) && !/Chrome\//i.test(ua)
+    const isFirefox = /Firefox\//i.test(ua)
+
+    return {
+        device: {
+            type: isMobile ? "mobile" : isTablet ? "tablet" : "desktop",
+            isDesktop,
+            isMobile,
+            isTablet,
+        },
+        browser: {
+            chrome: isChrome,
+            safari: isSafari,
+            firefox: isFirefox,
+            edge: isEdge,
+        },
+        isTouchDevice,
+    }
 }
 
-export const getCropHeightFromWidth = (desiredOrentation, width) => {
-  if (desiredOrentation === 'portrait') {
-    return Math.floor(width * 1.359)
-  } else if (desiredOrentation === 'square') {
-    return width
-  } else if (desiredOrentation === 'wide') {
-    return Math.floor(width * 0.6613)
-  }
+/**
+ * deviceInfo — 모듈 로드 시 1회 계산 (원본 패턴 그대로)
+ * Scroll.js에서 import { deviceInfo } from "./utils.js" 로 사용
+ */
+export const deviceInfo = getDeviceInfo()
 
-  return width
+// ─── Vercel Image Optimization ────────────────────────────────────────────────
+
+const VERCEL_ORIGIN = "https://woong-yu-portfolio.vercel.app"
+const VERCEL_IMAGES_BASE = "/assets/images"
+
+export const getImageUrl = (src, { width = null, quality = 80 } = {}) => {
+    if (!src) return null
+    if (src.includes("/_vercel/image")) return src
+
+    let imagePath
+    if (src.startsWith("http://") || src.startsWith("https://")) {
+        imagePath = src
+    } else if (src.startsWith("/")) {
+        imagePath = src
+    } else {
+        imagePath = `${VERCEL_IMAGES_BASE}/${src}`
+    }
+
+    const params = new URLSearchParams()
+    params.set("url", imagePath)
+    if (width) params.set("w", String(width))
+    params.set("q", String(quality))
+
+    return `${VERCEL_ORIGIN}/_vercel/image?${params.toString()}`
 }
 
-export const getUrlFromPageType = (pageType, slug) => {
-  if (pageType === DOC_TYPES.PAGE && slug === 'home') return `/`
-  if (pageType === DOC_TYPES.PAGE) return `/${slug}`
-  if (pageType === DOC_TYPES.PRODUCT) return `/${PRODUCTS_SLUG}/${slug}`
+export const BP_SRCSET_WIDTHS = [
+    768, 967, 1200, 1512, 1536, 1800, 1934, 2400, 3024,
+]
+
+export const getSrcSet = (src, widths = BP_SRCSET_WIDTHS, quality = 80) => {
+    if (!src) return ""
+    return widths
+        .map((w) => `${getImageUrl(src, { width: w, quality })} ${w}w`)
+        .join(", ")
 }
 
-export const getImageBackgroundFromAsset = imageObject => {
-  return imageObject?.asset?.metadata?.palette?.darkVibrant?.background
-}
+export const getImagePath = (folder, filename) =>
+    `${VERCEL_ORIGIN}${VERCEL_IMAGES_BASE}/${folder}/${filename}`
