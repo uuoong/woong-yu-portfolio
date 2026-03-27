@@ -1,10 +1,6 @@
-import { Geometry } from "ogl"
+import { Geometry } from "https://esm.sh/ogl"
 
-/**
- * buildPlane
- * Three.js PlaneGeometry(1,1,wS,hS)와 동일한 UV·좌표 구조
- */
-export function buildPlane(gl, wS = 80, hS = 80) {
+export const buildPlane = (gl, wS = 80, hS = 80) => {
     const vN = (wS + 1) * (hS + 1)
     const pos = new Float32Array(vN * 3)
     const uvs = new Float32Array(vN * 2)
