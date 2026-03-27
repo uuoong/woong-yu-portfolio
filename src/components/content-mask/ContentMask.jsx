@@ -1,24 +1,3 @@
-/**
- * ContentMask.jsx — 텍스트/콘텐츠 마스크 슬라이드 인/아웃
- *
- * 레퍼런스: components/ContentMask/ContentMask.jsx
- *
- * ─── 변경사항 ─────────────────────────────────────────────────────────────
- *
- *  제거: CSS module, classnames, useStore
- *  유지: forwardRef + useImperativeHandle (내부 컴포넌트 → Framer canvas 문제 없음)
- *        animateIn / animateOut 명령형 API
- *        isInView + loaderAnimationComplete 연동
- *        startPos UP / DOWN
- *
- * ─── 사용법 ───────────────────────────────────────────────────────────────
- *
- *  const ref = useRef()
- *  <ContentMask ref={ref} text="Hello\nWorld" />
- *  ref.current.animateIn()
- *  ref.current.animateOut({ direction: "DOWN" })
- */
-
 import React, {
     forwardRef,
     useEffect,
@@ -26,23 +5,25 @@ import React, {
     useRef,
 } from "react"
 import gsap from "https://esm.sh/gsap"
-import useInView from "https://framer.com/m/use-in-view-xncvJM.js@qHxupyUmAZKnO7gTx142"
-import { useAppContext } from "https://framer.com/m/App-bSRL7k.js@OSIlKrR0H91ZCA9r9DU7"
+import useInView from "../../hooks/use_in_view.js"
+import { useAppContext } from "../../context/App.js"
 
-const EASE = "power3.out"
+const EASE = "Power3.easeOut"
 const DURATION = 1.2
 
 const ContentMask = forwardRef(
     (
         {
+            className,
+            innerClassName,
             element,
             text,
-            startPos = "DOWN", // "UP" | "DOWN"
+            startPos = "DOWN",
             children,
             animateInView,
             delay = 0,
-            duration,
             onInView,
+            duration,
             style,
             innerStyle,
         },
@@ -50,80 +31,79 @@ const ContentMask = forwardRef(
     ) => {
         const Element = element || "div"
         const innerRefs = useRef([])
-        const containerRef = useRef(null)
+        const containerRef = useRef()
 
-        const { setElementToObserve, isInView } = useInView({
-            useIntersection: true,
-            intersectionMargin: "-5%",
-        })
+        const { setElementToObserve, isInView } = useInView()
+        const textLines = text?.split("\n")
 
         const { loaderAnimationComplete } = useAppContext()
 
-        const textLines = typeof text === "string" ? text.split("\n") : null
+        // 원본 animateIn — 그대로
+        const animateIn = (options) => {
+            if (!innerRefs.current?.length) return
+            gsap.killTweensOf(innerRefs.current)
 
-        // ── animateIn ─────────────────────────────────────────────────────
-        const animateIn = (options = {}) => {
-            const els = innerRefs.current.filter(Boolean)
-            if (!els.length) return
-            gsap.killTweensOf(els)
-
-            const cfg = {
+            const config = {
                 y: 0,
                 ease: EASE,
-                duration: options.duration ?? duration ?? DURATION,
-                delay: options.delay ?? 0,
+                duration: options?.duration || DURATION,
+                delay: options?.delay || 0,
             }
-            if (els.length > 1) cfg.stagger = 0.1
 
-            gsap.to(els, cfg)
+            if (config?.stagger || innerRefs.current?.length > 1) {
+                config.stagger = config?.stagger || 0.1
+            }
+
+            gsap.to(innerRefs.current, config)
         }
 
-        // ── animateOut ────────────────────────────────────────────────────
-        const animateOut = (options = {}) => {
-            const els = innerRefs.current.filter(Boolean)
-            if (!els.length) return
-            gsap.killTweensOf(els)
+        // 원본 animateOut — 그대로
+        const animateOut = (options) => {
+            if (!innerRefs.current?.length) return
+            gsap.killTweensOf(innerRefs.current)
 
-            const y = options.direction === "DOWN" ? "105%" : "-105%"
+            let y = "-105%"
+            if (options?.direction === "DOWN") y = "105%"
 
-            const cfg = {
+            const config = {
                 y,
                 ease: EASE,
-                duration: options.duration ?? duration ?? DURATION,
-                delay: options.delay ?? 0,
+                duration: options?.duration || DURATION,
+                delay: options?.delay || 0,
             }
-            if (els.length > 1) cfg.stagger = 0.1
 
-            gsap.to(els, cfg)
+            if (config?.stagger || innerRefs.current?.length > 1) {
+                config.stagger = config?.stagger || 0.1
+            }
+
+            gsap.to(innerRefs.current, config)
         }
 
-        // ── animateInView 트리거 ──────────────────────────────────────────
+        // 원본 useEffect — 그대로
         useEffect(() => {
             if (isInView && animateInView && loaderAnimationComplete) {
                 setTimeout(() => {
-                    onInView?.()
-                    animateIn({ duration: duration ?? DURATION })
+                    if (onInView) onInView()
+                    animateIn({ duration: duration || DURATION })
                 }, delay * 1000)
             }
-        }, [isInView, animateInView, loaderAnimationComplete]) // eslint-disable-line
+        }, [
+            isInView,
+            animateInView,
+            delay,
+            onInView,
+            duration,
+            loaderAnimationComplete,
+        ])
 
-        // ── 명령형 API 노출 ───────────────────────────────────────────────
         useImperativeHandle(ref, () => ({ animateIn, animateOut }))
 
-        // ── 초기 y 위치 (startPos) ────────────────────────────────────────
-        const initialY = startPos === "UP" ? "-105%" : "105%"
-
-        const containerStyle = {
-            position: "relative",
-            overflow: "hidden",
-            display: "block",
-            ...style,
-        }
-
+        // 원본 CSS: [data-start-pos='UP'] → translateY(-105%), DOWN → 105%
         const getInnerStyle = () => ({
             width: "100%",
             display: "block",
-            transform: `translateY(${initialY})`,
+            transform:
+                startPos === "UP" ? "translateY(-105%)" : "translateY(105%)",
             ...innerStyle,
         })
 
@@ -133,28 +113,39 @@ const ContentMask = forwardRef(
                     containerRef.current = node
                     setElementToObserve(node)
                 }}
-                style={containerStyle}
+                className={className}
                 data-start-pos={startPos}
+                style={{
+                    // 원본 .ContentMask CSS
+                    position: "relative",
+                    overflow: "hidden",
+                    display: "block",
+                    ...style,
+                }}
             >
                 {/* 멀티라인 텍스트 */}
-                {textLines?.map((line, i) => (
-                    <span
-                        key={i}
-                        ref={(node) => {
-                            innerRefs.current[i] = node
-                        }}
-                        style={getInnerStyle()}
-                    >
-                        {line}
-                    </span>
-                ))}
+                {textLines?.length > 0 &&
+                    textLines.map((line, i) => (
+                        <span
+                            key={i}
+                            className={innerClassName}
+                            ref={(node) => {
+                                innerRefs.current[i] = node
+                            }}
+                            data-themed="color"
+                            style={getInnerStyle()}
+                        >
+                            {line}
+                        </span>
+                    ))}
 
                 {/* children (text 없을 때) */}
-                {children && !textLines && (
+                {children && !text && (
                     <span
                         ref={(node) => {
                             innerRefs.current[0] = node
                         }}
+                        className={innerClassName}
                         style={getInnerStyle()}
                     >
                         {children}
