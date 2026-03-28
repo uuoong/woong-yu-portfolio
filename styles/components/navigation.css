@@ -9,7 +9,7 @@
    transition: opacity 0.6s;
 }
 
-.Navigation.Navigation_isVisible {
+.Navigation.isVisible {
    opacity: 1;
 }
 
