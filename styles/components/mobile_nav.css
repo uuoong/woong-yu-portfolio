@@ -10,7 +10,7 @@
   pointer-events: none;
 }
 
-.MobileNav.MobileNav_navIsOpen {
+.MobileNav.navIsOpen {
   pointer-events: all;
 }
 
