@@ -164,8 +164,8 @@
   transition: opacity 0.3s;
 }
 
-.MobileNav_isActive .MobileNav_informationButton__label,
-.MobileNav_isActive .MobileNav_linkList__link__label {
+.MobileNav_informationButton.isActive .MobileNav_informationButton__label,
+.MobileNav_informationButton.isActive .MobileNav_informationButton__number {
   opacity: 1;
 }
 
@@ -180,8 +180,8 @@
   transition: opacity 0.3s;
 }
 
-.MobileNav_isActive .MobileNav_informationButton__number,
-.MobileNav_isActive .MobileNav_linkList__link__number {
+.MobileNav_linkList__link.isActive .MobileNav_linkList__link__label,
+.MobileNav_linkList__link.isActive .MobileNav_linkList__link__number {
   opacity: 1;
 }
 
