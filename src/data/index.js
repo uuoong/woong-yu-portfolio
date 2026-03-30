@@ -1,64 +1,25 @@
-/**
- * data.js — 프로젝트 데이터 중앙 관리
- *
- * ─── Q3: Framer 디자인 패널 방식에서 DOC_TYPES/slug 필요성 ──────────────
- *
- *  Framer 디자인 패널에서 페이지를 생성하면:
- *    - URL 라우팅: Framer가 자동 처리 (수동 설정 불필요)
- *    - 페이지 간 이동: Framer의 <a href="/works/project-name"> 인터셉트
- *
- *  따라서 DOC_TYPES/getUrlFromPageType은 "선택적"으로만 필요:
- *    ✅ 필요한 경우: Navigation mainLinks, Footer 링크 등
- *                  Link 컴포넌트에서 href를 자동 생성할 때
- *    ❌ 불필요한 경우: 직접 href 문자열 입력 가능한 경우
- *
- *  결론: 유지하면 일관성 ↑, 제거해도 직접 href 문자열로 대체 가능
- *        Link 컴포넌트에서 linkType: "external"처럼
- *        linkType: "href"를 추가해 단순화도 가능
- */
-
-// ─── Slugs / Paths ────────────────────────────────────────────────────────────
-export const HOME_SLUG = "home"
-export const FOUR_OH_FOUR_SLUG = "404"
-export const WORKS_SLUG = "works"
-export const ABOUT_SLUG = "about"
-export const CONTACT_SLUG = "contact"
-
-// ─── Doc Types ───────────────────────────────────────────────────────────────
-export const DOC_TYPES = {
-    PAGE: "page",
-    WORK: "work",
-}
-
-// ─── Transitions ─────────────────────────────────────────────────────────────
+// Transitions
 export const TRANSITION_DURATION = 1.2
+// export const TRANSITION_DURATION = 40.2
 export const TRANSITION_DURATION_MS = TRANSITION_DURATION * 1000
 
-// ─── URL 생성 ─────────────────────────────────────────────────────────────────
-export const getUrlFromPageType = (pageType, slug) => {
-    if (pageType === DOC_TYPES.PAGE && slug === HOME_SLUG) return "/"
-    if (pageType === DOC_TYPES.PAGE) return `/${slug}`
-    if (pageType === DOC_TYPES.WORK) return `/${WORKS_SLUG}/${slug}`
-    // linkType: "href" 직접 사용 가능 (Framer 단순화 옵션)
-    return `/${slug}`
-}
-
-// ─── Navigation Data ─────────────────────────────────────────────────────────
+// Navigation Data
 export const NAV_DATA = {
     title: "WOONG YU",
     location: "Seoul",
     timeZone: "SEOUL",
 
     mainLinks: [
-        { linkType: DOC_TYPES.PAGE, link: WORKS_SLUG, label: "Work" },
-        { linkType: DOC_TYPES.PAGE, link: ABOUT_SLUG, label: "About" },
-        { linkType: DOC_TYPES.PAGE, link: CONTACT_SLUG, label: "Contact" },
+        { linkType: "internal", href: "/works", label: "Work" },
+        { linkType: "internal", href: "/about", label: "About" },
+        { linkType: "internal", href: "/contact", label: "Contact" },
     ],
 
     drawerContent: {
-        titleDescription: "We design and build\nexperiences",
+        descriptionTitle: "We design and build\nexperiences",
         description:
             "A product design studio specializing in digital experiences.",
+
         titleType: "Product Studio",
         titleLocation: "Seoul\nRemote",
         contactEmail: "hello@woongyu.com",
@@ -66,18 +27,35 @@ export const NAV_DATA = {
         socialLinks: [
             {
                 linkType: "external",
-                link: "https://instagram.com",
+                href: "https://instagram.com",
                 label: "Instagram",
             },
             {
                 linkType: "external",
-                link: "https://linkedin.com",
+                href: "https://linkedin.com",
                 label: "LinkedIn",
             },
         ],
-        worksListItems: [
-            { label: "Project Alpha", image: "" },
-            { label: "Project Beta", image: "" },
+
+        listTitle: "Title",
+
+        list: [
+            {
+                itemTitle: "Project Alpha",
+                itemImage: "https://picsum.photos/1920/1080?random=1",
+            },
+            {
+                itemTitle: "Project Beta",
+                itemImage: "https://picsum.photos/1920/1080?random=2",
+            },
+            {
+                itemTitle: "Project Gamma",
+                itemImage: "https://picsum.photos/1920/1080?random=3",
+            },
+            {
+                itemTitle: "Project Gamma",
+                itemImage: "https://picsum.photos/1920/1080?random=4",
+            },
         ],
     },
 }
@@ -123,13 +101,13 @@ export const CONTENT = {
             ],
             links: [
                 {
-                    linkType: DOC_TYPES.PAGE,
-                    link: WORKS_SLUG,
+                    linkType: "internal",
+                    href: "https://instagram.com",
                     label: "View Work",
                 },
                 {
-                    linkType: DOC_TYPES.PAGE,
-                    link: CONTACT_SLUG,
+                    linkType: "internal",
+                    href: "https://instagram.com",
                     label: "Get In Touch",
                 },
             ],
@@ -139,7 +117,7 @@ export const CONTENT = {
             links: [
                 {
                     linkType: "external",
-                    link: "mailto:hello@woongyu.com",
+                    href: "mailto:hello@woongyu.com",
                     label: "hello@woongyu.com",
                 },
             ],
