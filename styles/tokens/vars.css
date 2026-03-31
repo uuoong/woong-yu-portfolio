@@ -64,11 +64,13 @@
 	--gutter: 2.1rem;
 	--page-gutter: 1.5rem;
 	--section-spacing: 12rem;
+	--next-item-height: 16.9rem;
 }
 
 @media(min-width: 60.4375rem) {
 	:root {
 		--page-gutter: 2.1rem;
         --section-spacing: 26rem;
+		--next-item-height: 41.5rem;
     }
 }
