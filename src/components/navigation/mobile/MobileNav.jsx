@@ -1,35 +1,29 @@
-/**
- * MobileNav.jsx
- *
- * 레퍼런스: MobileNav.jsx (원본)
- *
- * ─── 원본 구조 그대로 ─────────────────────────────────────────────────────
- *  animateIn / animateOut — GSAP + CSS custom properties
- *  animateInDescription / animateOutDescription
- *  ContentMask refs (linkLineRefs, linkTitleRefs, linkIndexRefs)
- *  descriptionContainer height 토글
- *
- * ─── 원본 대비 변경사항 (최소화) ─────────────────────────────────────────
- *  useStore      → useAppContext
- *  CSS module    → inline style
- *  useRouter     → window.location.pathname
- *  drawerData 경로: navigationDrawerContent → drawerContent
- */
-
-import { useEffect, useRef, useState } from "react"
-import gsap from "gsap"
+import React, { useEffect, useRef, useState } from "react"
+import gsap from "https://esm.sh/gsap"
 import ContentMask from "../../content_mask/ContentMask.jsx"
 import Link from "../../link/Link.jsx"
 import Clock from "../../clock/Clock.jsx"
 import ArrowRight from "../../_svg/ArrowRight.js"
 import { useAppContext } from "../../../context/App.js"
-import { getUrlFromPageType } from "../../../data/index.js"
 
 const MobileNav = ({ className }) => {
-    const { navData, navigationIsOpen, setNavigationIsOpen } = useAppContext()
+    const {
+        navigationData,
+        navigationIsOpen,
+        setNavigationIsOpen,
+        currentPath,
+    } = useAppContext()
 
-    const navigationData = navData
-    const drawerData = navData?.drawerContent
+    const drawerData = navigationData?.drawerContent
+
+    const isActiveLink = (href) => {
+        if (!href) return false
+
+        const cleanHref = href.split("#")[0]
+        return currentPath === cleanHref && !descriptionIsOpen
+    }
+
+    const linksLength = navigationData?.mainLinks?.length || 0
 
     // refs
     const socialLinkMaskRefs = useRef([])
@@ -47,22 +41,30 @@ const MobileNav = ({ className }) => {
 
     const [descriptionIsOpen, setDescriptionIsOpen] = useState(false)
 
-    const [currentPath, setCurrentPath] = useState("/")
-    useEffect(() => {
-        setCurrentPath(window.location.pathname)
-    }, [])
-
-    const mainLinks = navigationData?.mainLinks || []
-
     const animateIn = () => {
-        if (!bgRef.current) return
+        if (
+            !aboutTitleRef?.current ||
+            !socialLinkMaskRefs?.current?.length ||
+            !locationTitleRef?.current ||
+            !navigationTitleRef?.current ||
+            !linkLineRefs?.current?.length ||
+            !linkTitleRefs?.current?.length ||
+            !linkIndexRefs?.current?.length ||
+            !bgRef?.current
+        ) {
+            return null
+        }
+
+        gsap.killTweensOf([
+            ...linkLineRefs?.current,
+            navigationTitleRef.current,
+        ])
 
         const duration = 1.2
         const ease = "Power3.easeInOut"
 
-        gsap.killTweensOf([...linkLineRefs.current, navigationTitleRef.current])
-        gsap.killTweensOf(bgRef.current)
-        gsap.to(bgRef.current, {
+        gsap.killTweensOf(bgRef?.current)
+        gsap.to(bgRef?.current, {
             "--left-y": "100%",
             "--right-y": "100%",
             duration,
@@ -70,15 +72,23 @@ const MobileNav = ({ className }) => {
         })
 
         const titleDelay = duration * 0.4
-        navigationTitleRef.current?.animateIn({ delay: titleDelay })
-        linkTitleRefs.current.forEach((r, i) =>
-            r?.animateIn({ delay: titleDelay + i * 0.1 })
-        )
-        linkIndexRefs.current.forEach((r, i) =>
-            r?.animateIn({ delay: titleDelay + 0.1 + i * 0.1 })
-        )
+        navigationTitleRef.current.animateIn({
+            delay: titleDelay,
+        })
+        linkTitleRefs?.current.forEach((ref, i) => {
+            if (!ref) return
+            ref.animateIn({
+                delay: titleDelay + i * 0.1,
+            })
+        })
+        linkIndexRefs?.current.forEach((ref, i) => {
+            if (!ref) return
+            ref.animateIn({
+                delay: titleDelay + 0.1 + i * 0.1,
+            })
+        })
+
         linkLineRefs.current.forEach((el, i) => {
-            if (!el) return
             gsap.to(el, {
                 scaleX: 1,
                 duration,
@@ -87,63 +97,110 @@ const MobileNav = ({ className }) => {
             })
         })
 
-        const bottomDelay = duration * 0.8
-        socialLinkMaskRefs.current.forEach((r) =>
-            r?.animateIn({ delay: bottomDelay })
-        )
-        aboutTitleRef.current?.animateIn({ delay: bottomDelay })
-        locationTitleRef.current?.animateIn({ delay: bottomDelay })
+        // bottom
+        socialLinkMaskRefs.current?.forEach((ref) => {
+            if (!ref) return
+            ref.animateIn({
+                delay: duration * 0.8,
+            })
+        })
+
+        const refs = [aboutTitleRef.current, locationTitleRef.current]
+        refs.forEach((ref) => {
+            if (!ref) return
+            ref.animateIn({
+                delay: duration * 0.8,
+            })
+        })
     }
 
     const animateOut = () => {
-        if (!bgRef.current) return
+        if (
+            !aboutTitleRef?.current ||
+            !socialLinkMaskRefs?.current?.length ||
+            !locationTitleRef?.current ||
+            !navigationTitleRef?.current ||
+            !linkLineRefs?.current?.length ||
+            !linkTitleRefs?.current?.length ||
+            !linkIndexRefs?.current?.length ||
+            !bgRef?.current
+        ) {
+            return null
+        }
+
+        gsap.killTweensOf([
+            ...linkLineRefs?.current,
+            navigationTitleRef.current,
+        ])
 
         const duration = 0.6
         const ease = "Power3.easeOut"
-        const maskOutDur = 0.6
 
-        gsap.killTweensOf([...linkLineRefs.current, navigationTitleRef.current])
-        gsap.killTweensOf(bgRef.current)
-        gsap.to(bgRef.current, {
+        gsap.killTweensOf(bgRef?.current)
+        gsap.to(bgRef?.current, {
             "--left-y": "0%",
             "--right-y": "0%",
             duration,
             ease,
         })
 
-        navigationTitleRef.current?.animateOut({ direction: "DOWN" })
-        linkTitleRefs.current.forEach((r) =>
-            r?.animateOut({ direction: "DOWN", duration: maskOutDur })
-        )
-        linkIndexRefs.current.forEach((r) =>
-            r?.animateOut({ direction: "DOWN", duration: maskOutDur })
-        )
-        gsap.to(linkLineRefs.current, { scaleX: 0, duration, ease })
-        socialLinkMaskRefs.current.forEach((r) =>
-            r?.animateOut({ direction: "DOWN", duration: maskOutDur })
-        )
-        aboutTitleRef.current?.animateOut({
+        const maskOutDuration = 0.6
+        navigationTitleRef.current.animateOut({
             direction: "DOWN",
-            duration: maskOutDur,
         })
-        locationTitleRef.current?.animateOut({
-            direction: "DOWN",
-            duration: maskOutDur,
+        linkTitleRefs?.current.forEach((ref) => {
+            if (!ref) return
+            ref.animateOut({
+                direction: "DOWN",
+                duration: maskOutDuration,
+            })
+        })
+        linkIndexRefs?.current.forEach((ref) => {
+            if (!ref) return
+            ref.animateOut({
+                direction: "DOWN",
+                duration: maskOutDuration,
+            })
+        })
+        gsap.to(linkLineRefs.current, {
+            scaleX: 0,
+            duration: duration,
+            ease,
         })
 
+        // bottom
+        socialLinkMaskRefs.current?.forEach((ref) => {
+            if (!ref) return
+            ref.animateOut({
+                direction: "DOWN",
+                duration: maskOutDuration,
+            })
+        })
+
+        const refs = [aboutTitleRef.current, locationTitleRef.current]
+        refs.forEach((ref) => {
+            if (!ref) return
+            ref.animateOut({
+                duration: maskOutDuration,
+                direction: "DOWN",
+            })
+        })
+
+        // Description
         setDescriptionIsOpen(false)
     }
 
     const animateInDescription = () => {
-        const lastLine = linkLineRefs.current[linkLineRefs.current.length - 1]
+        const lastLine = linkLineRefs?.current[linkLineRefs?.current.length - 1]
         if (
             !descriptionTitleRef.current ||
             !descriptionRef.current ||
             !lastLine ||
             !descriptionContainerRef.current ||
             !descriptionContainerInnerRef.current
-        )
+        ) {
             return
+        }
 
         const duration = 0.8
         const ease = "Power3.easeOut"
@@ -153,56 +210,88 @@ const MobileNav = ({ className }) => {
         gsap.killTweensOf([
             descriptionRef.current,
             descriptionContainerRef.current,
+            descriptionContainerInnerRef.current,
         ])
-        gsap.to(descriptionRef.current, { autoAlpha: 1, duration, ease })
-        gsap.to(lastLine, { y: height, duration, ease })
-        gsap.to(descriptionContainerRef.current, { height, duration, ease })
+        gsap.to(descriptionRef.current, {
+            autoAlpha: 1,
+            duration,
+            ease,
+        })
+        gsap.to(lastLine, {
+            y: height,
+            duration,
+            ease,
+        })
+        gsap.to(descriptionContainerRef.current, {
+            height,
+            duration,
+            ease,
+        })
     }
 
     const animateOutDescription = () => {
-        const lastLine = linkLineRefs.current[linkLineRefs.current.length - 1]
+        const lastLine = linkLineRefs?.current[linkLineRefs?.current.length - 1]
         if (
             !descriptionTitleRef.current ||
             !descriptionRef.current ||
             !lastLine ||
-            !descriptionContainerRef.current
-        )
+            !descriptionContainerRef.current ||
+            !descriptionContainerInnerRef.current
+        ) {
             return
+        }
 
+        descriptionTitleRef.current.animateOut({
+            direction: "DOWN",
+        })
         const duration = 0.4
         const ease = "Power3.easeOut"
-
-        descriptionTitleRef.current.animateOut({ direction: "DOWN" })
         gsap.killTweensOf([
             descriptionRef.current,
             descriptionContainerRef.current,
+            descriptionContainerInnerRef.current,
         ])
-        gsap.to(descriptionRef.current, { autoAlpha: 0, duration, ease })
-        gsap.to(lastLine, { y: 0, duration, ease })
-        gsap.to(descriptionContainerRef.current, { height: 0, duration, ease })
+        gsap.to(descriptionRef.current, {
+            autoAlpha: 0,
+            duration,
+            ease,
+        })
+        gsap.to(lastLine, {
+            y: 0,
+            duration,
+            ease,
+        })
+        gsap.to(descriptionContainerRef.current, {
+            height: 0,
+            duration,
+            ease,
+        })
     }
 
     useEffect(() => {
-        if (navigationIsOpen) animateIn()
-        else animateOut()
+        if (navigationIsOpen) {
+            animateIn()
+        } else {
+            animateOut()
+        }
     }, [navigationIsOpen])
 
     useEffect(() => {
-        if (descriptionIsOpen) animateInDescription()
-        else animateOutDescription()
+        if (descriptionIsOpen) {
+            animateInDescription()
+        } else {
+            animateOutDescription()
+        }
     }, [descriptionIsOpen])
 
     return (
         <div
-            className="MobileNav"
-            style={{
-                pointerEvents: navigationIsOpen ? "all" : "none",
-            }}
+            className={`MobileNav ${className || ""} ${navigationIsOpen ? "navIsOpen" : ""}`}
         >
             <div className="MobileNav_bgContainer" ref={bgRef}>
                 <div className="MobileNav_header">
                     <Link
-                        link={{ linkType: "page", link: "home" }}
+                        link={{ linkType: "internal", href: "/" }}
                         className="MobileNav_title"
                         data-themed="color"
                     >
@@ -232,13 +321,8 @@ const MobileNav = ({ className }) => {
                     </ContentMask>
 
                     <ul className="MobileNav_linkList">
-                        {mainLinks.map((link, i) => {
-                            const linkPath = getUrlFromPageType(
-                                link.linkType,
-                                link.link
-                            )
-                            const isActive =
-                                currentPath === linkPath && !descriptionIsOpen
+                        {navigationData?.mainLinks?.map((link, i) => {
+                            const isActive = isActiveLink(link.href)
 
                             return (
                                 <li
@@ -247,41 +331,31 @@ const MobileNav = ({ className }) => {
                                 >
                                     <Link
                                         link={link}
-                                        className="MobileNav_linkList__link"
+                                        className={`MobileNav_linkList__link ${isActive ? "isActive" : ""}`}
                                     >
                                         <span
                                             className="MobileNav_linkList__link__line"
-                                            ref={(el) => {
-                                                linkLineRefs.current[i] = el
+                                            ref={(ref) => {
+                                                linkLineRefs.current[i] = ref
                                             }}
                                         />
                                         <ContentMask
                                             element="span"
-                                            ref={(r) => {
-                                                linkTitleRefs.current[i] = r
+                                            ref={(ref) => {
+                                                linkTitleRefs.current[i] = ref
                                             }}
                                         >
-                                            <span
-                                                className="MobileNav_linkList__link__label"
-                                                style={{
-                                                    opacity: isActive ? 1 : 0.4,
-                                                }}
-                                            >
+                                            <span className="MobileNav_linkList__link__label">
                                                 {link.label}
                                             </span>
                                         </ContentMask>
                                         <ContentMask
                                             element="span"
-                                            ref={(r) => {
-                                                linkIndexRefs.current[i] = r
+                                            ref={(ref) => {
+                                                linkIndexRefs.current[i] = ref
                                             }}
                                         >
-                                            <span
-                                                className="MobileNav_linkList__link__number"
-                                                style={{
-                                                    opacity: isActive ? 1 : 0.4,
-                                                }}
-                                            >
+                                            <span className="MobileNav_linkList__link__number">
                                                 0{i + 1}
                                             </span>
                                         </ContentMask>
@@ -289,101 +363,81 @@ const MobileNav = ({ className }) => {
                                 </li>
                             )
                         })}
-
-                        {drawerData && (
-                            <li>
-                                <button
-                                    className="MobileNav_informationButton"
-                                    onClick={() =>
-                                        setDescriptionIsOpen((p) => !p)
-                                    }
-                                >
-                                    <span
-                                        className="MobileNav_linkList__link__line"
-                                        ref={(el) => {
-                                            linkLineRefs.current[
-                                                mainLinks.length
-                                            ] = el
-                                        }}
-                                    />
-                                    <ContentMask
-                                        element="span"
-                                        ref={(r) => {
-                                            linkTitleRefs.current[
-                                                mainLinks.length
-                                            ] = r
-                                        }}
-                                    >
-                                        <span
-                                            className="MobileNav_informationButton__label"
-                                            data-themed="color"
-                                            style={{
-                                                opacity: descriptionIsOpen
-                                                    ? 1
-                                                    : 0.4,
-                                            }}
-                                        >
-                                            Information
-                                        </span>
-                                    </ContentMask>
-                                    <ContentMask
-                                        element="span"
-                                        ref={(r) => {
-                                            linkIndexRefs.current[
-                                                mainLinks.length
-                                            ] = r
-                                        }}
-                                    >
-                                        <span
-                                            className="MobileNav_informationButton__number"
-                                            data-themed="color"
-                                            style={{
-                                                opacity: descriptionIsOpen
-                                                    ? 1
-                                                    : 0.4,
-                                            }}
-                                        >
-                                            0{mainLinks.length + 1}
-                                        </span>
-                                    </ContentMask>
-                                    <span
-                                        className="MobileNav_linkList__link__line"
-                                        ref={(el) => {
-                                            linkLineRefs.current[
-                                                mainLinks.length
-                                            ] = el
-                                        }}
-                                    />
-                                </button>
-
-                                <div
-                                    className="MobileNav_descriptionContainer"
-                                    ref={descriptionContainerRef}
-                                >
-                                    <div
-                                        className="MobileNav_descriptionContainer__inner"
-                                        ref={descriptionContainerInnerRef}
-                                    >
-                                        <p className="MobileNav_descriptionContainer__title">
-                                            <ContentMask
-                                                element="span"
-                                                ref={descriptionTitleRef}
-                                                text={
-                                                    drawerData.titleDescription
-                                                }
-                                            />
-                                        </p>
-                                        <p
-                                            className="MobileNav_descriptionContainer__description"
-                                            ref={descriptionRef}
-                                        >
-                                            {drawerData.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        )}
                     </ul>
+
+                    <button
+                        className={`MobileNav_informationButton ${descriptionIsOpen ? "isActive" : ""}`}
+                        onClick={() => {
+                            setDescriptionIsOpen((prev) => !prev)
+                        }}
+                    >
+                        <span
+                            className="MobileNav_linkList__link__line"
+                            ref={(ref) => {
+                                linkLineRefs.current[linksLength] = ref
+                            }}
+                        />
+                        <ContentMask
+                            element="span"
+                            ref={(ref) => {
+                                linkTitleRefs.current[
+                                    navigationData?.mainLinks?.length
+                                ] = ref
+                            }}
+                        >
+                            <span
+                                className="MobileNav_informationButton__label"
+                                data-themed="color"
+                            >
+                                Information
+                            </span>
+                        </ContentMask>
+                        <ContentMask
+                            element="span"
+                            ref={(ref) => {
+                                linkIndexRefs.current[
+                                    navigationData?.mainLinks?.length
+                                ] = ref
+                            }}
+                        >
+                            <span
+                                className="MobileNav_informationButton__number"
+                                data-themed="color"
+                            >
+                                0{navigationData?.mainLinks?.length + 1}
+                            </span>
+                        </ContentMask>
+                        <span
+                            className="MobileNav_linkList__link__line"
+                            ref={(ref) => {
+                                linkLineRefs.current[linksLength + 1] = ref
+                            }}
+                        />
+                    </button>
+
+                    <div
+                        className="MobileNav_descriptionContainer"
+                        ref={descriptionContainerRef}
+                    >
+                        <div
+                            className="MobileNav_descriptionContainer__inner"
+                            ref={descriptionContainerInnerRef}
+                        >
+                            <p className="MobileNav_descriptionContainer__title">
+                                <ContentMask
+                                    element="span"
+                                    ref={descriptionTitleRef}
+                                    text={drawerData.descriptionTitle}
+                                />
+                            </p>
+                            <p
+                                className="MobileNav_descriptionContainer__description"
+                                ref={descriptionRef}
+                            >
+                                {drawerData.description}
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="MobileNav_bottomContainer">
@@ -396,8 +450,8 @@ const MobileNav = ({ className }) => {
                                 >
                                     <ContentMask
                                         element="span"
-                                        ref={(r) => {
-                                            socialLinkMaskRefs.current[i] = r
+                                        ref={(ref) => {
+                                            socialLinkMaskRefs.current[i] = ref
                                         }}
                                         innerClassName={
                                             "MobileNav_socialLinks__linkMask"
@@ -417,6 +471,7 @@ const MobileNav = ({ className }) => {
                             ))}
                         </ul>
                     )}
+
                     <div className="MobileNav_bottomTitles">
                         <p className="MobileNav_aboutTitle">
                             <ContentMask element="span" ref={aboutTitleRef}>
