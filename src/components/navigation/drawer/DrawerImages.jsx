@@ -6,16 +6,12 @@ import React, {
 } from "react"
 import gsap from "https://esm.sh/gsap"
 import Image from "../../image/Image.jsx"
+import { useAppContext } from "../../../context/App.js"
 
-const DrawerImages = forwardRef(({ className, workImages }, ref) => {
+const DrawerImages = forwardRef(({ className, items }, ref) => {
+    const { navigationData } = useAppContext()
+    const drawerData = navigationData?.drawerContent
     const containerRef = useRef()
-
-    useEffect(() => {
-        const el = containerRef.current
-        if (!el) return
-        el.style.setProperty("--left-y", "0%")
-        el.style.setProperty("--right-y", "0%")
-    }, [])
 
     const animateIn = (options) => {
         if (!containerRef.current) return
@@ -41,50 +37,45 @@ const DrawerImages = forwardRef(({ className, workImages }, ref) => {
         })
     }
 
-    useImperativeHandle(ref, () => ({ animateIn, animateOut }))
+    useImperativeHandle(ref, () => ({
+        animateIn,
+        animateOut,
+    }))
 
-    if (!workImages?.length) return null
+    if (!drawerData || !items?.length) return null
 
     return (
-        <div ref={containerRef} className="DrawerImages">
+        <div ref={containerRef} className={`DrawerImages ${className || ""}`}>
             <div className="DrawerImages_inner">
-                {workImages.map((image, i) => (
-                    <ProductImageContainer key={i} image={image} />
-                ))}
+                {items?.map((item, i) => {
+                    const isActiveClass = "isActive"
+
+                    return (
+                        <div
+                            key={i}
+                            className={`DrawerImages_workImageContainer`}
+                            ref={(ref) => {
+                                if (ref) {
+                                    setTimeout(() => {
+                                        ref.classList.add(isActiveClass)
+                                    }, 5)
+                                }
+                            }}
+                        >
+                            <Image
+                                src={item.itemImage}
+                                alt={item.itemTitle}
+                                priority
+                                objectFit="cover"
+                                className="DrawerImages_image"
+                            />
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
 })
-
-function ProductImageContainer({ image }) {
-    const ref = useRef(null)
-
-    useEffect(() => {
-        const el = ref.current
-        if (!el) return
-        el.style.setProperty("--left-y", "100%")
-        el.style.setProperty("--right-y", "100%")
-
-        const timer = setTimeout(() => {
-            el.style.setProperty("--left-y", "0%")
-            el.style.setProperty("--right-y", "0%")
-        }, 5)
-
-        return () => clearTimeout(timer)
-    }, [])
-
-    return (
-        <div ref={ref} className="DrawerImages_productImageContainer">
-            <Image
-                src={image}
-                alt=""
-                priority
-                objectFit="cover"
-                className="DrawerImages_image"
-            />
-        </div>
-    )
-}
 
 DrawerImages.displayName = "DrawerImages"
 
