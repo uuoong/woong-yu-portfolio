@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from "react"
 import gsap from "https://esm.sh/gsap"
-import { TRANSITION_DURATION } from "../../data/index.js"
 import { useAppContext } from "../../context/App.js"
 
+const TRANSITION_DURATION = 1.2
+
 const Wipe = ({ className }) => {
-    const { navigationData, setPageIsTransitioning, pageIsTransitioning } =
+    const { pageIsTransitioning, setPageIsTransitioning, navigationData } =
         useAppContext()
-    const drawerData = navigationData?.drawerContent || {}
+    const drawerData = navigationData?.drawerContent
+
     const bgRef = useRef()
     const textLeftRef = useRef()
     const textRightRef = useRef()
@@ -102,17 +104,13 @@ const Wipe = ({ className }) => {
     if (!drawerData) return null
 
     return (
-        <div className="Wipe">
-            <div className="Wipe_wipeBg" ref={bgRef} />
-            <span className="Wipe_titleLeft">
-                <span className="Wipe_titleLeft__inner" ref={textLeftRef}>
-                    {drawerData?.titleType}
-                </span>
+        <div className={`Wipe ${className || ""}`}>
+            <div className="wipeBg" ref={bgRef} />
+            <span className="titleLeft">
+                <span ref={textLeftRef}>{drawerData?.titleType}</span>
             </span>
-            <span className="Wipe_titleRight">
-                <span className="Wipe_titleRight__inner" ref={textRightRef}>
-                    {drawerData?.titleLocation}
-                </span>
+            <span className="titleRight">
+                <span ref={textRightRef}>{drawerData?.titleLocation}</span>
             </span>
         </div>
     )
