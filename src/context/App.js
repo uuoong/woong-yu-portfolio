@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 let _themeCache = null
 
@@ -28,7 +28,41 @@ export function AppProvider({ children }) {
         _setTheme(t)
     }
 
-    const [navData, setNavData] = useState(null)
+    const [currentPath, setCurrentPath] = useState(
+        typeof window !== "undefined" ? window.location.pathname : "/"
+    )
+
+    useEffect(() => {
+        if (typeof window === "undefined") return
+
+        // Initial route settings
+        setCurrentPath(window.location.pathname)
+
+        // 1. Back/Forward (popstate) detection
+        const handlePopState = () => setCurrentPath(window.location.pathname)
+        window.addEventListener("popstate", handlePopState)
+
+        // 2. pushState detection (Monkey Patching)
+        const originalPushState = history.pushState
+        history.pushState = function (...arg) {
+            originalPushState.apply(this, args)
+            setCurrentPath(window.location.pathname)
+        }
+
+        const originalReplaceState = history.replaceState
+        history.replaceState = function (...args) {
+            originalReplaceState.apply(this, args)
+            setCurrentPath(window.location.pathname)
+        }
+
+        return () => {
+            window.removeEventListener("popstate", handlePopState)
+            history.pushState = originalPushState
+            history.replaceState = originalReplaceState
+        }
+    }, [])
+
+    const [navigationData, setNavigationData] = useState(null)
     const [navigationIsOpen, setNavigationIsOpen] = useState(false)
     const [drawerHeight, setDrawerHeight] = useState(0)
     const [pageIsTransitioning, setPageIsTransitioning] = useState(false)
@@ -44,8 +78,10 @@ export function AppProvider({ children }) {
     const value = {
         theme,
         setTheme,
-        navData,
-        setNavData,
+        currentPath,
+        setCurrentPath,
+        navigationData,
+        setNavigationData,
         navigationIsOpen,
         setNavigationIsOpen,
         drawerHeight,
@@ -77,8 +113,10 @@ export function useAppContext() {
         return {
             theme: _getPersistedTheme() || "dark",
             setTheme: () => {},
-            navData: null,
-            setNavData: () => {},
+            currentPath: "/",
+            setCurrentPath: () => {},
+            navigationData: null,
+            setNavigationData: () => {},
             navigationIsOpen: false,
             setNavigationIsOpen: () => {},
             drawerHeight: 0,
