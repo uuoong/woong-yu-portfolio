@@ -1,31 +1,10 @@
-/**
- * PageTransition.jsx
- *
- * 레퍼런스: PageTransition.jsx (원본)
- *
- * ─── 원본 구조 그대로 ─────────────────────────────────────────────────────
- *  AnimatePresence + motion.div (framer-motion)
- *  START_STATE / END_STATE / ANIMATION variants 원본과 동일
- *  onAnimationStart → exit 시 scroll.stop() + setPageIsTransitioning(true)
- *
- * ─── 원본 대비 변경사항 (최소화) ─────────────────────────────────────────
- *  useRouter().asPath   → pathname prop (페이지에서 전달)
- *  useStore             → useAppContext
- *  CSS module           → inline style
- *  classNames           → 제거
- *
- * ─── TRANSITION_DURATION ─────────────────────────────────────────────────
- *  원본: TRANSITION_DURATION = 1.2 (data.js에서 import)
- *  현재: data.js에 TRANSITION_DURATION 추가 → 동일
- */
-
 import React from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { ScrollContext } from "../../context/Scroll.js"
 import { useAppContext } from "../../context/App.js"
-import { TRANSITION_DURATION } from "../../data/index.js"
+import { ScrollContext } from "../../context/Scroll.js"
 
-// ── 원본 상수 그대로 ──────────────────────────────────────────────────────────
+const TRANSITION_DURATION = 1.2
+
 const START_STATE = {
     position: "fixed",
     top: 0,
@@ -44,7 +23,6 @@ const END_STATE = {
     overflow: "visible",
 }
 
-// 원본 ANIMATION 그대로
 const ANIMATION = {
     start: {
         opacity: 0,
@@ -62,14 +40,13 @@ const ANIMATION = {
     },
 }
 
-const PageTransition = ({ className, children, pathname = "/" }) => {
-    const { setPageIsTransitioning, pageIsTransitioning } = useAppContext()
+const PageTransition = ({ className, style, children }) => {
+    const { currentPath, pageIsTransitioning, setPageIsTransitioning } =
+        useAppContext()
     const { scroll } = React.useContext(ScrollContext)
 
     return (
-        <div
-            className={["PageTransition", className].filter(Boolean).join(" ")}
-        >
+        <div className={`PageTransition ${className || ""}`}>
             <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                     onAnimationStart={(state) => {
@@ -83,13 +60,8 @@ const PageTransition = ({ className, children, pathname = "/" }) => {
                     exit="exit"
                     variants={ANIMATION}
                     data-themed="background-color"
-                    key={pathname}
-                    className={[
-                        "page",
-                        pageIsTransitioning && "pageIsTransitioning",
-                    ]
-                        .filter(Boolean)
-                        .join(" ")}
+                    key={currentPath}
+                    className={`page ${pageIsTransitioning ? "pageIsTransitioning" : ""}`}
                     style={{ backgroundColor: "var(--bg)" }}
                 >
                     {children}
