@@ -21,27 +21,46 @@
  *  div wrapper가 없으므로 항상 window.scrollY가 정확한 스크롤 위치.
  */
 
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import gsap from "https://esm.sh/gsap"
-import Navigation from "../../components/navigation/Navigation.jsx"
 import { useAppContext } from "../../context/App.js"
+
 import {
     DRAWER_ANIMATION_CONFIG,
     DRAWER_INNER_ID,
 } from "../../components/navigation/drawer/Drawer.jsx"
-import useBreakpoint from "../../hooks/use_breakpoint.js"
-import Cursor from "../../components/cursor/Cursor.jsx"
-import PageTransition from "../../components/page_transition/PageTransition.jsx"
 
+import Navigation from "../../components/navigation/Navigation.jsx"
+import PageTransition from "../../components/page_transition/PageTransition.jsx"
+import Wipe from "../../components/wipe/Wipe.jsx"
+import Cursor from "../../components/cursor/Cursor.jsx"
+
+import useBreakpoint from "../../hooks/use_breakpoint.js"
+import { TRANSITION_DURATION_MS } from "../../data/index.js"
+
+export const SCROLL_CONTAINER_CLASS = "scrollContainer"
 export const SCROLL_CONTENT_CLASS = "scrollContainerInner"
 export const MAIN_FADE_IN_DURATION = 0.3
 
-const Layout = ({ children }) => {
-    const mainRef = useRef(null)
-    const scrollContentRef = useRef(null)
+const Layout = ({ children, nextItem }) => {
+    const mainRef = useRef()
+    const scrollContentRef = useRef()
+    const cachedNextItemDebounce = useRef()
+    const [cachedNextItem, setCachedNextItem] = useState(nextItem)
 
-    const { showMainContent, navigationIsOpen } = useAppContext()
+    const { showMainContent, navigationIsOpen, capContentHeight, currentPath } =
+        useAppContext()
+
     const { isMobile } = useBreakpoint()
+
+    useEffect(() => {
+        if (cachedNextItemDebounce.current) {
+            clearTimeout(cachedNextItemDebounce.current)
+        }
+        cachedNextItemDebounce.current = setTimeout(() => {
+            setCachedNextItem(nextItem)
+        }, TRANSITION_DURATION_MS)
+    }, [nextItem])
 
     useEffect(() => {
         if (!scrollContentRef.current || isMobile) return
@@ -49,7 +68,7 @@ const Layout = ({ children }) => {
         const config = DRAWER_ANIMATION_CONFIG[navigationIsOpen ? "IN" : "OUT"]
 
         const innerDrawerHeight =
-            document.getElementById(DRAWER_INNER_ID)?.offsetHeight || 0
+            document.getElementById(DRAWER_INNER_ID)?.offsetHeight
 
         gsap.to(scrollContentRef.current, {
             y: navigationIsOpen ? innerDrawerHeight : 0,
@@ -59,31 +78,42 @@ const Layout = ({ children }) => {
     }, [navigationIsOpen, isMobile])
 
     useEffect(() => {
-        if (!showMainContent || !mainRef.current) return
+        if (!showMainContent) return
 
-        const duration = pathname === "/" ? MAIN_FADE_IN_DURATION : 1.2
+        const duration = currentPath === "/" ? MAIN_FADE_IN_DURATION : 1.2
+
         if (showMainContent) {
             document.body.dataset.showMainContent = true
         }
-        gsap.to(mainRef.current, { autoAlpha: 1, duration })
-    }, [showMainContent, pathname])
+        gsap.to(mainRef.current, {
+            autoAlpha: 1,
+            duration,
+        })
+    }, [showMainContent, currentPath])
 
     return (
         <>
             <Navigation />
-            <main id="main" ref={mainRef} data-themed="background-color">
+            <main
+                id="main"
+                ref={mainRef}
+                className={`
+                ${SCROLL_CONTAINER_CLASS}
+                ${capContentHeight ? "disableScroll" : ""}
+                `}
+                data-themed="background-color"
+            >
                 <div
                     ref={scrollContentRef}
-                    className={`${SCROLL_CONTENT_CLASS}`}
-                    style={{
-                        display: "block",
-                        zIndex: 2,
-                        position: "relative",
-                    }}
+                    className={`
+                    ${SCROLL_CONTENT_CLASS}
+                    ${cachedNextItem ? "hasNextItem" : ""}
+                    `}
                 >
                     <PageTransition>{children}</PageTransition>
                 </div>
             </main>
+            <Wipe />
             <Cursor />
         </>
     )
