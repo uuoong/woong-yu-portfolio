@@ -1,25 +1,4 @@
-/**
- * Drawer.jsx
- *
- * 레퍼런스: Drawer.jsx (원본)
- *
- * ─── drawerData 경로 변경 ─────────────────────────────────────────────────
- *  원본: globalData?.navigation?.DrawerContent
- *  현재: navData?.drawerContent  (AppContext의 navData)
- *
- * ─── materialsListProduct → worksListItems ───────────────────────────────
- *  원본: drawerData.materialsListProduct.productData.variants (Sanity 제품 변형)
- *  현재: drawerData.worksListItems [{ label, image }] (직접 관리)
- *  이유: Sanity CMS 없음, 작업 목록을 data.js에서 직접 관리
- *
- * ─── 원본 구조 그대로 ─────────────────────────────────────────────────────
- *  forwardRef + useImperativeHandle (getElement)
- *  animateIn / animateOut — 원본 GSAP 로직 그대로
- *  ContentMask refs (upperItems, bottomItems 분류)
- *  materialImages state → 첫 번째 이미지 초기화 + hover 스택 추가
- */
-
-import {
+import React, {
     forwardRef,
     useCallback,
     useEffect,
@@ -27,7 +6,7 @@ import {
     useRef,
     useState,
 } from "react"
-import gsap from "gsap"
+import gsap from "https://esm.sh/gsap"
 import ContentMask from "../../content_mask/ContentMask.jsx"
 import DrawerImages from "./DrawerImages.jsx"
 import Link from "../../link/Link.jsx"
@@ -39,106 +18,100 @@ export const DRAWER_ANIMATION_CONFIG = {
     OUT: { duration: 0.8, ease: "Power3.easeOut" },
 }
 
-export const DRAWER_INNER_ID = "drawer-innnnurrrrr"
+export const DRAWER_INNER_ID = "drawer-inner"
 
 const Drawer = forwardRef(({ className }, ref) => {
     const {
-        navData,
+        navigationData,
         navigationIsOpen,
         setNavigationIsOpen,
         setCursorState,
-        setDrawerHeight,
     } = useAppContext()
 
-    const drawerData = navData?.drawerContent
+    const drawerData = navigationData?.drawerContent
 
-    const [materialImages, setMaterialImages] = useState([])
+    const [images, setImages] = useState([])
 
     const containerRef = useRef()
     const bgRef = useRef()
+    const overlayRef = useRef()
     const closeButtonTextRef = useRef()
-    const materialItemRefs = useRef([])
-    const socialLinkMaskRefs = useRef([])
-    const materialTitleRef = useRef()
+
+    const listTitleRef = useRef()
+    const listItemRefs = useRef([])
+    const imagesRef = useRef()
+
     const descriptionTitleRef = useRef()
     const descriptionRef = useRef()
     const aboutTitleRef = useRef()
     const locationTitleRef = useRef()
     const contactTitleRef = useRef()
-    const overlayRef = useRef()
-    const productImagesRef = useRef()
-
-    useEffect(() => {
-        const el =
-            containerRef.current || document.getElementById(DRAWER_INNER_ID)
-        if (el && setDrawerHeight) setDrawerHeight(el.offsetHeight)
-    }, [])
-
-    useEffect(() => {
-        const firstItem = drawerData?.worksListItems?.[0]
-        if (!firstItem?.image) return
-        setMaterialImages([firstItem.image])
-    }, [drawerData])
+    const socialLinkMaskRefs = useRef([])
 
     const animateIn = useCallback(() => {
+        const duration = DRAWER_ANIMATION_CONFIG.IN.duration
+        const ease = DRAWER_ANIMATION_CONFIG.IN.ease
+
         gsap.killTweensOf([
             bgRef.current,
             descriptionRef.current,
             overlayRef.current,
         ])
 
-        const duration = DRAWER_ANIMATION_CONFIG.IN.duration
-        const ease = DRAWER_ANIMATION_CONFIG.IN.ease
-
         gsap.to(bgRef.current, { scaleY: 1, duration, ease })
+
         gsap.to(overlayRef.current, { autoAlpha: 0.5, duration, ease })
+
         gsap.to(descriptionRef.current, {
             autoAlpha: 1,
             duration,
-            ease,
             delay: duration * 0.5,
+            ease,
         })
 
         const upperItems = [
             closeButtonTextRef.current,
-            ...materialItemRefs.current,
-            materialTitleRef.current,
             descriptionTitleRef.current,
-        ].filter(Boolean)
+            listTitleRef.current,
+            ...listItemRefs.current,
+        ]
 
         const bottomItems = [
-            ...socialLinkMaskRefs.current.filter(Boolean),
             aboutTitleRef.current,
             locationTitleRef.current,
             contactTitleRef.current,
-        ].filter(Boolean)
+            ...socialLinkMaskRefs.current,
+        ]
 
-        upperItems.forEach((item) =>
-            item.animateIn?.({ delay: duration * 0.3 })
-        )
-        bottomItems.forEach((item) =>
-            item.animateIn?.({ delay: duration * 0.7 })
-        )
+        upperItems.forEach((item) => {
+            item.animateIn({ delay: duration * 0.3 })
+        })
 
-        productImagesRef.current?.animateIn({
+        bottomItems.forEach((item) => {
+            item.animateIn({ delay: duration * 0.7 })
+        })
+
+        imagesRef.current?.animateIn({
             duration: duration * 1.2,
-            ease,
             delay: duration * 0.25,
+            ease,
         })
     }, [])
 
     const animateOut = useCallback(() => {
+        const duration = DRAWER_ANIMATION_CONFIG.OUT.duration
+        const ease = DRAWER_ANIMATION_CONFIG.OUT.ease
+
         gsap.killTweensOf([
             bgRef.current,
             descriptionRef.current,
             overlayRef.current,
         ])
 
-        const duration = DRAWER_ANIMATION_CONFIG.OUT.duration
-        const ease = DRAWER_ANIMATION_CONFIG.OUT.ease
-
         gsap.to(bgRef.current, { scaleY: 0, duration, ease })
+
         gsap.to(overlayRef.current, { autoAlpha: 0, duration, ease })
+
         gsap.to(descriptionRef.current, {
             autoAlpha: 0,
             duration: duration * 0.5,
@@ -147,40 +120,53 @@ const Drawer = forwardRef(({ className }, ref) => {
 
         const upperItems = [
             closeButtonTextRef.current,
-            ...materialItemRefs.current,
-            materialTitleRef.current,
             descriptionTitleRef.current,
-        ].filter(Boolean)
+            listTitleRef.current,
+            ...listItemRefs.current,
+        ]
 
         const bottomItems = [
-            ...socialLinkMaskRefs.current.filter(Boolean),
             aboutTitleRef.current,
             locationTitleRef.current,
             contactTitleRef.current,
-        ].filter(Boolean)
+            ...socialLinkMaskRefs.current,
+        ]
 
         upperItems.forEach((item) => item.animateOut?.({ duration }))
+
         bottomItems.forEach((item) => item.animateOut?.({ duration: 0.1 }))
 
-        productImagesRef.current?.animateOut({
+        imagesRef.current?.animateOut({
             duration: duration * 0.25,
             ease,
         })
     }, [])
 
-    useImperativeHandle(ref, () => ({ getElement: () => containerRef.current }))
+    useImperativeHandle(ref, () => ({
+        getElement: () => {
+            return containerRef.current
+        },
+    }))
 
     useEffect(() => {
-        if (navigationIsOpen) animateIn()
-        else animateOut()
+        if (navigationIsOpen) {
+            animateIn()
+        } else {
+            animateOut()
+        }
     }, [navigationIsOpen, animateIn, animateOut])
+
+    useEffect(() => {
+        if (!drawerData?.list?.length) return
+        setImages([drawerData.list[0].itemImage])
+    }, [drawerData])
 
     if (!drawerData) return null
 
     return (
         <div
             ref={containerRef}
-            className="Drawer"
+            className={`Drawer ${className || ""} ${navigationIsOpen ? "navigationIsOpen" : ""}`}
             aria-hidden={!navigationIsOpen}
         >
             <div className="Drawer_navigationDrawerInner" id={DRAWER_INNER_ID}>
@@ -189,7 +175,9 @@ const Drawer = forwardRef(({ className }, ref) => {
                 <div className="Drawer_navigationDrawerInner__content">
                     <button
                         className="Drawer_closeButton"
-                        onClick={() => setNavigationIsOpen(false)}
+                        onClick={() => {
+                            setNavigationIsOpen(false)
+                        }}
                     >
                         <ContentMask element="span" ref={closeButtonTextRef}>
                             <span
@@ -207,7 +195,7 @@ const Drawer = forwardRef(({ className }, ref) => {
                                 <ContentMask
                                     element="span"
                                     ref={descriptionTitleRef}
-                                    text={drawerData?.titleDescription}
+                                    text={drawerData?.descriptionTitle}
                                 />
                             </p>
                             <p
@@ -218,48 +206,44 @@ const Drawer = forwardRef(({ className }, ref) => {
                             </p>
                         </div>
 
-                        {drawerData?.worksListItems?.length > 0 && (
+                        {drawerData.list && (
                             <div className="Drawer_finishesListContainer">
                                 <p className="Drawer_finishesListTitle">
                                     <ContentMask
                                         element="span"
-                                        ref={materialTitleRef}
-                                        text="Works"
+                                        ref={listTitleRef}
+                                        text="Title"
                                     />
                                 </p>
                                 <ul className="Drawer_finishesList">
-                                    {drawerData.worksListItems.map(
-                                        (item, i) => (
-                                            <li
-                                                key={i}
-                                                className="Drawer_finishesList__item"
+                                    {drawerData.list.map((item, i) => (
+                                        <li
+                                            key={i}
+                                            className="Drawer_finishesList__item"
+                                        >
+                                            <button
+                                                className="Drawer_finishesList__button"
+                                                onMouseEnter={() => {
+                                                    setImages((prev) => {
+                                                        return [
+                                                            ...prev,
+                                                            item.itemImage,
+                                                        ]
+                                                    })
+                                                }}
                                             >
-                                                <button
-                                                    className="Drawer_finishesList__button"
-                                                    onMouseEnter={() => {
-                                                        if (item.image) {
-                                                            setMaterialImages(
-                                                                (prev) => [
-                                                                    ...prev,
-                                                                    item.image,
-                                                                ]
-                                                            )
-                                                        }
+                                                <ContentMask
+                                                    element="span"
+                                                    ref={(ref) => {
+                                                        listItemRefs.current[
+                                                            i
+                                                        ] = ref
                                                     }}
-                                                >
-                                                    <ContentMask
-                                                        element="span"
-                                                        ref={(r) => {
-                                                            materialItemRefs.current[
-                                                                i
-                                                            ] = r
-                                                        }}
-                                                        text={item.label}
-                                                    />
-                                                </button>
-                                            </li>
-                                        )
-                                    )}
+                                                    text={item.itemTitle}
+                                                ></ContentMask>
+                                            </button>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         )}
@@ -286,7 +270,7 @@ const Drawer = forwardRef(({ className }, ref) => {
                                 <Link
                                     link={{
                                         linkType: "external",
-                                        link: `mailto:${drawerData?.contactEmail}`,
+                                        href: `mailto:${drawerData?.contactEmail}`,
                                         label: drawerData?.contactEmail,
                                     }}
                                 />
@@ -301,11 +285,12 @@ const Drawer = forwardRef(({ className }, ref) => {
                                         key={i}
                                     >
                                         <ContentMask
-                                            element="span"
-                                            ref={(r) => {
+                                            ref={(ref) => {
                                                 socialLinkMaskRefs.current[i] =
-                                                    r
+                                                    ref
                                             }}
+                                            innerClassName="Drawer_socialLinks__linkMask"
+                                            element="span"
                                         >
                                             <Link
                                                 className="Drawer_socialLinks__link"
@@ -321,13 +306,11 @@ const Drawer = forwardRef(({ className }, ref) => {
                                 ))}
                             </ul>
                         )}
-                        <DrawerImages
-                            ref={productImagesRef}
-                            productImages={materialImages}
-                        />
+                        <DrawerImages ref={imagesRef} items={images} />
                     </div>
                 </div>
             </div>
+
             <div
                 className="Drawer_overlay"
                 ref={overlayRef}
