@@ -1,4 +1,4 @@
-.Wipe {
+/* .Wipe {
   position: fixed;
   top: 0;
   left: 0;
@@ -52,4 +52,58 @@
     font-size: calc(var(--unit) * 26);
     line-height: var(--line-height-tight);
   }
+} */
+
+/* Wipe.css */
+.Wipe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 110;
+    pointer-events: none;
+    color: var(--fg-invert);
+}
+
+.wipeBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-invert);
+    /* clip-path와 transform은 framer-motion이 inline style로 제어 */
+    will-change: clip-path, transform;
+}
+
+.titleLeft,
+.titleRight {
+    font-family: "Neue Haas Grotesk Display Pro", sans-serif;
+    font-style: normal;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    font-weight: 500;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media (min-width: 967px) {
+    .titleLeft,
+    .titleRight {
+        font-size: 1.6rem;
+        line-height: 1.6rem;
+    }
+}
+
+.titleLeft  { left:  var(--page-gutter); }
+.titleRight { right: var(--page-gutter); }
+
+.titleLeft__inner,
+.titleRight__inner {
+    white-space: pre-line;
+    display: inline-block;
+    /* opacity와 y는 framer-motion이 inline style로 제어 */
+    will-change: opacity, transform;
 }
