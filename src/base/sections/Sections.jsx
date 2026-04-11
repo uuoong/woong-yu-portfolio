@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useMemo } from "react"
-import SectionContainer from "../../base/SectionContainer/SectionContainer.jsx"
+import SectionContainer from "../../base/section_container/SectionContainer.jsx"
 import { ScrollContext } from "../../context/Scroll.js"
 import useBreakpoint from "../../hooks/use_breakpoint.js"
 import { buildIdFromText } from "../../utils/index.js"
@@ -18,7 +18,7 @@ const SECTIONS = {
     // 새 섹션 추가: fourOhFour: FourOhFour,
 }
 
-function Sections({ sections, infiniteScroll, hasFooter, pageSlug }) {
+const Sections = ({ sections, infiniteScroll, hasFooter, pageSlug }) => {
     const { initScroll } = React.useContext(ScrollContext)
     const { isMobile } = useBreakpoint()
 
@@ -92,4 +92,5 @@ function Sections({ sections, infiniteScroll, hasFooter, pageSlug }) {
     )
 }
 
+Sections.displayName = "Sections"
 export default Sections
