@@ -10,8 +10,6 @@
  *  → Scroll.js가 deviceInfo.device.type, deviceInfo.browser.chrome를 그대로 사용 가능
  */
 
-// ─── 기본 유틸 ────────────────────────────────────────────────────────────────
-
 export const wait = (ms = 0) => new Promise((r) => setTimeout(r, ms))
 
 export const lerp = (cur, target, ease = 0.1) => cur + (target - cur) * ease
