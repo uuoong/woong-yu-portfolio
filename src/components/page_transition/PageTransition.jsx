@@ -2,8 +2,7 @@ import React from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useAppContext } from "../../context/App.js"
 import { ScrollContext } from "../../context/Scroll.js"
-
-const TRANSITION_DURATION = 1.2
+import { TRANSITION_DURATION } from "../../data/index.js"
 
 const START_STATE = {
     position: "fixed",
@@ -46,7 +45,7 @@ const PageTransition = ({ className, style, children }) => {
     const { scroll } = React.useContext(ScrollContext)
 
     return (
-        <div className={`PageTransition ${className || ""}`}>
+        <div className="PageTransition">
             <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                     onAnimationStart={(state) => {
