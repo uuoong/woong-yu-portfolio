@@ -1,30 +1,9 @@
 import React, { useEffect } from "react"
+import { useAppContext } from "../../context/App.js"
+import Sections from "../../base/sections/Sections.jsx"
+import { HOME_SECTIONS, NAV_DATA } from "../../data/index.js"
 
-import {
-    AppProvider,
-    useAppContext,
-    ScrollProvider,
-    SceneProvider,
-    Layout,
-    Sections,
-    NAV_DATA,
-    HOME_SECTIONS,
-} from "https://framer.com/m/index-ShqOMv.js@qSKteEoI1TQ5w9xyL5Pd"
-
-// ─── Page Entry ───────────────────────────────────────────────────────────────
-export default function PageHome() {
-    return (
-        <AppProvider>
-            <AppInit>
-                <Providers>
-                    <HomeContent />
-                </Providers>
-            </AppInit>
-        </AppProvider>
-    )
-}
-
-function AppInit({ children }) {
+export default function Home() {
     const {
         setNavigationData,
         setShowMainContent,
@@ -33,27 +12,17 @@ function AppInit({ children }) {
 
     useEffect(() => {
         setNavigationData(NAV_DATA)
+
         const timer = setTimeout(() => {
             setLoaderAnimationComplete?.(true)
             setShowMainContent?.(true)
         }, 300)
-        return () => clearTimeout(timer)
+
+        return () => {
+            clearTimeout(timer)
+            setShowMainContent?.(false)
+        }
     }, [setNavigationData, setLoaderAnimationComplete, setShowMainContent])
 
-    return children
-}
-
-function Providers({ children }) {
-    return (
-        <ScrollProvider>
-            <SceneProvider>
-                <Layout>{children}</Layout>
-            </SceneProvider>
-        </ScrollProvider>
-    )
-}
-
-// ─── Content ─────────────────────────────────────────────────────────────────
-function HomeContent() {
     return <Sections sections={HOME_SECTIONS} hasFooter infiniteScroll />
 }
