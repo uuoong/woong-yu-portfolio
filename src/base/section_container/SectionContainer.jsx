@@ -19,35 +19,6 @@ const SectionContainer = ({
 
     const newElement = cloneElement(children, { sectionId: id })
 
-    // const sectionStyle = {
-    //     color: "var(--fg-primary)",
-
-    //     margin: "calc(var(--section-spacing) * 0.5) 0",
-
-    //     ...(isFirst && {
-    //         marginTop: 0,
-    //         paddingTop: "var(--section-spacing)",
-    //     }),
-
-    //     ...(isLast && {
-    //         marginBottom: 0,
-    //         paddingBottom: "calc(var(--section-spacing) * 0.5)",
-    //     }),
-
-    //     ...(isInfiniteDuplicate && {
-    //         height: "100svh",
-    //         overflow: "hidden",
-    //         position: "relative",
-    //         marginTop: 0,
-    //         paddingTop: "var(--section-spacing)",
-    //     }),
-
-    //     ...(hiddenOnMobile &&
-    //         isMobile && {
-    //             display: "none",
-    //         }),
-    // }
-
     return (
         <section
             id={id}
