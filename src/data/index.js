@@ -1,3 +1,15 @@
+// Paths
+export const HOME_PATH = "/"
+export const FOUR_OH_FOUR_PATH = "/404"
+export const WORKS_PATH = "/works"
+
+// Link Types
+export const LINK_TYPE = {
+    INTERNAL: "internal",
+    EXTERNAL: "external",
+    DISABLED: "disabled",
+}
+
 // Transitions
 export const TRANSITION_DURATION = 1.2
 // export const TRANSITION_DURATION = 40.2
@@ -10,9 +22,21 @@ export const NAV_DATA = {
     timeZone: "SEOUL",
 
     mainLinks: [
-        { linkType: "internal", href: "/works", label: "Work" },
-        { linkType: "internal", href: "/about", label: "About" },
-        { linkType: "internal", href: "/contact", label: "Contact" },
+        {
+            linkType: LINK_TYPE.INTERNAL,
+            href: WORKS_PATH,
+            label: "Work",
+        },
+        {
+            linkType: LINK_TYPE.INTERNAL,
+            href: "/about",
+            label: "About",
+        },
+        {
+            linkType: LINK_TYPE.INTERNAL,
+            href: "/contact",
+            label: "Contact",
+        },
     ],
 
     drawerContent: {
@@ -26,12 +50,12 @@ export const NAV_DATA = {
         copyright: "© 2025 Woong Yu",
         socialLinks: [
             {
-                linkType: "external",
+                linkType: LINK_TYPE.EXTERNAL,
                 href: "https://instagram.com",
                 label: "Instagram",
             },
             {
-                linkType: "external",
+                linkType: LINK_TYPE.EXTERNAL,
                 href: "https://linkedin.com",
                 label: "LinkedIn",
             },
@@ -42,19 +66,19 @@ export const NAV_DATA = {
         list: [
             {
                 itemTitle: "Project Alpha",
-                itemImage: "https://picsum.photos/1920/1080?random=1",
+                itemImage: "/1.jpg",
             },
             {
                 itemTitle: "Project Beta",
-                itemImage: "https://picsum.photos/1920/1080?random=2",
+                itemImage: "/2.jpg",
             },
             {
                 itemTitle: "Project Gamma",
-                itemImage: "https://picsum.photos/1920/1080?random=3",
+                itemImage: "/3.jpg",
             },
             {
                 itemTitle: "Project Gamma",
-                itemImage: "https://picsum.photos/1920/1080?random=4",
+                itemImage: "/4.jpg",
             },
         ],
     },
@@ -144,14 +168,14 @@ export const CONTENT = {
                     title: "Project Alpha",
                     category: "Digital Experience",
                     year: "2025",
-                    image: "https://images.unsplash.com/photo-1549880181-56a44cf4a9a5?q=80&w=1600",
+                    image: "https://woong-yu-portfolio.vercel.app/assets/images/8.jpg",
                 },
                 {
                     slug: "project-beta",
                     title: "Project Beta",
                     category: "Product Design",
                     year: "2024",
-                    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200",
+                    image: "https://woong-yu-portfolio.vercel.app/assets/images/9.jpg",
                 },
             ],
         },
