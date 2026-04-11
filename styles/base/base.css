@@ -62,6 +62,7 @@ main {
 .scrollContainer {
 	position: relative;
 	width: 100%;
+	opacity: 0;
 }
 
 .scrollContainer.disableScroll {
