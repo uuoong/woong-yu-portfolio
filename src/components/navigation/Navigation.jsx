@@ -8,9 +8,8 @@ import Link from "../link/Link.jsx"
 import ThemeToggle from "../theme_toggle/ThemeToggle.jsx"
 import Drawer, { DRAWER_ANIMATION_CONFIG } from "./drawer/Drawer.jsx"
 import MobileNav from "./mobile/MobileNav.jsx"
-import { DOC_TYPES } from "../../data/index.js"
 
-const { navigationDrawerAnimationDistance } = "52.2rem"
+const navigationDrawerAnimationDistance = "52.2rem"
 
 export const HEADER_ID = "site-header"
 const SCROLL_CALLBACK_KEY = "scroll-key"
@@ -51,7 +50,7 @@ const Navigation = () => {
         const config = DRAWER_ANIMATION_CONFIG[navigationIsOpen ? "IN" : "OUT"]
         gsap.killTweensOf(navigationRef.current)
         gsap.to(navigationRef.current, {
-            y: navigationIsOpen ? navigationDrawerAnimationDistance : 0,
+            y: navigationIsOpen ? navigationDrawerAnimationDistance : "0rem",
             ease: config.ease,
             duration: config.duration,
         })
@@ -100,11 +99,7 @@ const Navigation = () => {
                         <Link
                             link={{
                                 linkType: "internal",
-                                link: {
-                                    _id: "anyString",
-                                    _type: DOC_TYPES.PAGE,
-                                    slug: "home",
-                                },
+                                href: "/",
                             }}
                             className="Navigation_title"
                             data-themed="color"
