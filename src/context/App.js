@@ -21,7 +21,10 @@ function _persistTheme(theme) {
 const AppContext = React.createContext(null)
 
 export function AppProvider({ children }) {
-    const [theme, _setTheme] = useState(() => _getPersistedTheme() || "dark")
+    const [theme, _setTheme] = useState(() => {
+        if (typeof window === "undefined") return "dark"
+        return _getPersistedTheme() || "dark"
+    })
 
     const setTheme = (t) => {
         _persistTheme(t)
@@ -44,7 +47,7 @@ export function AppProvider({ children }) {
 
         // 2. pushState detection (Monkey Patching)
         const originalPushState = history.pushState
-        history.pushState = function (...arg) {
+        history.pushState = function (...args) {
             originalPushState.apply(this, args)
             setCurrentPath(window.location.pathname)
         }
@@ -57,6 +60,7 @@ export function AppProvider({ children }) {
 
         return () => {
             window.removeEventListener("popstate", handlePopState)
+
             history.pushState = originalPushState
             history.replaceState = originalReplaceState
         }
