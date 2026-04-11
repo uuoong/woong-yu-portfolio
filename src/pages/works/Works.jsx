@@ -1,65 +1,28 @@
-/**
- * PageAbout.jsx — About 페이지
- */
-
 import React, { useEffect } from "react"
+import { useAppContext } from "../../context/App.js"
+import Sections from "../../base/sections/Sections.jsx"
+import { WORKS_SECTIONS, NAV_DATA } from "../../data/index.js"
 
-import {
-    AppProvider,
-    useAppContext,
-    ScrollProvider,
-    SceneProvider,
-    Layout,
-    Sections,
-    NAV_DATA,
-    WORKS_SECTIONS,
-} from "https://framer.com/m/index-ShqOMv.js@anZZqReKgnlpL3Q2zV7o"
-
-export default function PageWorks() {
-    return (
-        <AppProvider>
-            <AppInit>
-                <Providers>
-                    <WorksContent />
-                </Providers>
-            </AppInit>
-        </AppProvider>
-    )
-}
-
-// ─── Providers ────────────────────────────────────────────────────────────────
-function AppInit({ children }) {
-    const { setNavData, setShowMainContent, setLoaderAnimationComplete } =
-        useAppContext()
+export default function Works() {
+    const {
+        setNavigationData,
+        setShowMainContent,
+        setLoaderAnimationComplete,
+    } = useAppContext()
 
     useEffect(() => {
-        setNavData(NAV_DATA)
-        setTimeout(() => {
-            setLoaderAnimationComplete(true)
-            setShowMainContent(true)
+        setNavigationData(NAV_DATA)
+
+        const timer = setTimeout(() => {
+            setLoaderAnimationComplete?.(true)
+            setShowMainContent?.(true)
         }, 300)
-    }, []) // eslint-disable-line
 
-    return children
-}
+        return () => {
+            clearTimeout(timer)
+            setShowMainContent?.(false)
+        }
+    }, [setNavigationData, setLoaderAnimationComplete, setShowMainContent])
 
-function Providers({ children }) {
-    return (
-        <ScrollProvider pathname="/works">
-            {/* SceneProvider: WorksGL 섹션이 GLImage를 사용 */}
-            <SceneProvider>
-                <Layout>{children}</Layout>
-            </SceneProvider>
-        </ScrollProvider>
-    )
-}
-
-function WorksContent() {
-    return (
-        <Sections
-            sections={WORKS_SECTIONS}
-            hasFooter
-            // infiniteScroll 없음 (home만 무한 스크롤)
-        />
-    )
+    return <Sections sections={WORKS_SECTIONS} hasFooter />
 }
