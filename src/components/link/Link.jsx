@@ -1,7 +1,7 @@
-import React, { forwardRef } from "react"
+import React, { forwardRef, useState } from "react"
 import { ScrollContext } from "../../context/Scroll.js"
 import { useAppContext } from "../../context/App.js"
-import { getUrlFromPageType } from "../../utils/index.js"
+import { TRANSITION_DURATION_MS } from "../../data/index.js"
 
 export const HEADER_ID = "site-header"
 
@@ -28,40 +28,25 @@ const Link = forwardRef(
         const { currentPath, setCursorState, setPageIsTransitioning } =
             useAppContext()
 
-        // const isExternal = link?.isExternal || false
-
         if (linkType === "disabled") {
             return null
         }
 
-        if (typeof url !== "string" && linkType === "external") {
+        if (!href && linkType === "external") {
             return null
         }
 
-        if (typeof url !== "object" && linkType === "internal") {
+        if (!href && linkType === "internal") {
             return null
         }
 
-        const handleMouseEnter = (event) => {
+        const handleMouseEnter = (e) => {
             setCursorState("FOCUS")
-
-            if (onMouseEnter) {
-                onMouseEnter(event)
-            }
+            onMouseEnter?.(e)
         }
-
-        const handleMouseLeave = (event) => {
+        const handleMouseLeave = (e) => {
             setCursorState(null)
-
-            if (onMouseLeave) {
-                onMouseLeave(event)
-            }
-        }
-
-        const handleClick = (event) => {
-            if (onClick) {
-                onClick(event)
-            }
+            onMouseLeave?.(e)
         }
 
         if (linkType === "external") {
@@ -69,37 +54,41 @@ const Link = forwardRef(
                 <a
                     ref={ref}
                     aria-label={ariaLabel}
-                    href={typeof url === "string" ? url : ""}
+                    href={href}
                     className={className}
                     style={style}
                     target={disableOpenNewTab ? "_self" : "_blank"}
                     rel="noreferrer"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                    onClick={handleClick}
-                    data-themed={disableThemeAttribute ? "" : "color"}
+                    onClick={(e) => onClick?.(e)}
+                    {...(!disableThemeAttribute && { "data-themed": "color" })}
                 >
                     {label && !children && !linkOnly && (
                         <span data-themed="color">{label}</span>
                     )}
-                    {children && children}
+                    {children}
                 </a>
             )
-        } else if (linkType === "internal") {
-            const urlObject = url
-            const slug = typeof url === "object" ? url.slug : ""
-            const path = getUrlFromPageType(urlObject?._type, slug)
+        }
+
+        if (linkType === "internal") {
+            const path = href
+            const fullHref = `${path}${hash ? `#${hash}` : ""}`
             const goesToOtherPage = currentPath !== path
-            const hasHashOnSamePage = !goesToOtherPage && hash
-            const isCurrentPage = !hasHashOnSamePage && !goesToOtherPage
+            const hasHashOnSamePage = !goesToOtherPage && !!hash
+            const isCurrentPage = !goesToOtherPage && !hash
 
             const props = {
+                ref,
                 "aria-label": ariaLabel,
-                ref: ref,
-                className:
-                    `${className || ""} ${hasHashOnSamePage ? "hashLink" : ""} ${
-                        isCurrentPage ? "inactive" : ""
-                    }`.trim(),
+                className: [
+                    className,
+                    hasHashOnSamePage ? "hashLink" : "",
+                    isCurrentPage ? "inactive" : "",
+                ]
+                    .filter(Boolean)
+                    .join(" "),
                 style: {
                     ...(hasHashOnSamePage && { cursor: "pointer" }),
                     ...(isCurrentPage && {
@@ -108,83 +97,78 @@ const Link = forwardRef(
                     }),
                     ...style,
                 },
-
-                onClick: (e) => {
-                    if (onClick) {
-                        onClick(e)
-                    }
-
-                    if (hasHashOnSamePage) {
-                        e.preventDefault()
-                        const header = document.getElementById(HEADER_ID)
-                        const id = document.getElementById(hash)
-
-                        if (id && scroll && header) {
-                            const distance = Math.abs(
-                                id?.offsetTop - header.offsetTop
-                            )
-                            const duration = 1 + distance / 20000
-
-                            scroll.scrollTo(id, {
-                                offset: header.offsetHeight * 2 * -1,
-                                //easeInOutCirc function
-                                easing: (x) =>
-                                    x < 0.5
-                                        ? (1 -
-                                              Math.sqrt(
-                                                  1 - Math.pow(2 * x, 2)
-                                              )) /
-                                          2
-                                        : (Math.sqrt(
-                                              1 - Math.pow(-2 * x + 2, 2)
-                                          ) +
-                                              1) /
-                                          2,
-                                // immediate: true,
-                                duration,
-                            })
-                        }
-                    }
-                },
-                onMouseEnter: (event) => {
-                    setCursorState("FOCUS")
-
-                    if (onMouseEnter) {
-                        onMouseEnter(event)
-                    }
-                },
-                onMouseLeave: (event) => {
-                    setCursorState(null)
-
-                    if (onMouseLeave) {
-                        onMouseLeave(event)
-                    }
-                },
+                onMouseEnter: handleMouseEnter,
+                onMouseLeave: handleMouseLeave,
+                ...(!disableThemeAttribute && {
+                    "data-themed": dataTheme || "color",
+                }),
             }
+            const handleClick = (e) => {
+                onClick?.(e)
 
-            if (!disableThemeAttribute) {
-                props["data-themed"] = dataTheme || "color"
+                // ── 해시 스크롤 (같은 페이지)
+                if (hasHashOnSamePage) {
+                    e.preventDefault()
+                    const header = document.getElementById(HEADER_ID)
+                    const target = document.getElementById(hash)
+                    if (target && scroll && header) {
+                        const distance = Math.abs(
+                            target.offsetTop - header.offsetTop
+                        )
+                        scroll.scrollTo(target, {
+                            offset: header.offsetHeight * 2 * -1,
+                            easing: (x) =>
+                                x < 0.5
+                                    ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) /
+                                      2
+                                    : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) +
+                                          1) /
+                                      2,
+                            duration: 1 + distance / 20000,
+                        })
+                    }
+                    return
+                }
+
+                // ── 페이지 전환
+                if (goesToOtherPage) {
+                    e.preventDefault()
+
+                    // 1. 현재 페이지에서 화면 덮기 시작
+                    setPageIsTransitioning(true)
+
+                    setTimeout(() => {
+                        // AppContext가 변경을 감지하여 알맞은 Page 컴포넌트로 교체해 줍니다.
+                        window.history.pushState(null, "", link.href)
+
+                        // 3. 아주 짧은 딜레이 후 Wipe 애니메이션 해제 -> 위로 자연스럽게 사라짐
+                        setTimeout(() => {
+                            setPageIsTransitioning(false)
+                        }, 50)
+                    }, TRANSITION_DURATION_MS)
+                }
             }
 
             if (hasHashOnSamePage) {
                 return (
-                    <span {...props}>
+                    <span {...props} onClick={handleClick}>
                         {label && !children && <span>{label}</span>}
-                        {children && children}
+                        {children}
                     </span>
                 )
             }
 
             props.scroll = false
-            props.href = `${path}${hash ? `#${hash}` : ""}`
 
             return (
-                <a {...props}>
+                <a {...props} href={fullHref} onClick={handleClick}>
                     {label && !children && <span>{label}</span>}
-                    {children && children}
+                    {children}
                 </a>
             )
         }
+
+        return null
     }
 )
 
