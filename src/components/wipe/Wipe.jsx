@@ -1,12 +1,14 @@
-import React, { useEffect, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import gsap from "https://esm.sh/gsap"
+
 import { useAppContext } from "../../context/App.js"
 
-const TRANSITION_DURATION = 1.2
+import { TRANSITION_DURATION } from "../../data/index.js"
 
 const Wipe = ({ className }) => {
-    const { pageIsTransitioning, setPageIsTransitioning, navigationData } =
+    const { navigationData, setPageIsTransitioning, pageIsTransitioning } =
         useAppContext()
+
     const drawerData = navigationData?.drawerContent
 
     const bgRef = useRef()
@@ -104,18 +106,21 @@ const Wipe = ({ className }) => {
     if (!drawerData) return null
 
     return (
-        <div className={`Wipe ${className || ""}`}>
-            <div className="wipeBg" ref={bgRef} />
-            <span className="titleLeft">
-                <span ref={textLeftRef}>{drawerData?.titleType}</span>
+        <div className="Wipe">
+            <div className="Wipe_wipeBg" ref={bgRef} />
+            <span className="Wipe_titleLeft">
+                <span className="Wipe_titleLeft__inner" ref={textLeftRef}>
+                    {drawerData?.titleType}
+                </span>
             </span>
-            <span className="titleRight">
-                <span ref={textRightRef}>{drawerData?.titleLocation}</span>
+            <span className="Wipe_titleRight">
+                <span className="Wipe_titleRight__inner" ref={textRightRef}>
+                    {drawerData?.titleLocation}
+                </span>
             </span>
         </div>
     )
 }
 
 Wipe.displayName = "Wipe"
-
 export default Wipe
