@@ -5,15 +5,11 @@ import useBreakpoint from "../../hooks/use_breakpoint.js"
 import { buildIdFromText } from "../../utils/index.js"
 
 /* INJECT_SECTIONS_IMPORT */
-import MultiParagraphWithLinks from "../../sections/MultiParagraphWithLinks/MultiParagraphWithLinks.jsx"
-import TwoImagesAndText from "../../sections/TwoImagesAndText/TwoImagesAndText.jsx"
 import WorksGL from "../../sections/GL/Worksgl.jsx"
 import Footer from "../../sections/footer/Footer.jsx"
 
 // _type string → Component map
 const SECTIONS = {
-    multiParagraphWithLinks: MultiParagraphWithLinks,
-    twoImagesAndText: TwoImagesAndText,
     worksGL: WorksGL,
     // 새 섹션 추가: fourOhFour: FourOhFour,
 }
