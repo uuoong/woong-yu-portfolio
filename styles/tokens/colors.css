@@ -147,11 +147,11 @@ html[data-theme="light"] {
 }
 
 /* Theme Transition */
-@media (prefers-reduced-motion: no-preference) {
+/* @media (prefers-reduced-motion: no-preference) {
 	html[data-theme] * {
 		transition:
 			background-color 0.4s ease,
 			color 0.4s ease,
 			border-color 0.4s ease;
 	}
-}
+} */
