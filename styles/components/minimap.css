@@ -1,68 +1,36 @@
-.container {
-    position: fixed;
-    top: 20px;       /* 상하 여백 조절 */
-    bottom: 20px;    /* 상하 여백 조절 */
-    right: 20px;     /* 우측 여백 */
-    width: 14vw;     /* 미니맵 너비 (반응형 vw 추천) */
-    max-width: 150px;
-    z-index: 9999;
-    overflow: hidden; /* 트랙이 컨테이너 밖으로 나가지 않도록 설정 */
-    touch-action: none;
-    cursor: pointer;
-}
-
-.track {
-    position: absolute;
-    top: calc(100vh + 20.8333vw);
+/* 전체 트랙 (Track) */
+.w-preview-w {
+    position: absolute; /* fixed가 아닌 absolute */
+    top: 0;
     right: 40px;
+    width: 60px;
     will-change: transform;
-    /* transition: transform 0.1s ease-out; 부드러운 스크롤을 원할 경우 주석 해제 (Lenis 사용시 불필요) */
+    z-index: 1000;
 }
 
-/* 각 섹션을 나타내는 블록 (이미지 또는 빈 공간) */
-.item {
+/* 개별 아이템 (Item) */
+.w-preview {
     position: relative;
+    width: 60px; /* 고정 너비 */
     margin-left: auto;
     margin-right: auto;
-    width: 60px;
-    transition: opacity 200ms;
     cursor: pointer;
+    transition: opacity 0.3s;
 }
 
-.item div {
-    position: absolute;
-    top: .5px;
-    left: .5px;
-    width: calc(100% - 1px);
-    height: calc(100% - 1px);
-    pointer-events: none;
-}
-
-.item:hover {
-    opacity: .5;
-}
-
-.itemImage {
+.w-preview img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
-    /* WebGL의 경우 이미지가 어두울 수 있으므로 배경색 지정 가능 */
-    background-color: rgba(0, 0, 0, 0.05); 
 }
 
-/* 현재 뷰포트를 나타내는 테두리 박스 (Camille Mormal 스타일) */
-.viewer {
+/* 뷰어 (Viewer / 현재 위치 표시창) */
+.w-preview-area {
     position: absolute;
-    top: calc(100vh + 20.8333vw - 7px);
-    right: 33px;
-    width: 74px;
-    border: 1px solid rgba(255,255,255,.5);
-    box-sizing: border-box;
-    will-change: transform;
+    left: -5px; /* 아이템보다 약간 넓게 */
+    width: 70px;
+    border: 1px solid #000;
     pointer-events: none;
-}
-
-.container:active .viewer {
-    cursor: grabbing;
+    z-index: 10;
+    will-change: transform;
 }
