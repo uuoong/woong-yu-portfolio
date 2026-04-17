@@ -1,50 +1,40 @@
-/* minimap.css */
-
-.Minimap {
-    position: fixed; /* 스크롤 시 화면에 고정 */
+.container {
+    position: fixed;
     top: 20px;
-    right: 20px; /* 우측 상단 배치 (원하는 위치로 변경 가능) */
-    width: 15vw; /* 미니맵 너비 */
-    z-index: 100;
-}
-
-.Minimap_inner {
-    position: relative;
-    width: 100%;
-    border: 2px solid white;
-    background-color: var(--bg, #fff); /* 배경색 지정 (투명 방지) */
+    right: 20px;
+    width: 15vw;
+    height: calc(15vw * (1080 / 1920)); /* 초기 비율 세팅 */
+    background: var(--bg, #ffffff);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 9999;
     overflow: hidden;
-    z-index: 5;
+    cursor: pointer; /* 클릭/드래그 유도 */
+    touch-action: none; /* 모바일 터치 스크롤 방지 */
 }
 
-.Minimap_iframe {
+.iframe {
     position: absolute;
     top: 0;
     left: 0;
-    transform-origin: 0 0;
     border: none;
-    z-index: 1;
-    /* width/height/transform은 JS에서 계산되어 들어갑니다 */
+    pointer-events: none; /* iframe 내부 클릭 방지 */
+    transform-origin: 0 0;
 }
 
-.Minimap_viewer {
+.viewer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    background: rgba(0, 0, 0, 0.1); /* VSCode 스타일의 반투명 뷰어 */
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    cursor: grab;
+    pointer-events: none; /* 이벤트는 container가 모두 받음 */
     transform-origin: 0 0;
-    z-index: 10;
-    border: 2px solid red; /* 현재 뷰포트를 나타내는 박스 색상 */
-    pointer-events: none; /* 클릭 방해 금지 */
+    will-change: transform; /* 부드러운 스크롤 렌더링 최적화 */
 }
 
-.Minimap_loader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.Minimap_loader--hidden {
-    display: none;
+.viewer:active {
+    cursor: grabbing;
 }
