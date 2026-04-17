@@ -1,176 +1,50 @@
-/* ═══════════════════════════════════════════════════════════════════
-   Minimap — iframe 기반 실시간 페이지 프리뷰
-   참고: app.js (minimap__container / minimap__viewer / minimap__content)
-═══════════════════════════════════════════════════════════════════ */
+/* minimap.css */
 
-/* ── 루트 컨테이너 ─────────────────────────────────────────────── */
 .Minimap {
-    position: fixed;
-    top: 50%;
-    right: 2rem;
-    transform: translateY(-50%) translateX(calc(100% + 3rem));
-    z-index: 90;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    opacity: 0;
-    transition:
-        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.4s ease;
-    pointer-events: none;
-    cursor: pointer;
+    position: fixed; /* 스크롤 시 화면에 고정 */
+    top: 20px;
+    right: 20px; /* 우측 상단 배치 (원하는 위치로 변경 가능) */
+    width: 15vw; /* 미니맵 너비 */
+    z-index: 100;
 }
 
-/* 마운트 후 슬라이드인 */
-.Minimap--mounted {
-    transform: translateY(-50%) translateX(0);
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* nav 열리면 숨김 */
-.Minimap--hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-50%) translateX(calc(100% + 3rem));
-}
-
-/* ── 미니맵 내부 (비율 박스) ───────────────────────────────────── */
 .Minimap_inner {
     position: relative;
-    width: 12rem;               /* 기본 너비 */
-    /* 높이는 padding-top 비율로 결정 (참고 코드의 minimapSize) */
-    padding-top: var(--minimap-body-ratio, 160%);
-    border-radius: 0.4rem;
+    width: 100%;
+    border: 2px solid white;
+    background-color: var(--bg, #fff); /* 배경색 지정 (투명 방지) */
     overflow: hidden;
-    background: var(--bg-secondary, #111);
-    border: 0.1rem solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-        0 0.4rem 2.4rem rgba(0, 0, 0, 0.4),
-        0 0 0 0.1rem rgba(255, 255, 255, 0.04);
-    transition:
-        width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.3s ease;
+    z-index: 5;
 }
 
-/* hover 시 너비 확장 */
-.Minimap--hovered .Minimap_inner {
-    width: 18rem;
-    box-shadow:
-        0 0.8rem 4rem rgba(0, 0, 0, 0.5),
-        0 0 0 0.1rem rgba(255, 255, 255, 0.1);
-}
-
-/* ── iframe (참고 코드의 minimap__content) ─────────────────────── */
 .Minimap_iframe {
     position: absolute;
     top: 0;
     left: 0;
-    /* width, height, transform은 use_minimap.js에서 JS로 직접 설정 */
     transform-origin: 0 0;
     border: none;
-    pointer-events: none;
     z-index: 1;
-    /* 로드 전 배경 */
-    background: transparent;
+    /* width/height/transform은 JS에서 계산되어 들어갑니다 */
 }
 
-/* iframe 콘텐츠가 준비되면 페이드인 */
-.Minimap--ready .Minimap_iframe {
-    opacity: 1;
-}
-
-.Minimap_iframe {
-    opacity: 0;
-    transition: opacity 0.4s ease 0.2s;
-}
-
-/* ── viewer (참고 코드의 minimap__viewer) ──────────────────────── */
-/* 현재 뷰포트 위치를 표시하는 오버레이 */
 .Minimap_viewer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    /* height는 JS에서 동적 설정 */
     transform-origin: 0 0;
     z-index: 10;
-    /* 반투명 흰색 박스로 현재 뷰포트 영역 표시 */
-    background: rgba(255, 255, 255, 0.06);
-    border: 0.1rem solid rgba(255, 255, 255, 0.25);
-    border-radius: 0.2rem;
-    /* JS에서 translateY로 위치 제어 — will-change로 GPU 레이어 분리 */
-    will-change: transform;
-    pointer-events: none;
-    transition: border-color 0.2s ease;
-    box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.25);
-    /* box-shadow로 viewer 바깥 영역을 어둡게 — 현재 위치 강조 */
+    border: 2px solid red; /* 현재 뷰포트를 나타내는 박스 색상 */
+    pointer-events: none; /* 클릭 방해 금지 */
 }
 
-.Minimap--hovered .Minimap_viewer {
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-/* ── 로딩 인디케이터 ────────────────────────────────────────────── */
 .Minimap_loader {
     position: absolute;
-    inset: 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    background: var(--bg-secondary, #111);
-    transition: opacity 0.3s ease;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .Minimap_loader--hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.Minimap_loader__dot {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    animation: minimapDotPulse 1.2s ease-in-out infinite;
-}
-
-.Minimap_loader__dot:nth-child(2) {
-    animation-delay: 0.2s;
-}
-.Minimap_loader__dot:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes minimapDotPulse {
-    0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
-    40%           { opacity: 1;   transform: scale(1);   }
-}
-
-/* ── 툴팁 ────────────────────────────────────────────────────────── */
-.Minimap_tooltip {
-    opacity: 0;
-    transform: translateX(0.4rem);
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-    pointer-events: none;
-    white-space: nowrap;
-}
-
-.Minimap--hovered .Minimap_tooltip {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.Minimap_tooltip span {
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--fg-primary);
-    opacity: 0.4;
+    display: none;
 }
