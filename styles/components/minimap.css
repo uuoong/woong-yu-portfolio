@@ -13,18 +13,33 @@
 
 .track {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: calc(100vh + 20.8333vw);
+    right: 40px;
     will-change: transform;
     /* transition: transform 0.1s ease-out; 부드러운 스크롤을 원할 경우 주석 해제 (Lenis 사용시 불필요) */
 }
 
 /* 각 섹션을 나타내는 블록 (이미지 또는 빈 공간) */
 .item {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60px;
+    transition: opacity 200ms;
+    cursor: pointer;
+}
+
+.item div {
     position: absolute;
-    left: 0;
-    width: 100%;
+    top: .5px;
+    left: .5px;
+    width: calc(100% - 1px);
+    height: calc(100% - 1px);
+    pointer-events: none;
+}
+
+.item:hover {
+    opacity: .5;
 }
 
 .itemImage {
@@ -39,14 +54,13 @@
 /* 현재 뷰포트를 나타내는 테두리 박스 (Camille Mormal 스타일) */
 .viewer {
     position: absolute;
-    left: -1px;
-    width: calc(100% + 2px); /* 이미지보다 살짝 크게 테두리 표시 */
-    border: 1px solid var(--fg, rgba(0, 0, 0, 0.4));
+    top: calc(100vh + 20.8333vw - 7px);
+    right: 33px;
+    width: 74px;
+    border: 1px solid rgba(255,255,255,.5);
     box-sizing: border-box;
-    cursor: grab;
-    pointer-events: none; /* 클릭/드래그 이벤트는 container가 모두 처리 */
-    z-index: 10;
     will-change: transform;
+    pointer-events: none;
 }
 
 .container:active .viewer {
