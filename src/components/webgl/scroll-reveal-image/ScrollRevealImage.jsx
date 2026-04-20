@@ -1,63 +1,15 @@
-/**
- * ScrollRevealImage.jsx — WebGL 이미지 리빌 컴포넌트
- *
- * ─── 아키텍처 통합 ────────────────────────────────────────────────────────
- *
- *  이전: scrollReady Promise, 독립 스크롤 구독
- *  현재: Scroll.js 아키텍처 통합
- *    - useScrollContext()  → onScrollCallback으로 스크롤 위치 실시간 감지
- *    - initScene()        → onScrollCallback을 전달받아 glScene 스크롤 구독 등록
- *    - IntersectionObserver → GSAP 기반 uProgress tween
- *
- *  동작 검증된 로직 유지:
- *    - OGL Mesh 생성 + glScene pending queue 등록
- *    - getBoundingClientRect() 기반 DOM 위치 추적
- *    - uProgress 0→1 GSAP tween (IntersectionObserver 트리거)
- *    - GLSL ES 3.00 셰이더 (fragmentPixel / fragmentWave)
- *    - cover UV 보정 + gamma correction
- *
- * ─── Props ────────────────────────────────────────────────────────────────
- *
- *  src       string              이미지 URL
- *  alt       string              alt 텍스트 (기본값: "")
- *  type      "pixel" | "wave"    효과 종류 (기본값: "pixel")
- *  color     string              fill 색상 hex (기본값: "#403fb7")
- *  className string
- *  style     object
- *
- * ─── 사용법 ───────────────────────────────────────────────────────────────
- *
- *  // GL이 있는 페이지에서
- *  function PageHome() {
- *    const { onScrollCallback } = useScrollContext()
- *
- *    useEffect(() => {
- *      initScene(onScrollCallback)   // OGL 초기화 (1회)
- *    }, [])
- *
- *    return (
- *      <main>
- *        <GLImage src="..." type="pixel" color="#403fb7" />
- *        <GLImage src="..." type="wave" />
- *      </main>
- *    )
- *  }
- */
-
-import { useEffect, useRef } from "react"
-import { Texture, Program, Mesh } from "ogl"
-import gsap from "gsap"
-import { useScene } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/core/scene.js"
-import { buildPlane } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/utils/geometry.js"
-import { hexToFloat32 } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/utils/color.js"
-import { vertex } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/shader/vertex.js"
-import { fragmentPixel } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/shader/fragment-pixel.js"
-import { fragmentWave } from "https://woong-yu-portfolio.vercel.app/src/components/webgl/scroll-reveal-image/shader/fragment-wave.js"
+import React, { useEffect, useRef } from "react"
+import { Texture, Program, Mesh } from "https://esm.sh/ogl"
+import gsap from "https://esm.sh/gsap"
+import { useScene } from "./core/scene.js"
+import { buildPlane } from "./utils/geometry.js"
+import { hexToFloat32 } from "./utils/color.js"
+import { vertex } from "./shader/vertex.js"
+import { fragment } from "./shader/fragment.js"
 
 export default function ScrollRevealImage({
     src,
     alt = "",
-    type = "pixel",
     color = "#403fb7",
     className,
     style,
@@ -65,8 +17,6 @@ export default function ScrollRevealImage({
     const imgRef = useRef(null)
     const itemRef = useRef(null)
     const cleanupRef = useRef(null)
-
-    // 싱글톤 sceneCtx 직접 반환 (Provider 없이)
     const ctx = useScene()
 
     useEffect(() => {
@@ -80,8 +30,8 @@ export default function ScrollRevealImage({
                 if (!img.naturalWidth) return
 
                 const rect = img.getBoundingClientRect()
-                // window 스크롤 기준 (Scroll.js wrapper: window 고정 이후 일치)
-                const absTop = rect.top + window.scrollY
+                // 수정: window.scrollY → S.scroll (div scroll 환경에서도 정확)
+                const absTop = rect.top + S.scroll
                 const left = rect.left
                 const width = rect.width
                 const height = rect.height
@@ -99,8 +49,6 @@ export default function ScrollRevealImage({
                     magFilter: gl.LINEAR,
                     flipY: true,
                 })
-
-                const fragment = type === "pixel" ? fragmentPixel : fragmentWave
 
                 const program = new Program(gl, {
                     vertex,
@@ -133,7 +81,6 @@ export default function ScrollRevealImage({
                     0
                 )
 
-                // GSAP tween: uProgress 0 → 1
                 let tween = null
                 const animateTo = (target) => {
                     tween?.kill()
@@ -146,7 +93,6 @@ export default function ScrollRevealImage({
                     })
                 }
 
-                // IntersectionObserver (동작 검증된 로직 유지)
                 const observer = new IntersectionObserver(([entry]) => {
                     animateTo(entry.isIntersecting ? 1 : 0)
                 })
@@ -163,7 +109,8 @@ export default function ScrollRevealImage({
                     height,
                     recompute() {
                         const r = img.getBoundingClientRect()
-                        this.absTop = r.top + window.scrollY
+                        // 수정: S.scroll 사용
+                        this.absTop = r.top + S.scroll
                         this.left = r.left
                         this.width = r.width
                         this.height = r.height
@@ -195,7 +142,7 @@ export default function ScrollRevealImage({
             cleanupRef.current?.()
             cleanupRef.current = null
         }
-    }, [src, type, color]) // eslint-disable-line
+    }, [src, color]) // eslint-disable-line
 
     return (
         <div
@@ -210,9 +157,16 @@ export default function ScrollRevealImage({
                 style={{
                     display: "block",
                     width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                     visibility: "hidden",
+                    position: "absolute", // DOM 흐름에서 분리하여 레이아웃 안정성 확보
+                    top: 0,
+                    left: 0,
                 }}
             />
         </div>
     )
 }
+
+ScrollRevealImage.displayName = "ScrollRevealImage"
