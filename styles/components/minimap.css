@@ -1,51 +1,63 @@
-/* ═══════════════════════════════════════════════════════════════
-   Minimap — DOM 기반 페이지 프리뷰
-   참고: .w-preview-w / .w-preview / .w-preview-area
-═══════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   ScrollRevealImage — 오버레이 bg 수정 (#6)
+   WebGL canvas가 fixed로 위에서 렌더링하므로 컨테이너는 transparent
+══════════════════════════════════════════════════════════════ */
+
+/* 모든 WebGL 이미지 컨테이너: 배경 투명 강제 */
+.WorkImage,
+.WorkImage > div,          /* ScrollRevealImage 외부 div */
+.WorkDetail_imageWrap {
+    background: transparent !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Minimap — Portal 렌더링 대응 CSS (#7)
+   createPortal로 body에 직접 붙으므로 position:fixed 정상 작동
+══════════════════════════════════════════════════════════════ */
 
 .Minimap {
     position: fixed;
     right: 4rem;
     top: 0;
     height: 100vh;
-    width: 6rem;      /* 참고 코드 60px */
+    width: 6rem;
     z-index: 90;
+
+    /* 기본: 숨김 */
     opacity: 0;
-    transform: translateX(2rem);
-    transition:
-        opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-        transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
     pointer-events: none;
+    transform: translateX(1.2rem);
+    transition:
+        opacity    0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+        transform  0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.Minimap--mounted {
+/* 마운트 + 히어로 지나친 후 표시 */
+.Minimap--mounted.Minimap--visible {
     opacity: 1;
-    transform: translateX(0);
     pointer-events: auto;
+    transform: translateX(0);
 }
 
-.Minimap--hidden {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateX(2rem) !important;
+.Minimap--hovered .Minimap_strip {
+    cursor: pointer;
 }
 
-/* ── strip (전체 프리뷰 영역) ─────────────────────────────── */
+/* strip */
 .Minimap_strip {
     position: relative;
     width: 100%;
     height: 100%;
-    cursor: ns-resize;
+    cursor: pointer;
     user-select: none;
 }
 
-/* ── 개별 이미지 썸네일 ───────────────────────────────────── */
+/* 이미지 썸네일 */
 .Minimap_thumb {
     position: absolute;
     left: 0;
     width: 100%;
     overflow: hidden;
-    /* top, height는 인라인 스타일로 설정 */
 }
 
 .Minimap_thumbImg {
@@ -55,167 +67,23 @@
     object-fit: cover;
     pointer-events: none;
     user-select: none;
-    /* hover 시 미니맵 전체 opacity 변화로 대응 */
+    opacity: 0.45;
     transition: opacity 0.2s ease;
-    opacity: 0.5;
 }
+.Minimap--hovered .Minimap_thumbImg { opacity: 0.8; }
 
-.Minimap--hovered .Minimap_thumbImg {
-    opacity: 1;
-}
-
-/* ── viewport indicator (.w-preview-area 대응) ────────────── */
+/* viewport indicator */
 .Minimap_viewer {
     position: absolute;
-    left: -0.7rem;          /* 좌우 7px 확장 (참고 코드: right: 33px vs 40px) */
+    left: -0.7rem;
     width: calc(100% + 1.4rem);
-    /* top, height는 인라인 스타일 (JS 제어) */
-    border: 0.1rem solid rgba(255, 255, 255, 0.5);
+    border: 0.1rem solid rgba(255, 255, 255, 0.45);
     box-sizing: border-box;
     pointer-events: none;
     will-change: top;
-    /* 바깥 영역 dim */
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
     transition: border-color 0.2s ease;
 }
-
 .Minimap--hovered .Minimap_viewer {
     border-color: rgba(255, 255, 255, 0.85);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   WorkDetail 페이지 — 참고: .w-s, .w-hero, .w-progress
-═══════════════════════════════════════════════════════════════ */
-
-.WorkDetail {
-    position: relative;
-    width: 100%;
-}
-
-/* ── 스크롤 진행 바 (.w-progress 대응) ───────────────────── */
-.WorkProgress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0.3rem;
-    height: 100vh;
-    z-index: 95;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.WorkProgress_bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--fg-primary);
-    transform: scaleY(0);
-    transform-origin: top center;
-    will-change: transform;
-}
-
-/* ── Hero (.w-hero 대응) ──────────────────────────────────── */
-.WorkDetail_hero {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: flex-end;
-    padding-bottom: 6rem;
-    /* 참고 코드: .w-hero-txt { margin-left: 65.625vw } */
-    padding-left: 65.625vw;
-}
-
-.WorkDetail_heroInner {
-    width: 100%;
-}
-
-.WorkDetail_heroTitle {
-    font-size: 3.125vw;
-    line-height: 3.3333vw;
-    letter-spacing: -0.02em;
-    margin: 0;
-}
-
-.WorkDetail_heroTitle span {
-    display: block;
-    overflow: hidden;
-}
-
-.WorkDetail_heroMeta {
-    margin-top: 2.0833vw;
-    font-size: 1.6rem;
-    line-height: 2.1rem;
-    color: rgba(var(--fg-primary-rgb, 255, 255, 255), 0.5);
-    display: flex;
-    gap: 2.4rem;
-}
-
-/* ── 본문 이미지/텍스트 영역 (.w-s 대응) ────────────────── */
-.WorkDetail_body {
-    padding-bottom: 20.8333vw;
-}
-
-.WorkDetail_imageWrap {
-    /* 참고 .w-s: margin-top/bottom: 20.8333vw */
-    margin-top: 20.8333vw;
-    margin-left: auto;
-    margin-right: auto;
-    width: 900px;
-    max-width: 52.9412vw;
-    will-change: transform;
-}
-
-/* 큰 이미지: 전체 너비 */
-.WorkDetail_imageWrap--large,
-.WorkDetail_image--large {
-    width: 100%;
-}
-
-/* 소형 이미지: 좌측 오프셋 */
-.WorkDetail_imageWrap--small {
-    width: 56.25vw;
-    margin-left: 0;
-}
-
-.WorkDetail_image {
-    width: 100%;
-}
-
-/* ── 텍스트 섹션 (.w-s 사이 텍스트 영역) ─────────────────── */
-.WorkDetail_text {
-    /* 이미지와 이미지 사이 텍스트 — Minimap에서 빈 공간으로 표시 */
-    margin-top: 20.8333vw;
-    margin-left: auto;
-    margin-right: auto;
-    width: 900px;
-    max-width: 52.9412vw;
-    padding-left: calc(82rem / 16);
-}
-
-.WorkDetail_text--first {
-    margin-top: 10.4167vw;
-}
-
-.WorkDetail_textRole {
-    font-size: 1.6rem;
-    line-height: 2.1rem;
-    color: rgba(var(--fg-primary-rgb, 255, 255, 255), 0.4);
-    margin-bottom: 2.1rem;
-    margin: 0 0 2.1rem;
-}
-
-.WorkDetail_textDesc {
-    font-size: 2.2917vw;
-    line-height: 2.7604vw;
-    letter-spacing: -0.02em;
-    margin: 0;
-}
-
-/* ── WorkImage 컨테이너 ───────────────────────────────────── */
-.WorkImage {
-    position: relative;
-    display: block;
-    width: 100%;
 }
