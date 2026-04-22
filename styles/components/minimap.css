@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════
-   Minimap — DOM 기반 페이지 프리뷰
-   참고: .w-preview-w / .w-preview / .w-preview-area
-═══════════════════════════════════════════════════════════════ */
-
 .Minimap {
     position: fixed;
     right: 4rem;
@@ -20,13 +15,18 @@
         transform  0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+/* 마운트 + 히어로 지나친 후 표시 */
 .Minimap--mounted.Minimap--visible {
     opacity: 1;
     pointer-events: auto;
     transform: translateX(0);
 }
 
-/* ── strip (전체 프리뷰 영역) ─────────────────────────────── */
+.Minimap--hovered .Minimap_strip {
+    cursor: pointer;
+}
+
+/* strip */
 .Minimap_strip {
     position: relative;
     width: 100%;
@@ -35,7 +35,7 @@
     user-select: none;
 }
 
-/* ── 개별 이미지 썸네일 ───────────────────────────────────── */
+/* 이미지 썸네일 */
 .Minimap_thumb {
     position: absolute;
     left: 0;
@@ -53,14 +53,9 @@
     opacity: 0.45;
     transition: opacity 0.2s ease;
 }
-
 .Minimap--hovered .Minimap_thumbImg { opacity: 0.8; }
 
-.Minimap--hovered .Minimap_strip {
-    cursor: pointer;
-}
-
-/* ── viewport indicator (.w-preview-area 대응) ────────────── */
+/* viewport indicator */
 .Minimap_viewer {
     position: absolute;
     left: -0.7rem;
@@ -72,7 +67,6 @@
     box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
     transition: border-color 0.2s ease;
 }
-
 .Minimap--hovered .Minimap_viewer {
     border-color: rgba(255, 255, 255, 0.85);
 }
