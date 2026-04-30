@@ -14,7 +14,7 @@
     will-change: transform; /* JS translateY 최적화 */
     pointer-events: auto;
     cursor: pointer;
-    z-index: 90;
+    z-index: 190;
 }
 
 /* strip */
