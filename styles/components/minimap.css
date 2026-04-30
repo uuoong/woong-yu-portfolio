@@ -8,7 +8,7 @@
     top: 0;
     height: 100vh;
     width: 6rem;
-    z-index: 90;
+    z-index: 109;
     /* 기본: 숨김 상태 */
     opacity: 0;
     pointer-events: none;
