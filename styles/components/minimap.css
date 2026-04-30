@@ -1,38 +1,31 @@
 /* ═══════════════════════════════════════════════════════════════
-   Minimap (createPortal → body 직접 렌더링)
-   position:fixed가 반드시 viewport 기준으로 작동
+   Minimap — 레퍼런스(camillemormal.com) 방식
+   position:absolute + JS translateY = sticky 효과
+   .w-preview-w / .w-preview / .w-preview-area 대응
 ═══════════════════════════════════════════════════════════════ */
+
 .Minimap {
-    position: fixed;
-    right: 4rem;
-    top: 0;
-    height: 100vh;
-    width: 6rem;
-    z-index: 109;
-    /* 기본: 숨김 상태 */
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(1.2rem);
-    transition:
-        opacity   0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-        transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-/* hero 스크롤 아웃 후 표시 */
-.Minimap--visible {
-    opacity: 1;
+    /* position:absolute: WorkDetail(position:relative) 기준 */
+    position: absolute;
+    top: 100vh;         /* hero(100vh) 바로 아래에서 시작 */
+    right: 4rem;        /* 레퍼런스: right:40px */
+    width: 6rem;        /* 레퍼런스: width:60px */
+    height: 100vh;      /* viewport 높이만큼 유지 */
+    will-change: transform; /* JS translateY 최적화 */
     pointer-events: auto;
-    transform: translateX(0);
+    cursor: pointer;
+    z-index: 90;
 }
 
+/* strip */
 .Minimap_strip {
     position: relative;
     width: 100%;
     height: 100%;
-    cursor: pointer;
     user-select: none;
 }
 
+/* 이미지 썸네일: .w-preview 대응 */
 .Minimap_thumb {
     position: absolute;
     left: 0;
@@ -48,75 +41,53 @@
     object-fit: cover;
     pointer-events: none;
     user-select: none;
-    opacity: 0.45;
-    transition: opacity 0.25s ease;
+    opacity: 0.5;
+    transition: opacity 200ms ease;
 }
-.Minimap--hovered .Minimap_thumbImg { opacity: 0.85; }
+.Minimap--hovered .Minimap_thumbImg { opacity: 1; }
 
+/* viewport indicator: .w-preview-area 대응 */
+/* ─── 오버레이 제거: box-shadow 사용 안 함 ──────────────── */
 .Minimap_viewer {
     position: absolute;
-    left: -0.6rem;
-    width: calc(100% + 1.2rem);
-    border: 0.1rem solid rgba(255, 255, 255, 0.4);
+    left: -0.7rem;         /* 레퍼런스: right:33px vs 40px → 7px 확장 */
+    width: calc(100% + 1.4rem);
+    /* top, height: JS 인라인 스타일로 제어 */
+    border: 0.1rem solid rgba(255, 255, 255, 0.5);
     box-sizing: border-box;
     pointer-events: none;
-    will-change: top;
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
-    transition: border-color 0.2s ease;
+    will-change: top;      /* RAF lerp 최적화 */
+    /* box-shadow 제거 → 오버레이 원인 */
 }
 .Minimap--hovered .Minimap_viewer {
-    border-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.85);
 }
 
 /* ═══════════════════════════════════════════════════════════════
    WorkDetail 레이아웃
 ═══════════════════════════════════════════════════════════════ */
+
 .WorkDetail {
-    position: relative;
+    position: relative; /* Minimap(absolute)의 기준점 */
     width: 100%;
-    /* 오른쪽 미니맵 공간 확보 */
+    /* 미니맵 공간: 오른쪽 여백 */
     padding-right: 10rem;
 }
 
-/* 스크롤 진행 바 */
-.WorkProgress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0.2rem;
-    height: 100vh;
-    z-index: 95;
-    overflow: hidden;
-    pointer-events: none;
-}
-.WorkProgress_bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--fg-primary);
-    transform: scaleY(0);
-    transform-origin: top;
-    will-change: transform;
-}
-
-/* Hero */
+/* Hero: 100vh */
 .WorkDetail_hero {
     position: relative;
     height: 100vh;
     display: flex;
     align-items: flex-end;
-    padding: 0 6.5625vw 6rem;
+    padding: 0 4rem 6rem;
 }
-.WorkDetail_heroInner { width: 100%; }
 .WorkDetail_heroMeta {
     font-size: 1.4rem;
-    line-height: 1.8rem;
-    color: rgba(var(--fg-primary-rgb, 255,255,255), 0.4);
+    color: rgba(255, 255, 255, 0.4);
     display: flex;
-    gap: 2.4rem;
-    margin-bottom: 2rem;
+    gap: 2rem;
+    margin-bottom: 1.6rem;
 }
 .WorkDetail_heroTitle {
     font-size: 3.125vw;
@@ -128,39 +99,28 @@
 
 /* 본문 */
 .WorkDetail_body {
-    padding: 0 6.5625vw 20vw;
+    padding: 0 4rem 20vw;
 }
+.WorkDetail_row { margin-top: 20.8333vw; }
+.WorkDetail_row--full   { width: 100%; }
+.WorkDetail_row--offset { width: 66%; margin-left: auto; }
+.WorkDetail_row--small  { width: 44%; }
 
-/* 이미지 행 */
-.WorkDetail_row {
-    margin-top: 20.8333vw;
-}
-.WorkDetail_row--full  { width: 100%; }
-.WorkDetail_row--offset {
-    width: 66%;
-    margin-left: auto;
-}
-.WorkDetail_row--small {
-    width: 44%;
-    margin-left: 0;
-}
-
-/* WorkImage 컨테이너 — 반드시 transparent */
+/* WorkImage: 반드시 transparent */
 .WorkImage {
+    display: block;
     background: transparent !important;
 }
 
 /* 텍스트 */
 .WorkDetail_text {
     margin-top: 10.4167vw;
-    max-width: 50rem;
+    max-width: 52rem;
 }
-.WorkDetail_text--right {
-    margin-left: auto;
-}
+.WorkDetail_text--right { margin-left: auto; }
 .WorkDetail_textRole {
     font-size: 1.4rem;
-    color: rgba(var(--fg-primary-rgb, 255,255,255), 0.4);
+    color: rgba(255, 255, 255, 0.4);
     margin: 0 0 1.6rem;
 }
 .WorkDetail_textDesc {
@@ -171,9 +131,9 @@
 }
 
 @media (max-width: 768px) {
-    .WorkDetail { padding-right: 0; }
+    .WorkDetail        { padding-right: 0; }
     .WorkDetail_row--offset,
     .WorkDetail_row--small { width: 100%; margin-left: 0; }
-    .WorkDetail_heroTitle { font-size: 7vw; line-height: 8vw; }
-    .WorkDetail_textDesc  { font-size: 1.8rem; line-height: 2.6rem; }
+    .WorkDetail_heroTitle  { font-size: 7vw; line-height: 8.5vw; }
+    .WorkDetail_textDesc   { font-size: 1.8rem; line-height: 2.6rem; }
 }
