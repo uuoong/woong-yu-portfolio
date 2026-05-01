@@ -67,145 +67,104 @@
    WorkDetail 레이아웃
 ═══════════════════════════════════════════════════════════════ */
 
-.hero-txt {
+.work {
    position: relative;
-   margin-left: 65.625vw;
+   min-height: calc(var(--vh, 1vh) * 100);
+   color: #6d6d6d;
 }
 
-.hero-txt-h1-wrapper {
-   letter-spacing: -.02em;
+.work-case {
+   position: relative;
+   z-index: 1;
+   display: flex;
+   align-items: flex-start;
+   gap: 3rem;
+   padding: 0rem var(--gutter) 0;
+   margin-bottom: 10rem;
+   min-height: calc(var(--vh, 1vh) * 100);
 }
 
-.hero-txt-h1-wrapper span {
-   display: block;
+@media all and (max-width: 1023.98px) {
+   .work-case {
+      padding-top:20rem;
+      flex-direction: column;
+   }
 }
 
-.hero-txt-h1-wrapper>span {
-   display: block;
-   overflow: hidden;
-}
-
-.hero-txt-h1 {
-   will-change: transform;
-   transform: translate3d(0,110%,0);
-}
-
-.hero-txt-role {
-    margin-top: 10.1852vh;
-    width: 21.875vw;
-    max-width: 420px;
-    font-size: 16px;
-    line-height: 21px;
-}
-
-.hero-txt-role-title {
-   overflow: hidden;
-}
-
-.hero-txt-role-title>div {
-   will-change: transform;
-   transform: translate3d(0,110%,0);
-}
-
-.hero-txt-role-p {
-   margin-top: 21px;
-   color: rgba(255,255,255,.5);
-}
-
-.hero-txt-role-p span {
-   display: block;
-}
-
-.hero-txt-role-p-fx {
-   overflow: hidden;
-}
-
-.hero-txt-role-p-fx span {
-   will-change: transform;
-   transform: translate3d(0,110%,0);
-}
-
-.hero-txt-team-wrapper {
-   margin-top: 10.1852vh;
-   font-size: 16px;
-   line-height: 21px;
-}
-
-.hero-txt-team-wrapper>div {
-   overflow: hidden;
-}
-
-.hero-txt-team {
-   will-change: transform;
-   transform: translate3d(0,110%,0);
-}
-
-.hero-txt-scroll {
-    position: absolute;
-    bottom: 37px;
-    left: 0;
-    overflow: hidden;
-    transition: opacity 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.hero-scroll {
-   cursor: pointer;
-}
-
-.hero-txt-scroll div {
-   will-change: transform;
-   transform: translate3d(0,110%,0);
-}
-
-.hero-txt-scroll div {
-   pointer-events: none;
-}
-
-.hero-txt-icon {
-   position: absolute;
-   bottom: 39px;
-   right: 39px;
-   width: 47px;
-   height: 55px;
-}
-
-.hero-txt-icon-arrow {
-   fill: #fff;
-   will-change: transform,opacity;
-   opacity: 0;
-}
-
-.hero-txt-icon>div {
-   position: absolute;
-   top: 0;
-   left: 0;
+.work-case__aside {
+   display: flex;
+   flex-direction: column;
+   gap: 3rem; 
    width: 100%;
-   height: 100%;
-   pointer-events: none;
 }
 
-.hero-txt-icon-border {
-   transition: opacity 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.hero-txt-icon-border-path {
-   fill: none;
-   stroke: rgba(255,255,255,.5);
-   opacity: 0;
-}
-
-@media (max-aspect-ratio: 16 / 9) {
-   .hero-txt {
-      padding-top: calc(40px - .2604vw);
-      height: calc(100% - 40px + .2604vw);
-   }
-
-   .hero-txt-h1-wrapper {
-      font-size: 3.125vw;
-      line-height: 3.3333vw;
+@media all and (min-width: 768px) {
+   .work-case__aside {
+      max-width: 44.2rem;
    }
 }
 
+@media all and (min-width: 1024px) {
+   .work-case__aside {
+      position: sticky;
+      top: 0;
+      left: 0;
+      height: calc(var(--vh, 1vh) * 100);
+      max-width: 22.7rem;
+      padding-top: calc(var(--gutter) * .5);
+      padding-bottom: calc(var(--gutter) * .5);
+      margin-left: 11.9rem;
+      justify-content: flex-end;
+   }
+}
+
+.work-case__aside-infos {
+   display: flex;
+   align-items: flex-start;
+   flex-direction: column;
+   gap: 3rem;
+}
+
+@media all and (min-width: 1024px) {
+   .work-case__aside-infos {
+      margin-bottom: 10rem;
+   }
+}
+
+.work-case__gallery {
+   display: grid;
+   grid-gap: 1.5rem;
+   width: 100%;
+}
+
+@media all and (min-width: 1024px) {
+   .work-case__gallery {
+      grid-gap: 5rem;
+      padding-top: 20rem;
+      max-width: 93.8rem;
+      margin-right: 0;
+      margin-left: auto;
+   }
+}
+
+@media all and (min-width: 1920px) {
+   .work-case__gallery {
+      max-width: 81.9rem;
+   }
+}
+
+.work-case__gallery-item {
+   display: flex;
+   align-items: flex-start;
+   gap: 1rem;
+}
+
+@media all and (max-width: 1023.98px) {
+   .work-case__gallery-item {
+      flex-direction: column-reverse;
+      align-items: flex-end;
+   }
+}
 
 /* 본문 */
 .WorkDetail_body {
