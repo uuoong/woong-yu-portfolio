@@ -166,6 +166,19 @@
    }
 }
 
+.content-block__title {
+   filter: opacity(.75);
+   letter-spacing: 0;
+   text-transform: uppercase;
+   display: block;
+   overflow: hidden;
+   margin-bottom: 1.25rem;
+}
+
+.content-block__up {
+   display: inline-block;
+}
+
 /* 본문 */
 .WorkDetail_body {
     padding: 0 4rem 20vw;
