@@ -12,6 +12,9 @@
 
 	/* Point Colors */
 	--accent: #ff4401;
+
+	/* Overlay Colors */
+	--overlay: color-mix(in srgb, var(--black) 73%, transparent);
 }
 
 /* Theming (Dark) */
