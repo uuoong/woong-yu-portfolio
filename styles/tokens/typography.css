@@ -22,70 +22,84 @@
 
 /* Font Sizes (Fluid) */
 :root {
-	--font-size-display: clamp(
-		calc(var(--unit) * 48),
-		calc(var(--unit) * 48) + 32 * var(--fluid-unit),
-		calc(var(--unit) * 80)
-	);
-	
-	--font-size-h1: clamp(
-		calc(var(--unit) * 24),
-		calc(var(--unit) * 24) + 24 * var(--fluid-unit),
-		calc(var(--unit) * 48)
+	--display--font-size: clamp(
+		2.5rem, 1.813rem + 5.84vw, 9.229rem
 	);
 
-	--font-size-h2: clamp(
-		calc(var(--unit) * 16),
-		calc(var(--unit) * 16) + 12 * var(--fluid-unit),
-		calc(var(--unit) * 28)
-	);
-
-	--font-size-h3: clamp(
-		calc(var(--unit) * 14),
-		calc(var(--unit) * 14) + 8 * var(--fluid-unit),
-		calc(var(--unit) * 22)
+	--display-lg--font-size: clamp(
+		4.2rem, 3.142rem + 6.24vw, 11.032rem
 	);
 	
-	--font-size-lg: clamp(
-		calc(var(--unit) * 14),
-		calc(var(--unit) * 14) + 4 * var(--fluid-unit),
-		calc(var(--unit) * 18)
-	);
-	
-	--font-size-md: clamp(
-		calc(var(--unit) * 12),
-		calc(var(--unit) * 12) + 4 * var(--fluid-unit),
-		calc(var(--unit) * 16)
-	);
-	
-	--font-size-sm: clamp(
-		calc(var(--unit) * 10),
-		calc(var(--unit) * 10) + 2 * var(--fluid-unit),
-		calc(var(--unit) * 12)
-	);
-	
-	--font-size-mono: clamp(
-		calc(var(--unit) * 11),
-		calc(var(--unit) * 11) + 3 * var(--fluid-unit),
-		calc(var(--unit) * 14)
+	--h1--font-size: clamp(
+		3.02rem, 2.32rem + 4.2vw, 7.52rem
 	);
 
-	/* Font Weights */
-	--font-weight-regular: 450;
-	--font-weight-semibold: 550;
+	--h2--font-size: clamp(
+		2.39rem, 1.95rem + 2.2vw, 4.59rem
+	);
 
-	/* Line Heights */
-	--line-height-tight: 1;
-	--line-height-normal: 1.15;
-	--line-height-relaxed: 1.35;
+	--h3--font-size: clamp(
+		1.9rem, 2.6rem + 1.02vw, 3.5rem
+	);
 
-	/* Letter Spacing */
-	--letter-spacing-tight: -0.02em;
-	--letter-spacing-normal: 0;
-	--letter-spacing-relaxed: 0.02em;
+	--h4--font-size: clamp(
+		1.51rem, 1.358rem + 0.76vw, 2.268rem
+	);
+
+	--h5--font-size: clamp(
+		1.2rem, 1.126rem + 0.37vw, 1.571rem
+	);
+
+	--h6--font-size: clamp(
+		0.95rem, 0.922rem + 0.14vw, 1.092rem
+	);
+	
+	--body-lg--font-size: clamp(
+		1.25rem, 1.06rem + 0.26vw, 1.6rem
+	);
+	
+	--body-md--font-size: clamp(
+		1rem, 0.986rem + 0.07vw, 1.071rem
+	);
+
+	--body-sm--font-size: clamp(
+		0.875rem, 0.800rem + 0vw, 0.875rem
+	);
+	
+	--mono--font-size: clamp(
+		1rem, 0.986rem + 0.07vw, 1.071rem
+	);
 }
 
-/* Font Utilities */
+/* Font Weights */
+:root {
+	--font-weight-regular: 450;
+	--font-weight-semibold: 550;
+}
+
+/* Line Heights */
+:root {
+	--line-height-tight: 0.95em;
+	--line-height-normal: 1.05em;
+	--line-height-relaxed: 1.2em;
+}
+
+/* Letter Spacing */
+:root {
+	--letter-spacing-tight: -0.04em;
+	--letter-spacing-normal: -0.01em;
+	--letter-spacing-relaxed: 0em;
+}
+
+/* Text Utilities */
+.text-display {
+	font-family: var(--font-primary);
+	font-size: var(--font-size-display);
+	font-weight: var(--font-weight-regular);
+	line-height: var(--line-height-normal);
+	letter-spacing: var(--letter-spacing-normal);
+}
+
 .font-body {
 	font-family: var(--font-primary);
 	font-size: var(--font-size-md);
