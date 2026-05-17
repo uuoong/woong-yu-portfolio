@@ -188,7 +188,7 @@
 	text-wrap: pretty;
 }
 
-.font-mono {
+.text-mono {
 	font-family: var(--font-mono);
 	font-size: var(--mono--font-size);
 	font-weight: var(--font-mono--weight);
