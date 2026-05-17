@@ -15,9 +15,9 @@
 		"Monaspace Neon Fallback Win",
 		"Monaspace Neon Fallback Universal",
 		ui-monospace, monospace;
-
-  --font-primary: var(--font-sans);
-  --font-secondary: var(--font-mono);
+	
+	--font-primary: var(--font-sans);
+	--font-secondary: var(--font-mono);
 }
 
 /* Font Sizes (Fluid) */
@@ -73,8 +73,8 @@
 
 /* Font Weights */
 :root {
-	--font-weight-regular: 450;
-	--font-weight-semibold: 550;
+	--font-primary--weight-regular: 450;
+	--font-primary--weight-semibold: 550;
 }
 
 /* Line Heights */
@@ -86,7 +86,7 @@
 
 /* Letter Spacing */
 :root {
-	--letter-spacing-tight: -0.04em;
+	--letter-spacing-tight: -0.03em;
 	--letter-spacing-normal: -0.01em;
 	--letter-spacing-relaxed: 0em;
 }
@@ -94,10 +94,32 @@
 /* Text Utilities */
 .text-display {
 	font-family: var(--font-primary);
-	font-size: var(--font-size-display);
-	font-weight: var(--font-weight-regular);
-	line-height: var(--line-height-normal);
-	letter-spacing: var(--letter-spacing-normal);
+	font-size: var(--display--font-size);
+	font-weight: var(--font-primary--weight-semibold);
+	line-height: var(--line-height-tight);
+	letter-spacing: var(--letter-spacing-tight);
+	font-variation-settings: "wght" 550;
+	text-transform: uppercase;
+}
+
+.text-h1 {
+	font-family: var(--font-primary);
+	font-size: var(--h1--font-size);
+	font-weight: var(--font-primary--weight-semibold);
+	line-height: var(--line-height-tight);
+	letter-spacing: var(--letter-spacing-tight);
+	font-variation-settings: "wght" 550;
+	text-transform: uppercase;
+}
+
+.u-text-h1 {
+    font-family: var(--h1--font-family);
+    font-size: var(--h1--font-size);
+    line-height: var(--h1--line-height);
+    font-variation-settings: "wght" 530;
+    letter-spacing: var(--h1--letter-spacing);
+    font-weight: var(--h1--font-weight);
+    text-transform: var(--h1--text-transform)
 }
 
 .font-body {
