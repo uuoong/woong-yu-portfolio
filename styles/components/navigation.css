@@ -28,11 +28,6 @@
 }
 
 .Navigation_title {
-   font-family: var(--font-primary);
-   font-style: normal;
-   font-weight: var(--font-weight-semibold);
-   font-size: calc(var(--unit) * 20);
-   line-height: var(--line-height-tight);
    text-transform: uppercase;
    margin-right: 4.3rem;
 }
@@ -42,11 +37,7 @@
 }
 
 .Navigation_percentScrolled {
-   font-family: var(--font-primary);
    font-style: normal;
-   font-weight: var(--font-weight-semibold);
-   font-size: calc(var(--unit) * 20);
-   line-height: var(--line-height-tight);
 }
 
 .Navigation_right {
@@ -57,11 +48,6 @@
 }
 
 .Navigation_link {
-   font-family: var(--font-primary);
-   font-style: normal;
-   font-weight: var(--font-weight-semibold);
-   font-size: calc(var(--unit) * 20);
-   line-height: var(--line-height-tight);
    display: flex;
    align-items: center;
    justify-content: center;
@@ -71,7 +57,8 @@
 }
 
 .Navigation_link__number {
-   font-family: var(--font-secondary);
+   font-weight: 530;
+   font-variation-settings: "wght" 530;
    opacity: 0.5;
    display: none;
 }
@@ -92,11 +79,6 @@
    -moz-appearance: none;
    appearance: none;
    color: currentColor;
-   font-family: var(--font-primary);
-   font-style: normal;
-   font-weight: var(--font-weight-semibold);
-   font-size: calc(var(--unit) * 20);
-   line-height: var(--line-height-tight);
 }
 
 .Navigation_hoveredProduct {
@@ -109,12 +91,14 @@
 }
 
 .Navigation_hoveredProduct span {
-   font-family: var(--font-secondary);
+   font-family: var(--font-mono);
    font-style: normal;
-   font-weight: var(--font-weight-semibold);
+   font-weight: 530;
    text-transform: uppercase;
-   font-size: calc(var(--unit) * 20);
-   line-height: var(--line-height-tight);
+   font-size: var(--mono--font-size);
+   line-height: var(--line-height-relaxed);
+   letter-spacing: var(--letter-spacing-relaxed);
+   font-variation-settings: "wght" 530;
    opacity: 0.5;
 }
 
