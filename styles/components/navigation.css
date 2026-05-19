@@ -36,10 +36,6 @@
     display: none;
 }
 
-.Navigation_percentScrolled {
-   font-style: normal;
-}
-
 .Navigation_right {
    display: flex;
    align-items: center;
@@ -104,8 +100,6 @@
 
 @media(min-width: 60.4375rem) {
    .Navigation_title {
-      font-size: calc(var(--unit) * 26);
-      line-height: var(--line-height-tight);
       margin-right: 5.7rem;
    }
 
@@ -114,18 +108,11 @@
       margin-right: 3.7rem;
    }
 
-   .Navigation_percentScrolled {
-      font-size: calc(var(--unit) * 26);
-      line-height: var(--line-height-tight);
-   }
-
    .Navigation_right {
       gap: 2.5rem;
    }
 
    .Navigation_link {
-      font-size: calc(var(--unit) * 26);
-      line-height: var(--line-height-tight);
       display: flex;
    }
 
