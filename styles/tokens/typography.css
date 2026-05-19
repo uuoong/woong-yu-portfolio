@@ -22,69 +22,39 @@
 
 /* Font Sizes (Fluid) */
 :root {
-	--display--font-size: clamp(
-		2.5rem, 1.813rem + 5.84vw, 9.229rem
-	);
+	--display--font-size: calc(var(--unit) * 148);
 
-	--display-lg--font-size: clamp(
-		4.2rem, 3.142rem + 6.24vw, 11.032rem
-	);
+	--display-lg--font-size: calc(var(--unit) * 176);
 	
-	--h1--font-size: clamp(
-		3.02rem, 2.32rem + 4.2vw, 7.52rem
-	);
+	--h1--font-size: calc(var(--unit) * 42);
 
-	--h2--font-size: clamp(
-		2.39rem, 1.95rem + 2.2vw, 4.59rem
-	);
+	--h2--font-size: calc(var(--unit) * 36);
 
-	--h3--font-size: clamp(
-		1.9rem, 2.6rem + 1.02vw, 3.5rem
-	);
-
-	--h4--font-size: clamp(
-		1.51rem, 1.358rem + 0.76vw, 2.268rem
-	);
-
-	--h5--font-size: clamp(
-		1.2rem, 1.126rem + 0.37vw, 1.571rem
-	);
-
-	--h6--font-size: clamp(
-		0.95rem, 0.922rem + 0.14vw, 1.092rem
-	);
+	--h3--font-size: calc(var(--unit) * 28);
 	
-	--body-lg--font-size: clamp(
-		1.25rem, 1.06rem + 0.26vw, 1.6rem
-	);
+	--body-lg--font-size: calc(var(--unit) * 36);
 	
-	--body-md--font-size: clamp(
-		1rem, 0.986rem + 0.07vw, 1.071rem
-	);
+	--body-md--font-size: calc(var(--unit) * 28);
 
-	--body-sm--font-size: clamp(
-		0.875rem, 0.800rem + 0vw, 0.875rem
-	);
+	--body-sm--font-size: calc(var(--unit) * 20);
 	
-	--mono--font-size: clamp(
-		1rem, 0.986rem + 0.07vw, 1.071rem
-	);
+	--mono--font-size: calc(var(--unit) * 20);
 }
 
 /* Font Weights */
 :root {
-	--font-sans--weight-regular: 400;
-	--font-sans--weight-medium: 530;
+	--font-sans--weight-normal: 450;
+	--font-sans--weight-medium: 550;
 	--font-sans--weight-semibold: 650;
 
-	--font-mono--weight: 400;
+	--font-mono--weight: 550;
 }
 
 /* Line Heights */
 :root {
-	--line-height-tight: 0.95em;
-	--line-height-normal: 1.05em;
-	--line-height-relaxed: 1.2em;
+	--line-height-tight: 0.97;
+	--line-height-normal: 1;
+	--line-height-relaxed: 1.13;
 }
 
 /* Letter Spacing */
@@ -97,102 +67,110 @@
 /* Text Utilities */
 .text-display {
 	font-family: var(--font-sans);
-	font-size: var(--display--font-size);
+	font-style: normal;
 	font-weight: var(--font-sans--weight-medium);
+	text-transform: uppercase;
+	font-size: var(--display--font-size);
 	line-height: var(--line-height-tight);
 	letter-spacing: var(--letter-spacing-tight);
-	font-variation-settings: "wght" 530;
-	text-transform: uppercase;
+	font-variation-settings: "wght" 550;
 }
 
 .text-h1 {
 	font-family: var(--font-sans);
-	font-size: var(--h1--font-size);
+	font-style: normal;
 	font-weight: var(--font-sans--weight-medium);
+	font-size: var(--h1--font-size);
 	line-height: var(--line-height-normal);
 	letter-spacing: var(--letter-spacing-tight);
-	font-variation-settings: "wght" 530;
+	font-variation-settings: "wght" 550;
 }
 
 .text-h2 {
 	font-family: var(--font-sans);
-	font-size: var(--h2--font-size);
+	font-style: normal;
 	font-weight: var(--font-sans--weight-medium);
+	font-size: var(--h2--font-size);
 	line-height: var(--line-height-normal);
 	letter-spacing: var(--letter-spacing-tight);
-	font-variation-settings: "wght" 530;
+	font-variation-settings: "wght" 550;
 }
 
 .text-h3 {
 	font-family: var(--font-sans);
-	font-size: var(--h3--font-size);
+	font-style: normal;
 	font-weight: var(--font-sans--weight-medium);
+	font-size: var(--h3--font-size);	
 	line-height: var(--line-height-normal);
 	letter-spacing: var(--letter-spacing-tight);
-	font-variation-settings: "wght" 530;
-}
-
-.text-h4 {
-	font-family: var(--font-sans);
-	font-size: var(--h4--font-size);
-	font-weight: var(--font-sans--weight-medium);
-	line-height: var(--line-height-normal);
-	letter-spacing: var(--letter-spacing-tight);
-	font-variation-settings: "wght" 530;
-}
-
-.text-h5 {
-	font-family: var(--font-sans);
-	font-size: var(--h5--font-size);
-	font-weight: var(--font-sans--weight-medium);
-	line-height: var(--line-height-normal);
-	letter-spacing: var(--letter-spacing-tight);
-	font-variation-settings: "wght" 530;
-}
-
-.text-h6 {
-	font-family: var(--font-sans);
-	font-size: var(--h6--font-size);
-	font-weight: var(--font-sans--weight-medium);
-	line-height: var(--line-height-normal);
-	letter-spacing: var(--letter-spacing-tight);
-	font-variation-settings: "wght" 530;
+	font-variation-settings: "wght" 550;
 }
 
 .text-lg {
 	font-family: var(--font-sans);
+	font-style: normal;
+	font-weight: var(--font-sans--weight-medium);
 	font-size: var(--body-lg--font-size);
 	line-height: var(--line-height-relaxed);
 	letter-spacing: var(--letter-spacing-normal);
-	font-variation-settings: "wght" 530;
+	font-variation-settings: "wght" 550;
 	text-wrap: pretty;
 }
 
 .text-md {
 	font-family: var(--font-sans);
-	font-size: var(--body-md--font-size);
+	font-style: normal;
 	font-weight: var(--font-sans--weight-medium);
+	font-size: var(--body-md--font-size);
 	line-height: var(--line-height-relaxed);
 	letter-spacing: var(--letter-spacing-normal);
-	font-variation-settings: "wght" 530;
+	font-variation-settings: "wght" 550;
 	text-wrap: pretty;
 }
 
 .text-sm {
 	font-family: var(--font-sans);
-	font-size: var(--body-sm--font-size);
+	font-style: normal;
 	font-weight: var(--font-sans--weight-medium);
-	line-height: var(--line-height-relaxed);
+	font-size: var(--body-sm--font-size);
+	line-height: var(--line-height-normal);
 	letter-spacing: var(--letter-spacing-normal);
-	font-variation-settings: "wght" 650;
+	font-variation-settings: "wght" 550;
 	text-wrap: pretty;
 }
 
 .text-mono {
 	font-family: var(--font-mono);
-	font-size: var(--mono--font-size);
+	font-style: normal;
 	font-weight: var(--font-mono--weight);
-	line-height: var(--line-height-relaxed);
-	letter-spacing: var(--letter-spacing-relaxed);
-	font-variation-settings: "wght" 400;
+	text-transform: uppercase;
+	font-size: var(--mono--font-size);
+	line-height: var(--line-height-normal);
+	letter-spacing: var(--letter-spacing-normal);
+	font-variation-settings: "wght" 550;
+}
+
+@media(max-width: 60.4375rem) {
+	.text-h1 {
+		font-size: calc(var(--unit) * 76);
+		line-height: var(--line-height-relaxed);
+	}
+	
+	.text-h2 {
+		font-size: calc(var(--unit) * 52);
+	}
+	
+	.text-h3 {
+		font-size: calc(var(--unit) * 76);
+		line-height: var(--line-height-relaxed);
+	}
+	
+	.text-h1 {
+		font-size: calc(var(--unit) * 76);
+		line-height: var(--line-height-relaxed);
+	}
+	
+	.text-sm {
+		font-size: calc(var(--unit) * 26);
+	}
 }
