@@ -24,7 +24,7 @@
   position: absolute;
   top: 0;
   left: calc(50% - .5px);
-  background-color: var(--white);
+  background-color: var(--color-white);
 }
 
 .Cursor_crosshair__horizontal {
@@ -33,7 +33,7 @@
   position: absolute;
   top: calc(50% - .5px);
   left: 0;
-  background-color: var(--white);
+  background-color: var(--color-white);
 }
 
 .Cursor_text {
@@ -61,7 +61,7 @@
   text-align: center;
   white-space: nowrap;
   grid-area: a;
-  color: var(--white);
+  color: var(--color-white);
   transform: translateY(105%);
   display: block;
 }

@@ -6,7 +6,7 @@
   height: 100%;
   z-index: 110;
   pointer-events: none;
-  color: var(--fg-inverse);
+  color: var(--color-fg-inverse);
 }
 
 .Wipe_wipeBg {
@@ -15,7 +15,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--bg-inverse);
+  background-color: var(--color-bg-inverse);
   -webkit-clip-path: polygon(0 var(--left-y), 100% var(--right-y), 100% 100%, 0 100%);
   clip-path: polygon(0 var(--left-y), 100% var(--right-y), 100% 100%, 0 100%);
   --left-y: 100%;

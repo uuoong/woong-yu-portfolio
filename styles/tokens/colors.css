@@ -1,186 +1,76 @@
+/* ==========================================================================
+   Color Tokens
+   --------------------------------------------------------------------------
+   Two layers only:
+   1. Primitive  — raw palette, stored as OKLCH channels (L C H)
+   2. Semantic   — role tokens, resolved per theme with light-dark()
+
+   Theme: light by default. html[data-theme="dark"] switches color-scheme,
+   and every light-dark() token follows automatically — no duplicated blocks.
+
+   Need a one-off tint (placeholder, scrim, hover wash)? Derive it where it is
+   used instead of adding a token:
+     color-mix(in oklch, var(--color-fg) 12%, transparent)
+     oklch(var(--oklch-black) / 0.4)
+   ========================================================================== */
+
+/* 1. Primitive ------------------------------------------------------------ */
 :root {
-	/* Pure Colors */
-	--color-black-rgb: 14, 14, 14;
-	--color-black: rgba(var(--color-black-rgb), 1);
-	
-	--color-white-rgb: 241, 241, 241;
-	--color-white: rgba(var(--color-white-rgb), 1);
+	/* Channels (L C H) — reuse with any alpha: oklch(var(--oklch-x) / a) */
+	--oklch-white: 96.4% 0.012 91.5;   /* #F6F3EA · PANTONE 11-0103 TCX Egret */
+	--oklch-black: 36.2% 0.004 308.3;  /* #3E3D3F · PANTONE Black 7 C */
+	--oklch-blue:  51.1% 0.203 266;    /* #2F57D8 · PANTONE 2728 C */
+	--oklch-brown: 69.5% 0.076 67.4;   /* #BD9469 · PANTONE 7512 C */
 
-	/* Primitive Colors */
-	--color-dark-rgb: 40, 40, 42;
-	--color-dark: rgba(var(--color-dark-rgb), 1);
-	
-	--color-light-rgb: 236, 234, 229;
-	--color-light: rgba(var(--color-light-rgb), 1);
-	
-	/* Point Colors */
-	--color-red-rgb: 255, 69, 1;
-	--color-red: rgba(var(--color-red-rgb), 1);
-
-	/* Border Tokens */
-	--border-dark: rgb(var(--color-black-rgb) / 0.18);
-	--border-dark-subtle: rgb(var(--color-black-rgb) / 0.12);
-
-	--border-light: rgb(var(--color-white-rgb) / 0.24);
-	--border-light-subtle: rgb(var(--color-white-rgb) / 0.16);
-
-	/* Alpha Tokens */
-	--alpha-black-12: rgb(var(--color-black-rgb) / 0.12);
-	--alpha-black-18: rgb(var(--color-black-rgb) / 0.18);
-	--alpha-black-24: rgb(var(--color-black-rgb) / 0.24);
-	--alpha-black-46: rgb(var(--color-black-rgb) / 0.46);
-	
-	--alpha-white-12: rgb(var(--color-white-rgb) / 0.12);
-	--alpha-white-16: rgb(var(--color-white-rgb) / 0.16);
-	--alpha-white-24: rgb(var(--color-white-rgb) / 0.24);
-	--alpha-white-40: rgb(var(--color-white-rgb) / 0.40);
+	--color-white: oklch(var(--oklch-white));
+	--color-black: oklch(var(--oklch-black));
+	--color-blue:  oklch(var(--oklch-blue));
+	--color-brown: oklch(var(--oklch-brown));
 }
 
-/* Theming (Dark) */
-:root,
-html[data-theme="dark"] {
-	/* Backgrounds */
-	--color-bg: var(--color-black);
-	--color-on-bg: var(--color-light);
-	
-	/* Surface */
-	--color-surface: var(--color-light);
-	--color-on-surface: var(--color-dark);
-	
-	/* Text */
-	--color-text-primary: var(--color-light);
-	--color-text-secondary: rgb(var(--color-light-rgb) / 0.5);
-
-	/* Border */
-	--color-border: var(--border-light);
-	--color-border-subtle: var(--border-light-subtle);
-	
-	/* Accent */
-	--color-accent: var(--color-red);
-	--color-on-accent: var(--color-black);
-	
-	/* Neutral */
-	--color-neutral-100: var(--alpha-white-16);
-	--color-neutral-200: var(--alpha-white-24);
-	--color-neutral-300: var(--alpha-white-40);
-
-	/* Code Highlighter */
-	--color-ch-background: var(--alpha-white-24);
-	
-	--color-ch-identifier: #e5e7eb;
-	--color-ch-keyword: #f472b6;
-	--color-ch-class: #93c5fd;
-	--color-ch-function: #7dd3fc;
-	--color-ch-property: #86efac;
-	--color-ch-string: #86efac;
-	--color-ch-number: #60a5fa;
-	--color-ch-entity: #fde68a;
-	--color-ch-jsxliterals: #c4b5fd;
-	--color-ch-comment: #9ca3af;
-	--color-ch-sign: #fca5a5;
-	--color-ch-break: transparent;
-	--color-ch-space: transparent;
-		
-	/* Color Scheme */
-	color-scheme: dark;
-}
-
-/* Theming (Light) */
-html[data-theme="light"] {
-	/* Backgrounds */
-	--color-bg: var(--color-light);
-	--color-on-bg: var(--color-dark);
-	
-	/* Surface */
-	--color-surface: var(--color-black);
-	--color-on-surface: var(--color-light);
-
-	/* Text */
-	--color-text-primary: var(--color-dark);
-	--color-text-secondary: rgb(var(--color-dark-rgb) / 0.5);
-
-	/* Border */
-	--color-border: var(--border-dark);
-	--color-border-subtle: var(--border-dark-subtle);
-
-	/* Accent */
-	--color-accent: var(--color-red);
-	--color-on-accent: var(--color-black);
-	
-	/* Neutral */
-	--color-neutral-100: var(--alpha-black-12);
-	--color-neutral-200: var(--alpha-black-18);
-	--color-neutral-300: var(--alpha-black-46);
-
-	/* Code Highlighter */
-	--color-ch-background: var(--alpha-black-18);
-	
-	--color-ch-identifier: #1f2937;
-	--color-ch-keyword: #9f1239;
-	--color-ch-class: #1d4ed8;
-	--color-ch-function: #0369a1;
-	--color-ch-property: #065f46;
-	--color-ch-string: #065f46;
-	--color-ch-number: #1e40af;
-	--color-ch-entity: #92400e;
-	--color-ch-jsxliterals: #6d28d9;
-	--color-ch-comment: #6b7280;
-	--color-ch-sign: #b91c1c;
-	--color-ch-break: transparent;
-	--color-ch-space: transparent;
-	
-	/* Color Scheme */
+/* 2. Semantic ------------------------------------------------------------- */
+:root {
 	color-scheme: light;
+
+	/* Primary — background & foreground */
+	--color-bg: light-dark(var(--color-white), var(--color-black));
+	--color-fg: light-dark(var(--color-black), var(--color-white));
+
+	/* Inverse — sections that flip against the page (menu, wipe) */
+	--color-bg-inverse: var(--color-fg);
+	--color-fg-inverse: var(--color-bg);
+
+	/* Secondary — the single gray: foreground at reduced alpha.
+	   Alphas tuned to keep 4.5:1 on --color-bg (light 4.7:1, dark 5.1:1). */
+	--color-secondary: light-dark(
+		oklch(var(--oklch-black) / 0.74),
+		oklch(var(--oklch-white) / 0.64)
+	);
+
+	/* Point — blue in light, brown in dark */
+	--color-point: light-dark(var(--color-blue), var(--color-brown));
+	--color-on-point: light-dark(var(--color-white), var(--color-black));
+
+	/* Code Highlighter */
+	--color-ch-background: light-dark(oklch(var(--oklch-black) / 0.18), oklch(var(--oklch-white) / 0.24));
+	--color-ch-identifier:  light-dark(oklch(27.8% 0.030 256.8), oklch(92.8% 0.006 264.5));
+	--color-ch-keyword:     light-dark(oklch(45.5% 0.171 13.7),  oklch(72.5% 0.175 349.8));
+	--color-ch-class:       light-dark(oklch(48.8% 0.217 264.4), oklch(80.9% 0.096 251.8));
+	--color-ch-function:    light-dark(oklch(50.0% 0.119 242.7), oklch(82.8% 0.101 230.3));
+	--color-ch-property:    light-dark(oklch(43.2% 0.086 166.9), oklch(87.1% 0.136 154.4));
+	--color-ch-string:      light-dark(oklch(43.2% 0.086 166.9), oklch(87.1% 0.136 154.4));
+	--color-ch-number:      light-dark(oklch(42.4% 0.181 265.6), oklch(71.4% 0.143 254.6));
+	--color-ch-entity:      light-dark(oklch(47.3% 0.125 46.2),  oklch(92.4% 0.115 95.7));
+	--color-ch-jsxliterals: light-dark(oklch(49.1% 0.241 292.6), oklch(81.1% 0.101 293.6));
+	--color-ch-comment:     light-dark(oklch(55.1% 0.023 264.4), oklch(71.4% 0.019 261.3));
+	--color-ch-sign:        light-dark(oklch(50.5% 0.190 27.5),  oklch(80.8% 0.103 19.6));
+	--color-ch-break: transparent;
+	--color-ch-space: transparent;
 }
 
-/* Theming (System) */
-@media (prefers-color-scheme: dark) {
-	html:not([data-theme]) {
-		/* Backgrounds */
-		--color-bg: var(--color-black);
-		--color-on-bg: var(--color-light);
-		
-		/* Surface */
-		--color-surface: var(--color-light);
-		--color-on-surface: var(--color-dark);
-		
-		/* Text */
-		--color-text-primary: var(--color-light);
-		--color-text-secondary: rgb(var(--color-light-rgb) / 0.5);
-
-		/* Border */
-		--color-border: var(--border-light);
-		--color-border-subtle: var(--border-light-subtle);
-		
-		/* Accent */
-		--color-accent: var(--color-red);
-		--color-on-accent: var(--color-black);
-		
-		/* Neutral */
-		--color-neutral-100: var(--alpha-white-16);
-		--color-neutral-200: var(--alpha-white-24);
-		--color-neutral-300: var(--alpha-white-40);
-		
-		/* Code Highlighter */
-		--color-ch-background: var(--alpha-white-24);
-		
-		--color-ch-identifier: #e5e7eb;
-		--color-ch-keyword: #f472b6;
-		--color-ch-class: #93c5fd;
-		--color-ch-function: #7dd3fc;
-		--color-ch-property: #86efac;
-		--color-ch-string: #86efac;
-		--color-ch-number: #60a5fa;
-		--color-ch-entity: #fde68a;
-		--color-ch-jsxliterals: #c4b5fd;
-		--color-ch-comment: #9ca3af;
-		--color-ch-sign: #fca5a5;
-		--color-ch-break: transparent;
-		--color-ch-space: transparent;
-		
-		/* Color Scheme */
-		color-scheme: dark;
-	}
+/* Theme switch ------------------------------------------------------------ */
+html[data-theme="dark"] {
+	color-scheme: dark;
 }
 
 /* Theme Transition */

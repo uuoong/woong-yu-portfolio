@@ -33,5 +33,5 @@
   min-width: 1rem;
   min-height: 1rem;
   border-radius: 50%;
-  background-color: var(--fg-primary);
+  background-color: var(--color-fg);
 }

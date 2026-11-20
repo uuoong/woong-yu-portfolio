@@ -68,7 +68,7 @@
 }
 
 .MultiParagraphWithLinks_bottomContent__linksContainer__listItemLine {
-  border-top: 1px solid var(--fg-primary);
+  border-top: 1px solid var(--color-fg);
   width: 100%;
   display: block;
   transform: scaleX(0);
@@ -89,7 +89,7 @@
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: var(--fg-primary);
+  background-color: var(--color-fg);
   z-index: 0;
   transform: scaleX(0);
   transform-origin: left;

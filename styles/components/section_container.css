@@ -1,5 +1,5 @@
 .SectionContainer {
-  color: var(--fg-primary);
+  color: var(--color-fg);
 }
 
 .SectionContainer[data-component] {

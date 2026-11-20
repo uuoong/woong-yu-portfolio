@@ -9,11 +9,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--image-bg);
+  background-color: color-mix(in oklch, var(--color-fg) 8%, transparent);
 }
 
 .ImageReveal_hasBackgroundColor .ImageReveal_backgroundColor {
-  background-color: var(--bg);
+  background-color: var(--color-bg);
   opacity: 0.5;
 }
 

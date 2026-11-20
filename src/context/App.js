@@ -22,8 +22,8 @@ const AppContext = React.createContext(null)
 
 export function AppProvider({ children }) {
     const [theme, _setTheme] = useState(() => {
-        if (typeof window === "undefined") return "dark"
-        return _getPersistedTheme() || "dark"
+        if (typeof window === "undefined") return "light"
+        return _getPersistedTheme() || "light"
     })
 
     const setTheme = (t) => {
@@ -115,7 +115,7 @@ export function useAppContext() {
     const ctx = React.useContext(AppContext)
     if (!ctx) {
         return {
-            theme: _getPersistedTheme() || "dark",
+            theme: _getPersistedTheme() || "light",
             setTheme: () => {},
             currentPath: "/",
             setCurrentPath: () => {},
