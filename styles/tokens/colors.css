@@ -5,34 +5,37 @@
    1. Primitive  — raw palette, stored as OKLCH channels (L C H)
    2. Semantic   — role tokens, resolved per theme with light-dark()
 
-   Theme: light by default. html[data-theme="dark"] switches color-scheme,
-   and every light-dark() token follows automatically — no duplicated blocks.
+   Theme order: user's choice (data-theme) > OS/browser setting > light.
+   - <html> without data-theme  → follows the system; no preference = light
+   - <html data-theme="light">  → light, whatever the system says
+   - <html data-theme="dark">   → dark, whatever the system says
+   Browsers without light-dark() get the light theme (fallback at the bottom).
 
    Need a one-off tint (placeholder, scrim, hover wash)? Derive it where it is
    used instead of adding a token:
-     color-mix(in oklch, var(--color-fg) 12%, transparent)
+     color-mix(in oklch, var(--color-fg) 8%, transparent)
      oklch(var(--oklch-black) / 0.4)
    ========================================================================== */
 
 /* 1. Primitive ------------------------------------------------------------ */
 :root {
 	/* Channels (L C H) — reuse with any alpha: oklch(var(--oklch-x) / a) */
-	--oklch-white: 96.4% 0.012 91.5;   /* #F6F3EA · PANTONE 11-0103 TCX Egret */
-	--oklch-black: 36.2% 0.004 308.3;  /* #3E3D3F · PANTONE Black 7 C */
-	--oklch-blue:  51.1% 0.203 266;    /* #2F57D8 · PANTONE 2728 C */
-	--oklch-brown: 69.5% 0.076 67.4;   /* #BD9469 · PANTONE 7512 C */
+	--oklch-white:       96.4% 0.012 91.5;  /* #F6F3EA · PANTONE 11-0103 TCX Egret */
+	--oklch-black:       36.2% 0.004 308.3; /* #3E3D3F · PANTONE Black 7 C */
+	--oklch-brown-deep:  53.4% 0.09 60;     /* #936033 · point on light (4.8:1 on white) */
+	--oklch-brown-soft:  75.9% 0.09 60;     /* #DBA376 · point on dark  (4.9:1 on black) */
 
-	--color-white: oklch(var(--oklch-white));
-	--color-black: oklch(var(--oklch-black));
-	--color-blue:  oklch(var(--oklch-blue));
-	--color-brown: oklch(var(--oklch-brown));
+	--color-white:      oklch(var(--oklch-white));
+	--color-black:      oklch(var(--oklch-black));
+	--color-brown-deep: oklch(var(--oklch-brown-deep));
+	--color-brown-soft: oklch(var(--oklch-brown-soft));
 }
 
 /* 2. Semantic ------------------------------------------------------------- */
 :root {
-	color-scheme: light;
+	color-scheme: light dark;
 
-	/* Primary — background & foreground */
+	/* Primary — background & foreground (9.7:1 both themes) */
 	--color-bg: light-dark(var(--color-white), var(--color-black));
 	--color-fg: light-dark(var(--color-black), var(--color-white));
 
@@ -40,15 +43,21 @@
 	--color-bg-inverse: var(--color-fg);
 	--color-fg-inverse: var(--color-bg);
 
-	/* Secondary — the single gray: foreground at reduced alpha.
-	   Alphas tuned to keep 4.5:1 on --color-bg (light 4.7:1, dark 5.1:1). */
+	/* Secondary — the single gray: foreground at reduced alpha (4.5:1+) */
 	--color-secondary: light-dark(
 		oklch(var(--oklch-black) / 0.74),
 		oklch(var(--oklch-white) / 0.64)
 	);
 
-	/* Point — blue in light, brown in dark */
-	--color-point: light-dark(var(--color-blue), var(--color-brown));
+	/* Border — solid (3:1, controls & key rules) / subtle (alpha, dividers) */
+	--color-border: light-dark(oklch(63.9% 0.004 72.7), oklch(62.7% 0.004 70.5));
+	--color-border-subtle: light-dark(
+		oklch(var(--oklch-black) / 0.2),
+		oklch(var(--oklch-white) / 0.14)
+	);
+
+	/* Point — one hue, two lightnesses */
+	--color-point: light-dark(var(--color-brown-deep), var(--color-brown-soft));
 	--color-on-point: light-dark(var(--color-white), var(--color-black));
 
 	/* Code Highlighter */
@@ -68,9 +77,38 @@
 	--color-ch-space: transparent;
 }
 
-/* Theme switch ------------------------------------------------------------ */
-html[data-theme="dark"] {
-	color-scheme: dark;
+/* Theme override (set by the toggle) ------------------------------------- */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+
+/* Fallback: no light-dark() (Safari < 17.5, Chrome < 123, Firefox < 120) --
+   Light theme only, so the page stays readable instead of losing its colors. */
+@supports not (color: light-dark(#000, #fff)) {
+	:root,
+	:root[data-theme] {
+		color-scheme: light;
+
+		--color-bg: var(--color-white);
+		--color-fg: var(--color-black);
+		--color-secondary: oklch(var(--oklch-black) / 0.74);
+		--color-border: oklch(63.9% 0.004 72.7);
+		--color-border-subtle: oklch(var(--oklch-black) / 0.2);
+		--color-point: var(--color-brown-deep);
+		--color-on-point: var(--color-white);
+
+		--color-ch-background: oklch(var(--oklch-black) / 0.18);
+		--color-ch-identifier:  oklch(27.8% 0.030 256.8);
+		--color-ch-keyword:     oklch(45.5% 0.171 13.7);
+		--color-ch-class:       oklch(48.8% 0.217 264.4);
+		--color-ch-function:    oklch(50.0% 0.119 242.7);
+		--color-ch-property:    oklch(43.2% 0.086 166.9);
+		--color-ch-string:      oklch(43.2% 0.086 166.9);
+		--color-ch-number:      oklch(42.4% 0.181 265.6);
+		--color-ch-entity:      oklch(47.3% 0.125 46.2);
+		--color-ch-jsxliterals: oklch(49.1% 0.241 292.6);
+		--color-ch-comment:     oklch(55.1% 0.023 264.4);
+		--color-ch-sign:        oklch(50.5% 0.190 27.5);
+	}
 }
 
 /* Theme Transition */
