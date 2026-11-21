@@ -152,14 +152,14 @@
    left: 0;
    width: 100%;
    height: 100%;
-   background-color: var(--color-bg);
+   background-color: var(--bg);
    z-index: 1;
    opacity: 0;
 }
 
 .Drawer_navigationDrawerInner {
    width: 100%;
-   color: var(--color-fg-inverse);
+   color: var(--fg-inverse);
    padding: var(--page-gutter);
    position: relative;
    z-index: 2;
@@ -180,7 +180,7 @@
    left: 0;
    width: 100%;
    height: 100%;
-   background-color: var(--color-bg-inverse);
+   background-color: var(--bg-inverse);
    transform: scaleY(0);
    transform-origin: top;
 }

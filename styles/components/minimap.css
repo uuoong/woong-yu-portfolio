@@ -15,7 +15,7 @@
 
 .hero_home_overlay {
    z-index: 4;
-   background-color: var(--color-black);
+   background-color: var(--black);
    pointer-events: none;
    opacity: 0;
    width: 100%;
@@ -26,7 +26,7 @@
 .hero_project_overlay {
    z-index: 3;
    pointer-events: none;
-   background-color: oklch(var(--oklch-black) / 0.4);
+   background-color: var(--overlay);
    width: 100%;
    height: 100%;
    position: absolute;
@@ -63,7 +63,7 @@
 
 .hero_project_heading.text-display {
     margin-bottom: var(--padding-vertical--small);
-    color: var(--color-white);
+    color: var(--white);
     width: 100%;
     max-width: 10ch;
 }

@@ -46,6 +46,26 @@ const ThemeToggle = () => {
     }, [theme])
 
     useEffect(() => {
+        const saved = (() => {
+            try {
+                return localStorage.getItem("app-theme")
+            } catch {
+                return null
+            }
+        })()
+        if (saved) return
+
+        let isLight = true
+        if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+            isLight = false
+        }
+        setTheme(isLight ? "light" : "dark")
+    }, [])
+
+    useEffect(() => {
         if (!theme) return
         document.documentElement.dataset.theme = theme
     }, [theme])

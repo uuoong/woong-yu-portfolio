@@ -61,7 +61,7 @@ const PageTransition = ({ className, style, children }) => {
                     data-themed="background-color"
                     key={currentPath}
                     className={`page ${pageIsTransitioning ? "pageIsTransitioning" : ""}`}
-                    style={{ backgroundColor: "var(--color-bg)" }}
+                    style={{ backgroundColor: "var(--bg)" }}
                 >
                     {children}
                 </motion.div>
