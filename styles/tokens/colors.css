@@ -1,67 +1,55 @@
 /* ==========================================================================
-   Color Tokens
+   Color Tokens — monotone
    --------------------------------------------------------------------------
-   Two layers only:
-   1. Primitive  — raw palette, stored as OKLCH channels (L C H)
-   2. Semantic   — role tokens, resolved per theme with light-dark()
+   1. Primitive  — Tailwind neutral scale (light). Steps not used are left out.
+   2. Semantic   — role tokens, resolved per theme with light-dark().
+                   Dark values are tuned per role (warm near-black, off-white
+                   text) to keep the same contrast ratios as light.
 
    Theme order: user's choice (data-theme) > OS/browser setting > light.
    - <html> without data-theme  → follows the system; no preference = light
    - <html data-theme="light">  → light, whatever the system says
    - <html data-theme="dark">   → dark, whatever the system says
    Browsers without light-dark() get the light theme (fallback at the bottom).
-
-   Need a one-off tint (placeholder, scrim, hover wash)? Derive it where it is
-   used instead of adding a token:
-     color-mix(in oklch, var(--color-fg) 8%, transparent)
-     oklch(var(--oklch-black) / 0.4)
    ========================================================================== */
 
 /* 1. Primitive ------------------------------------------------------------ */
 :root {
-	/* Channels (L C H) — reuse with any alpha: oklch(var(--oklch-x) / a) */
-	--oklch-white:       96.4% 0.012 91.5;  /* #F6F3EA · PANTONE 11-0103 TCX Egret */
-	--oklch-black:       36.2% 0.004 308.3; /* #3E3D3F · PANTONE Black 7 C */
-	--oklch-brown-deep:  53.4% 0.09 60;     /* #936033 · point on light (4.8:1 on white) */
-	--oklch-brown-soft:  75.9% 0.09 60;     /* #DBA376 · point on dark  (4.9:1 on black) */
-
-	--color-white:      oklch(var(--oklch-white));
-	--color-black:      oklch(var(--oklch-black));
-	--color-brown-deep: oklch(var(--oklch-brown-deep));
-	--color-brown-soft: oklch(var(--oklch-brown-soft));
+	--color-white:       oklch(100% 0 0);   /* #FFFFFF */
+	--color-neutral-100: oklch(97% 0 0);    /* #F5F5F5 */
+	--color-neutral-200: oklch(92.2% 0 0);  /* #E5E5E5 */
+	--color-neutral-300: oklch(87% 0 0);    /* #D4D4D4 */
+	--color-neutral-400: oklch(70.8% 0 0);  /* #A1A1A1 */
+	--color-neutral-950: oklch(14.5% 0 0);  /* #0A0A0A */
 }
 
 /* 2. Semantic ------------------------------------------------------------- */
 :root {
 	color-scheme: light dark;
 
-	/* Primary — background & foreground (9.7:1 both themes) */
-	--color-bg: light-dark(var(--color-white), var(--color-black));
-	--color-fg: light-dark(var(--color-black), var(--color-white));
+	/*                       light                       dark                                    vs bg */
+	/* Background */
+	--color-bg:        light-dark(var(--color-white),       oklch(20% 0.004 75));    /* #171614 */
+	--color-bg-subtle: light-dark(var(--color-neutral-100), oklch(23.7% 0.005 80));  /* #201E1C  1.1:1 */
+
+	/* Foreground */
+	--color-fg-primary:   light-dark(var(--color-neutral-950), oklch(92% 0.008 80));   /* #E7E4DF  L 19.8 · D 14.3:1 */
+	--color-fg-secondary: light-dark(var(--color-neutral-400), oklch(54% 0.005 80));   /* #706E6B  L 2.6 · D 3.6:1 (dark reads dimmer, one step up) */
+	--color-fg-tertiary:  light-dark(var(--color-neutral-200), oklch(28.5% 0.005 80)); /* #2B2A27  1.3:1 */
+
+	/* State */
+	--color-inactive: var(--color-fg-tertiary);
+
+	/* Border */
+	--color-border:        var(--color-fg-tertiary);                                     /* 1.3:1 */
+	--color-border-strong: light-dark(var(--color-neutral-300), oklch(33% 0.005 80));    /* #373533  1.5:1 */
 
 	/* Inverse — sections that flip against the page (menu, wipe) */
-	--color-bg-inverse: var(--color-fg);
+	--color-bg-inverse: var(--color-fg-primary);
 	--color-fg-inverse: var(--color-bg);
 
-	/* Secondary — the single gray: foreground at reduced alpha (4.5:1+) */
-	--color-secondary: light-dark(
-		oklch(var(--oklch-black) / 0.74),
-		oklch(var(--oklch-white) / 0.64)
-	);
-
-	/* Border — solid (3:1, controls & key rules) / subtle (alpha, dividers) */
-	--color-border: light-dark(oklch(63.9% 0.004 72.7), oklch(62.7% 0.004 70.5));
-	--color-border-subtle: light-dark(
-		oklch(var(--oklch-black) / 0.2),
-		oklch(var(--oklch-white) / 0.14)
-	);
-
-	/* Point — one hue, two lightnesses */
-	--color-point: light-dark(var(--color-brown-deep), var(--color-brown-soft));
-	--color-on-point: light-dark(var(--color-white), var(--color-black));
-
 	/* Code Highlighter */
-	--color-ch-background: light-dark(oklch(var(--oklch-black) / 0.18), oklch(var(--oklch-white) / 0.24));
+	--color-ch-background: var(--color-bg-subtle);
 	--color-ch-identifier:  light-dark(oklch(27.8% 0.030 256.8), oklch(92.8% 0.006 264.5));
 	--color-ch-keyword:     light-dark(oklch(45.5% 0.171 13.7),  oklch(72.5% 0.175 349.8));
 	--color-ch-class:       light-dark(oklch(48.8% 0.217 264.4), oklch(80.9% 0.096 251.8));
@@ -88,15 +76,13 @@
 	:root[data-theme] {
 		color-scheme: light;
 
-		--color-bg: var(--color-white);
-		--color-fg: var(--color-black);
-		--color-secondary: oklch(var(--oklch-black) / 0.74);
-		--color-border: oklch(63.9% 0.004 72.7);
-		--color-border-subtle: oklch(var(--oklch-black) / 0.2);
-		--color-point: var(--color-brown-deep);
-		--color-on-point: var(--color-white);
+		--color-bg:            var(--color-white);
+		--color-bg-subtle:     var(--color-neutral-100);
+		--color-fg-primary:    var(--color-neutral-950);
+		--color-fg-secondary:  var(--color-neutral-400);
+		--color-fg-tertiary:   var(--color-neutral-200);
+		--color-border-strong: var(--color-neutral-300);
 
-		--color-ch-background: oklch(var(--oklch-black) / 0.18);
 		--color-ch-identifier:  oklch(27.8% 0.030 256.8);
 		--color-ch-keyword:     oklch(45.5% 0.171 13.7);
 		--color-ch-class:       oklch(48.8% 0.217 264.4);
